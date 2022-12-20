@@ -1,17 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { baseApi } from './configs/BaseApi';
-import UserAuth from './slice/UserAuth'
+import { loginApi } from './shared/redux/api/auth/loginApi';
 
 
 
 export const store = configureStore({
   reducer: {
-    [baseApi.reducerPath]: baseApi.reducer
+    [loginApi.reducerPath]: loginApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware().concat(baseApi.middleware),
+      getDefaultMiddleware().concat(loginApi.middleware),
 });
 
 setupListeners(store.dispatch);
