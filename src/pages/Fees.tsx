@@ -37,7 +37,7 @@ export const Fees = () => {
                 <Divider />
             </Row>
 
-            <Form form={form} wrapperCol= {{span:14}} labelCol={{span:8}} name="fees-collection-form" layout="inline" size="large" onFinish={onFinish}>
+            <Form form={form} wrapperCol= {{span:14}} labelCol={{span:8}} name="fees-collection-form" size="large" onFinish={onFinish}>
 
                 <FeesLineItem />
 
