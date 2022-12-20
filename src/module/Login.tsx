@@ -1,7 +1,10 @@
-import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd"
+import { Alert, Button, Card, Checkbox, Col, Form, Input, Row, Space } from "antd"
+import { useMemo } from "react";
 import { DateTime } from "../shared/component/DateTime"
 import { LoginDTO } from "../shared/interface/login";
 import { useLoginUserMutation } from "../shared/redux/api/auth/loginApi";
+import { login } from "../shared/redux/slices/UserAuth";
+import { useAppDispatch } from "../store";
 
 
 export const Login = () => {
@@ -17,14 +20,14 @@ export const Login = () => {
 
     const onFinish = (values: any) => {
         console.log('Success:', values);
-        login(values as LoginDTO);
+        auth(values as LoginDTO);
     };
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
 
-    const login = async (value: LoginDTO) => {
+    const auth = async (value: LoginDTO) => {
         try {
             await loginUser(value);
         } catch (err) {
@@ -32,8 +35,11 @@ export const Login = () => {
         }
     }
 
+    useMemo(() => {
+    //    useAppDispatch(login(data));
+    }, [data])
 
-    console.log(data);
+
     return (
         <>
             <Row style={{ marginTop: '3vh' }}>
@@ -44,8 +50,17 @@ export const Login = () => {
                 <Col span={3} offset={3}><DateTime /></Col></Row>
             <div style={{ marginTop: '20vh' }}>
                 <Row>
+
                     <Col span={8} offset={9}>
+
                         <Card style={{ width: 400 }}>
+
+                            <div hidden={!isError} style={{margin: ' 2vh 0'}}>
+                                <Space  direction="vertical" style={{ width: '100%' }}>
+                                    <Alert message="Incorect Username or password" type="error" />
+                                </Space>
+                            </div>
+
                             <Form
                                 name="basic"
                                 labelCol={{ span: 8 }}
@@ -73,7 +88,7 @@ export const Login = () => {
                                 <Form.Item name="rememberMe" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
                                     <Checkbox>Remember me</Checkbox>
                                 </Form.Item>
-                                
+
                                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                                     <Button type="default" htmlType="reset" style={{ marginRight: '4vh' }}>
                                         Reset

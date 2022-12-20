@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface UserAuth {
-    userName: string | null,
-    userId: string | null,
-    idToken: string | null,
-    expiry: number,
-    authority: string[],
-}
+import { UserAuth } from "../../interface/UserAuth";
 
 const initialState: UserAuth = {
     userName: null,
@@ -20,19 +13,16 @@ const UserAuth = createSlice({
     name: 'userAuth',
     initialState,
     reducers: {
-        login: (state) => {
-
+        login: (state, data: PayloadAction<UserAuth>) => {
+           state = data.payload;
         },
         logout: (state) => {
-            // state.value -= 1
-        },
-        refreshToken: (state, action: PayloadAction<UserAuth>) => {
-            // state.value += action.payload
+            state = initialState;
         },
     },
     
 });
 
-export const { login, logout, refreshToken } = UserAuth.actions
+export const { login, logout } = UserAuth.actions
 
 export default UserAuth.reducer

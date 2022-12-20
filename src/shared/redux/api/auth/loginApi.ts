@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../configs/BaseApi";
 import { LoginDTO } from "../../../interface/login";
+import { UserAuth } from "../../../interface/UserAuth";
 
 
 export const loginApi = createApi({
