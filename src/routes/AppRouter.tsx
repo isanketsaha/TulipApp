@@ -6,38 +6,38 @@ import { Error404 } from "../error/Error404";
 import { Home } from "../module/Home"
 import { Login } from "../module/Login";
 import { Fees } from "../pages/Fees";
+import { ProtectedRoutes } from "./ProtectedRoutes";
 
 
 export const AppRouter = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
+        element: <ProtectedRoutes />,
         errorElement: <Error404 />,
         children: [
             {
-                index: true,
-                element: <Dashboard />,
-            },{
-                path: "fees",
-                element: <Fees />,
-            },{
-                path:"admission",
-                element: <Dashboard />,
-            },
-            {
-                path:"purchase",
-                element: <Dashboard />,
+                path: "/home",
+                element: <Home />,
+                children: [
+                    {
+                        index: true,
+                        element: <Dashboard />,
+                    }, {
+                        path: "fees",
+                        element: <Fees />,
+                    }, {
+                        path: "admission",
+                        element: <Dashboard />,
+                    },
+                    {
+                        path: "purchase",
+                        element: <Dashboard />,
+                    }
+                ]
             }
         ]
-    },
-    {
+    }, {
         path: "/login",
         element: <Login />,
-        errorElement: <Error404 />
-    },
-    {
-        path: "/",
-        element: <App />,
-        errorElement: <Error404 />
     }
 ]);

@@ -1,14 +1,17 @@
 import { Alert, Button, Card, Checkbox, Col, Form, Input, Row, Space } from "antd"
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { DateTime } from "../shared/component/DateTime"
 import { LoginDTO } from "../shared/interface/login";
 import { useLoginUserMutation } from "../shared/redux/api/auth/loginApi";
 import { login } from "../shared/redux/slices/UserAuth";
-import { useAppDispatch } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 
 
 export const Login = () => {
-
+    let navigate = useNavigate();
+   const userAuth = useAppSelector((state) => state?.userAuth);
+   const dispatch =  useAppDispatch();
     const [loginUser, {
         data,
         isLoading,
@@ -35,8 +38,12 @@ export const Login = () => {
         }
     }
 
+    if(userAuth?.idToken != null){
+        navigate("/home");
+    }
+
     useMemo(() => {
-    //    useAppDispatch(login(data));
+        dispatch(login(data));
     }, [data])
 
 

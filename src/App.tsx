@@ -3,6 +3,7 @@ import { Spin } from 'antd';
 import { useEffect, useMemo } from 'react';
 import { Navigate, Outlet, RouterProvider, useNavigate } from 'react-router-dom';
 import './App.scss'
+import { Home } from './module/Home';
 import { AppRouter } from './routes/AppRouter';
 import { loginApi } from './shared/redux/api/auth/loginApi';
 import { useAppSelector } from './store';
@@ -17,7 +18,7 @@ const App = () => {
   });
 
   let userLogged = useAppSelector((state) => {
-    return state.userAuth.idToken != null || undefined;
+    return state?.userAuth?.idToken != null || undefined;
   })
 
 

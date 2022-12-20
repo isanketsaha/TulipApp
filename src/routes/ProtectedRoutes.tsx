@@ -1,10 +1,10 @@
 import React, { FC } from "react"
-import {  Outlet, Route } from "react-router-dom"
+import { Navigate, Outlet, Route } from "react-router-dom"
 import { useAppSelector } from "../store";
 export const ProtectedRoutes : FC = ({...rest}) => {
 
     let userLogged = useAppSelector((state) => {
-        return state.userAuth.idToken != null || undefined;
+        return state?.userAuth?.idToken != null || undefined;
       })
       
       return userLogged ? ( //Check if logged in
@@ -13,7 +13,7 @@ export const ProtectedRoutes : FC = ({...rest}) => {
         <Outlet /> //This is your nested route
       </>
     ) : (
-      <></> //Go back to login if not logged in
+      <Navigate to="/login" replace /> //Go back to login if not logged in
     );
 
 }

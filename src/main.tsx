@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       }}
     >
       <Provider store={store}>
-        <RouterProvider router={AppRouter} />
+        <App/>
       </Provider>
     </ConfigProvider>
   </React.StrictMode>,
