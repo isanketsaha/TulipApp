@@ -3,19 +3,17 @@ import { useEffect, useMemo } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { DateTime } from "../shared/component/DateTime"
 import { LoginDTO } from "../shared/interface/login";
-import { useLoginUserMutation } from "../shared/redux/api/auth/loginApi";
 import { login } from "../shared/redux/slices/UserAuth";
 import { useAppDispatch, useAppSelector } from "../store";
+import { useLoginUserMutation } from "../shared/redux/api/auth/loginApi";
 
 
 export const Login = () => {
     let navigate = useNavigate();
-   const userAuth = useAppSelector((state) => state?.userAuth);
+   const userAuth = useAppSelector((state) => state.userAuth);
    const dispatch =  useAppDispatch();
     const [loginUser, {
         data,
-        isLoading,
-        isSuccess,
         isError,
         error,
     }] = useLoginUserMutation();
@@ -32,23 +30,24 @@ export const Login = () => {
 
     const auth = async (value: LoginDTO) => {
         try {
-            await loginUser(value);
+            const result = await loginUser(value);
+            if(result != null && data != null){
+               dispatch(login(data))
+                navigate("/home");
+            }
         } catch (err) {
             console.error('Failed to save the post: ', err)
         }
     }
 
-    if(userAuth?.idToken != null){
-        navigate("/home");
-    }
 
-    useMemo(() => {
-        dispatch(login(data));
-    }, [data])
+   
 
 
     return (
+       
         <>
+         
             <Row style={{ marginTop: '3vh' }}>
                 <Col span={2} offset={5}>
                     <img width={100} src="../src/assets/logo.png" />
@@ -64,10 +63,9 @@ export const Login = () => {
 
                             <div hidden={!isError} style={{margin: ' 2vh 0'}}>
                                 <Space  direction="vertical" style={{ width: '100%' }}>
-                                    <Alert message="Incorect Username or password" type="error" />
+                                    <Alert message= {(error as any)?.data.detail} type="error" />
                                 </Space>
                             </div>
-
                             <Form
                                 name="basic"
                                 labelCol={{ span: 8 }}

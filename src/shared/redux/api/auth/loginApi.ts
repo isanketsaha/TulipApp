@@ -8,7 +8,7 @@ export const loginApi = createApi({
     reducerPath: 'loginApi',
     baseQuery: baseQueryWithRetry,
     endpoints: (builder) => ({
-        loginUser: builder.mutation({
+        loginUser: builder.mutation<UserAuth, Partial<LoginDTO>>({
             query: (code: LoginDTO) => {
                 return ({
                     url: 'authenticate',
