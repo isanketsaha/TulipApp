@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../configs/BaseApi";
 import { LoginDTO } from "../../../interface/login";
 import { UserAuth } from "../../../interface/UserAuth";
+import { login } from "../../slices/UserAuth";
 
 
 export const loginApi = createApi({
@@ -16,8 +17,15 @@ export const loginApi = createApi({
                     method: 'POST',
                     body: code 
                 });
-            }
+            },
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                  const { data } = await queryFulfilled;;
+                  dispatch(login(data));
+                } catch (error) {}
+              },
         }),
+
     }),
 });
 

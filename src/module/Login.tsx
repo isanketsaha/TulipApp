@@ -14,6 +14,7 @@ export const Login = () => {
    const dispatch =  useAppDispatch();
     const [loginUser, {
         data,
+        isSuccess,
         isError,
         error,
     }] = useLoginUserMutation();
@@ -32,7 +33,6 @@ export const Login = () => {
         try {
             const result = await loginUser(value);
             if(result != null && data != null){
-               dispatch(login(data))
                 navigate("/home");
             }
         } catch (err) {
@@ -70,7 +70,7 @@ export const Login = () => {
                                 name="basic"
                                 labelCol={{ span: 8 }}
                                 wrapperCol={{ span: 16 }}
-                                initialValues={{ rememberMe: true }}
+                                initialValues={{ rememberMe: false }}
                                 onFinish={onFinish}
                                 onFinishFailed={onFinishFailed}
                                 autoComplete="off"

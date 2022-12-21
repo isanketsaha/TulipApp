@@ -4,7 +4,7 @@ import { useAppSelector } from "../store";
 export const ProtectedRoutes : FC = ({...rest}) => {
 
     let userLogged = useAppSelector((state) => {
-        return state.userAuth.idToken != null || undefined;
+        return state.userAuth.user != null || undefined;
       });
       
       return userLogged ? (

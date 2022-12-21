@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserAuth } from "../../interface/UserAuth";
 
-const initialState: UserAuth = {
-    userName: null,
-    userId: null,
-    idToken: null,
-    expiry: 0,
-    authority: []
+
+interface IUserAuthState{
+    user: UserAuth | null;
+}
+
+
+const initialState: IUserAuthState = {
+    user: null
 }
 
 const UserAuth = createSlice({
@@ -14,10 +16,10 @@ const UserAuth = createSlice({
     initialState,
     reducers: {
         login: (state, data: PayloadAction<UserAuth>) => {
-           state = data.payload;
+            state.user =  data.payload;
         },
         logout: (state) => {
-            state = initialState;
+            state.user = initialState.user;
         },
     },
     

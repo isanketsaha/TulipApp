@@ -1,5 +1,5 @@
 export interface UserAuth {
-    userName: string | null,
+    userName : string | null,
     userId: string | null,
     idToken: string | null,
     expiry: number,

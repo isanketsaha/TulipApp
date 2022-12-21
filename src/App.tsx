@@ -18,7 +18,7 @@ const App = () => {
   });
 
   let userLogged = useAppSelector((state) => {
-    return state?.userAuth?.idToken != null || undefined;
+    return state.userAuth.user != null || undefined;
   })
 
 

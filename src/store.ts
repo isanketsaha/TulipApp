@@ -9,14 +9,11 @@ import userAuthReducer from './shared/redux/slices/UserAuth';
 export const store = configureStore({
   reducer: {
     [loginApi.reducerPath]: loginApi.reducer,
-      userAuth : userAuthReducer,
-
+      userAuth : userAuthReducer
   },
   middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(loginApi.middleware),
 });
-
-setupListeners(store.dispatch);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
