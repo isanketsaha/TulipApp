@@ -7,8 +7,17 @@ interface IUserAuthState{
 }
 
 
+const getToken = (key: string ) => {
+    const tokenString = sessionStorage.getItem(key);
+    if(tokenString != null){
+    const userToken = JSON.parse(tokenString);
+    return userToken;
+    }
+    return null;
+  }; 
+
 const initialState: IUserAuthState = {
-    user: null
+    user: getToken("tulipAuth")
 }
 
 const UserAuth = createSlice({

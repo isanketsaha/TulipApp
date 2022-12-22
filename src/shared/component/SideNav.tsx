@@ -1,8 +1,10 @@
-import { Menu, MenuProps, theme } from "antd";
+import { Menu, MenuProps, Typography, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import React, { useState } from "react";
-import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled, IdcardFilled, FolderOpenFilled, FundFilled, UserOutlined } from '@ant-design/icons';
-import { Link } from "react-router-dom";
+import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled, IdcardFilled, FolderOpenFilled, LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { logout } from "../redux/slices/UserAuth";
 interface nav {
     label: string,
     link?: string,
@@ -12,12 +14,22 @@ interface nav {
 }
 export const SideNav = () => {
 
+    const { Text } = Typography;
+    const userAuth = useAppSelector((state) => state.userAuth);
+    const dispatch = useAppDispatch();
+    let navigate = useNavigate();
+
     let [collapsed, setCollapsed] = useState<boolean>(false);
 
     const {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    const logoutUser = () =>{
+        sessionStorage.removeItem("tulipAuth");
+        dispatch(logout());
+         navigate("/login");
+    }
     const navigatons: nav[] = [
         {
             label: 'Office',
@@ -34,7 +46,7 @@ export const SideNav = () => {
                 {
                     label: 'Admission',
                     icon: <EditFilled />
-                },
+                }
             ]
         },
         {
@@ -73,17 +85,38 @@ export const SideNav = () => {
         },
     );
 
+    options.push(userAuth.user != null ?
+        {
+            danger: true,
+            key: 'logout',
+            label: 'Logout',
+            onClick: logoutUser,
+            icon: <LogoutOutlined />,
+            style: {}
 
+
+        } : null);
+
+        
 
     return (
-        <Sider width={250} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} style={{ background: colorBgContainer }}>
-            <div hidden={collapsed} style={{ margin: '5vh' }} >
+        <Sider width={250} collapsible collapsed={collapsed}
+            onCollapse={(value) => setCollapsed(value)}
+            style={{
+                background: colorBgContainer,
+                overflow: 'auto',
+                height: '100vh'
+            }}>
+            <div hidden={collapsed && userAuth.user != null} style={{ margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
+                <div style={{ textAlign: 'center', marginTop: '2vh' }}>
+                    <Text strong>{userAuth.user?.userId}</Text>
+                </div>
             </div>
 
             <Menu
                 mode="vertical"
-                style={{ height: '100%', borderRight: 0 }}
+                style={{ borderRight: 0 }}
                 items={options}
             />
         </Sider>

@@ -21,6 +21,7 @@ export const Home = () => {
                         style={{
                             padding: 24,
                             margin: 0,
+                            overflow: 'initial',
                             minHeight: '80vh',
                             background: colorBgContainer,
                         }}

@@ -16,7 +16,6 @@ export const AppRouter = createBrowserRouter([
         errorElement: <Error404 />,
         children: [
             {
-                path: "/home",
                 element: <Home />,
                 children: [
                     {

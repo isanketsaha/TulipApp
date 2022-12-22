@@ -31,16 +31,17 @@ export const Login = () => {
 
     const auth = async (value: LoginDTO) => {
         try {
-            const result = await loginUser(value);
-            if(result != null && data != null){
-                navigate("/home");
-            }
+            await loginUser(value);
         } catch (err) {
             console.error('Failed to save the post: ', err)
         }
     }
 
-
+    useEffect(()=>{
+        if(userAuth.user != null){
+            navigate("/", { replace: true });
+        }
+    },[userAuth.user])
    
 
 

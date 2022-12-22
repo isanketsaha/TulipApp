@@ -4,14 +4,11 @@ import { useAppSelector } from "../store";
 export const ProtectedRoutes : FC = ({...rest}) => {
 
     let userLogged = useAppSelector((state) => {
-        return state.userAuth.user != null || undefined;
+        return state.userAuth.user != null;
       });
       
       return userLogged ? (
-      <>
-        {rest} //This is your children
-        <Outlet /> //This is your nested route
-      </>
+        <Outlet/>
     ) : (
       <Navigate to="/login" replace /> 
     );

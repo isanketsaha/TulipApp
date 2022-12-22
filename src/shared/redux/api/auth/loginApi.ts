@@ -5,6 +5,8 @@ import { UserAuth } from "../../../interface/UserAuth";
 import { login } from "../../slices/UserAuth";
 
 
+
+
 export const loginApi = createApi({
     reducerPath: 'loginApi',
     baseQuery: baseQueryWithRetry,
@@ -20,8 +22,9 @@ export const loginApi = createApi({
             },
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
-                  const { data } = await queryFulfilled;;
+                  const { data } = await queryFulfilled;
                   dispatch(login(data));
+                  sessionStorage.setItem("tulipAuth", JSON.stringify(data));
                 } catch (error) {}
               },
         }),
