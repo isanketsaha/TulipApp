@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled, IdcardFilled, FolderOpenFilled, LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { logout } from "../redux/slices/UserAuth";
+import { logout } from "../redux/slices/UserAuthSlice";
 interface nav {
     label: string,
     link?: string,
@@ -110,7 +110,7 @@ export const SideNav = () => {
             <div hidden={collapsed && userAuth.user != null} style={{ margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
                 <div style={{ textAlign: 'center', marginTop: '2vh' }}>
-                    <Text strong>{userAuth.user?.userId}</Text>
+                    <Text strong>{userAuth.user?.userName}</Text>
                 </div>
             </div>
 

@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { DateTime } from "../shared/component/DateTime"
 import { LoginDTO } from "../shared/interface/login";
-import { login } from "../shared/redux/slices/UserAuth";
+import { login } from "../shared/redux/slices/UserAuthSlice";
 import { useAppDispatch, useAppSelector } from "../store";
 import { useLoginUserMutation } from "../shared/redux/api/auth/loginApi";
 
