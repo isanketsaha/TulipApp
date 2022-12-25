@@ -25,10 +25,10 @@ export const SideNav = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
-    const logoutUser = () =>{
+    const logoutUser = () => {
         sessionStorage.removeItem("tulipAuth");
         dispatch(logout());
-         navigate("/login");
+        navigate("/login");
     }
     const navigatons: nav[] = [
         {
@@ -97,7 +97,7 @@ export const SideNav = () => {
 
         } : null);
 
-        
+
 
     return (
         <Sider width={250} collapsible collapsed={collapsed}
@@ -107,10 +107,12 @@ export const SideNav = () => {
                 overflow: 'auto',
                 height: '100vh'
             }}>
-            <div hidden={collapsed && userAuth.user != null} style={{ margin: '5vh' }} >
+            <div hidden={collapsed && userAuth.user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
-                <div style={{ textAlign: 'center', marginTop: '2vh' }}>
+                <div style={{ marginTop: '2vh' }}>
                     <Text strong>{userAuth.user?.userName}</Text>
+                    <br/>
+                    <Text type="secondary">{userAuth.user?.authority[0].split("_")[1]}</Text>
                 </div>
             </div>
 
