@@ -20,7 +20,7 @@ export const AppHeader = () => {
                 <Col span={2} offset={12}>
                     <Select
                     style={{width: '100%',marginTop: '4vh' }}
-                        defaultValue="lucy"
+                        defaultValue={currentOption}
                         options={[
                             {
                               value: 'jack',

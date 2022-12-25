@@ -8,7 +8,7 @@ const initialState: IAppGlobal = {
     showSpinner: false
 }
 
-const AppSlice = createSlice({
+const GlobalAppSlice = createSlice({
     name: 'userAuth',
     initialState,
     reducers: {
@@ -21,7 +21,7 @@ const AppSlice = createSlice({
     },
 });
 
-export const { hideSpinner , showSpinner} = AppSlice.actions;
+export const { hideSpinner , showSpinner} = GlobalAppSlice.actions;
 
-export default AppSlice.reducer;
+export default GlobalAppSlice.reducer;
 
