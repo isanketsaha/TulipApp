@@ -7,6 +7,8 @@ import { Home } from "../module/Home"
 import { Login } from "../module/Login";
 import { Fees } from "../pages/Fees";
 import { ProtectedRoutes } from "./ProtectedRoutes";
+import { EmployeePage } from "../pages/Employee";
+import { Onboarding } from "../pages/Onboarding";
 
 
 export const AppRouter = createBrowserRouter([
@@ -31,6 +33,12 @@ export const AppRouter = createBrowserRouter([
                     {
                         path: "purchase",
                         element: <Dashboard />,
+                    },{
+                        path:'staffs',
+                        element:<EmployeePage/>
+                    },{
+                        path:'onboarding',
+                        element: <Onboarding/>
                     }
                 ]
             }

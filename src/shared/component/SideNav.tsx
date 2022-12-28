@@ -67,7 +67,7 @@ export const SideNav = () => {
     const options: MenuProps['items'] = navigatons.map(
         (item, index) => {
             const key = String(index + 1);
-            const url: string = `/${item.label}`.toLowerCase();
+            const url: string = item.label=='Office'?  '/': `/${item.label}`.toLowerCase();
             return {
                 key: `sub${key}`,
                 label: (<Link to={url}> {item.label} </Link>),

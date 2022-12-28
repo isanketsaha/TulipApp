@@ -21,8 +21,8 @@ export const Dashboard = () => {
             tab: 'New Admission',
         },
         {
-            key: 'vouchers',
-            tab: 'Vouchers',
+            key: 'expense',
+            tab: 'Expense',
         },
         {
             key: 'purchase',

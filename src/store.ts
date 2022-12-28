@@ -6,6 +6,7 @@ import userAuthReducer from './shared/redux/slices/UserAuthSlice';
 import { finacialYearApi } from './shared/redux/api/feature/financialYear/api';
 import { GlobalListener } from './GlobalListener';
 import GlobalAppSlice from './shared/redux/slices/GlobalAppSlice';
+import { employeeApi } from './shared/redux/api/feature/employee/api';
 
 
 
@@ -13,11 +14,12 @@ export const store = configureStore({
   reducer: {
     [loginApi.reducerPath]: loginApi.reducer,
     [finacialYearApi.reducerPath]: finacialYearApi.reducer,
+    [employeeApi.reducerPath]:employeeApi.reducer,
     userAuth: userAuthReducer,
     globalState: GlobalAppSlice
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, finacialYearApi.middleware),
+    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, finacialYearApi.middleware, employeeApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -4,19 +4,19 @@ import { RootState } from '../store'
 
 
 // Create our baseQuery instance
-const baseQuery = fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_BASE_API_URL}`,
+const baseQuery = (baseUrl: string) => fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_BASE_API_URL}/${baseUrl}`,
     prepareHeaders: (headers, { getState }) => {
-        console.log(import.meta.env);
         // By default, if we have a token in the store, let's use that for authenticated requests
-        const token = (getState() as RootState);
-        if (token) {
-            headers.set('authentication', `Bearer ${token}`)
+        const auth = (getState() as RootState);
+        if (auth.userAuth.user != null) {
+            headers.set('authorization', `Bearer ${auth.userAuth.user.idToken}`);
+            // headers.set("Access-Control-Allow-Origin","*")
         }
         return headers
     },
 })
 
-export const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 })
+export const baseQueryWithRetry = (baseUrl: string) => retry(baseQuery(baseUrl), { maxRetries: 2 })
 
 

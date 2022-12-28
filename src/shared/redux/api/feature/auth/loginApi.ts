@@ -8,13 +8,13 @@ import { login } from "../../../slices/UserAuthSlice";
 
 
 export const loginApi = createApi({
-    reducerPath: 'loginApi',
-    baseQuery: baseQueryWithRetry,
+    reducerPath: 'auth',
+    baseQuery: baseQueryWithRetry(""),
     endpoints: (builder) => ({
         loginUser: builder.mutation<UserAuth, Partial<LoginDTO>>({
             query: (code: LoginDTO) => {
                 return ({
-                    url: 'authenticate',
+                    url: '/authenticate',
                     credentials: 'include',
                     method: 'POST',
                     body: code 

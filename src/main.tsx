@@ -14,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       theme={{
         token: {
           colorPrimary: '#800000',
+          fontSize: 16
 
         },
       }}
