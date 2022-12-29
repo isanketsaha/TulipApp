@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { DefaultOptionType } from "antd/es/select";
-import { updateBloodGroup, updateGender, updateRelation, updateReligion } from "../../../slices/CommonSlice";
+import { updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList, updateUserRoleList } from "../../../slices/CommonSlice";
 
 
 
@@ -14,7 +14,7 @@ export const commonApi = createApi({
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(updateGender(data));
+                    dispatch(updateGenderList(data));
                 } catch (error) { }
             },
 
@@ -24,7 +24,7 @@ export const commonApi = createApi({
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(updateBloodGroup(data));
+                    dispatch(updateBloodGroupList(data));
                 } catch (error) { }
             },
 
@@ -34,7 +34,7 @@ export const commonApi = createApi({
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(updateRelation(data));
+                    dispatch(updateRelationList(data));
                 } catch (error) { }
             },
         }),
@@ -43,12 +43,21 @@ export const commonApi = createApi({
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    dispatch(updateReligion(data));
+                    dispatch(updateReligionList(data));
+                } catch (error) { }
+            },
+        }),
+        fetchUserRoleList: builder.query<DefaultOptionType[], void>({
+            query: (id) => '/userRoleList',
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(updateUserRoleList(data));
                 } catch (error) { }
             },
         })
     }),
-
+    
 });
 
-export const { useFetchBloodGroupListQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery, useFetchReligionListQuery } = commonApi
+export const { useFetchBloodGroupListQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery, useFetchReligionListQuery, useFetchUserRoleListQuery } = commonApi

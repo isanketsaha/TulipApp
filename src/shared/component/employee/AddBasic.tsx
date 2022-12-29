@@ -22,7 +22,7 @@ export const AddBasic = () => {
             
             <Row  gutter={[40, 40]}>
                 <Col span={12}>
-                    <Form.Item name="contact" label="Phone Number" rules={[{ type: 'number', min: 0, max: 12 }]}>
+                    <Form.Item name="contact" label="Phone Number" rules={[{ required: true }]}>
                         <InputNumber style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>

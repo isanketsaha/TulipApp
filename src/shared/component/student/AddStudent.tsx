@@ -1,26 +1,35 @@
 import { Button, Col, Divider, Form, Row, Steps } from "antd"
 import Title from "antd/es/typography/Title"
 import { useState } from "react";
-import { AddBasic } from "./AddBasic";
-import { AddDependent } from "./AddDependent";
-import { AddAdditional } from "./AddAdditional";
+import { AddAdditional } from "../employee/AddAdditional";
+import { AddBasic } from "../employee/AddBasic";
+import { AddDependent } from "../employee/AddDependent";
 
-export const AddEmployee = () => {
+
+export const AddStudent = () => {
 
     const [currentStep, setCurrentStep] = useState(0);
     const [form] = Form.useForm();
 
     const onNext = () => {
-
-        form.validateFields().then(values => {
-            setCurrentStep(currentStep + 1);
-            form.resetFields;
-        }).catch(errorInfo => console.log("FAILED", errorInfo));
-        // console.log(employeeDetails)
+        setCurrentStep(currentStep + 1);
+        let employeeDetails = form.getFieldsValue(true);
+        console.log(employeeDetails)
     };
 
     const onPrev = () => {
         setCurrentStep(currentStep - 1);
+    };
+
+    const validateMessages = {
+        required: '${label} is required!',
+        types: {
+            email: '${label} is not a valid email!',
+            number: '${label} is not a valid number!',
+        },
+        number: {
+            range: '${label} must be between ${min} and ${max}',
+        },
     };
 
 
@@ -33,23 +42,11 @@ export const AddEmployee = () => {
             title: 'Dependent Details',
             content: <AddDependent />
 
-        }, {
-            title: 'Additional Details',
-            content: <AddAdditional />
         },
     ];
 
-    const validateMessages = {
-        required: '${label} is required!',
-        types: {
-            email: '${label} is not a valid email!',
-            number: '${label} is not a valid number!',
-        },
-    };
-
     return (<>
-        <Title level={3}>Add Employee</Title>
-
+        <Title level={3}>Student Admission</Title>
         <div style={{ margin: '4vh' }}>
             <Steps
                 type="navigation"
@@ -60,7 +57,6 @@ export const AddEmployee = () => {
 
             <Divider />
 
-
             <Form
                 form={form}
                 wrapperCol={{ span: 15 }}
@@ -70,33 +66,25 @@ export const AddEmployee = () => {
                 validateMessages={validateMessages}
                 size={"large"}
                 autoComplete={"off"}
-                scrollToFirstError
-                onFinish={onNext}
             >
                 {stepOptions[currentStep].content}
 
                 <Row>
-
-                    <Col span={2} offset={20}>
-                        <Button hidden={currentStep >  0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
-                            Prev
-                        </Button>
-                    </Col>
-                    <Col span={currentStep != stepOptions.length - 1 ? 0 : 2} >
+                    <Col span={4} offset={20}>
                         <div hidden={currentStep != stepOptions.length - 1}>
                             <Button type="primary" htmlType="submit">
                                 Submit
                             </Button>
                         </div>
-                    </Col>
-                    <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
                         <div hidden={currentStep == stepOptions.length - 1}>
-                            <Button type="primary" htmlType="submit" onClick={() => { onNext() }}>
+                            <Button style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
+                                Prev
+                            </Button>
+                            <Button type="primary" onClick={() => { onNext() }}>
                                 Next
                             </Button>
                         </div>
                     </Col>
-
                 </Row>
             </Form>
         </div>

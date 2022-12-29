@@ -6,30 +6,35 @@ interface ICommonSelect {
     gender: DefaultOptionType[],
     religion: DefaultOptionType[],
     bloodGroup: DefaultOptionType[],
-    relation: DefaultOptionType[]
+    relation: DefaultOptionType[],
+    userRole: DefaultOptionType[]
 }
 
 const commonSelect: ICommonSelect = {
     gender: [],
     religion: [],
     bloodGroup: [],
-    relation: []
+    relation: [],
+    userRole:[]
 }
 const CommonSlice = createSlice({
     name: 'userAuth',
     initialState: commonSelect,
     reducers: {
-        updateGender: (state, data: PayloadAction<DefaultOptionType[]>) => {
+        updateGenderList: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.gender = data.payload;
         },
-        updateReligion: (state, data: PayloadAction<DefaultOptionType[]>) => {
+        updateReligionList: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.religion = data.payload;
         },
-        updateBloodGroup: (state, data: PayloadAction<DefaultOptionType[]>) => {
+        updateBloodGroupList: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.bloodGroup = data.payload;
         },
-        updateRelation: (state, data: PayloadAction<DefaultOptionType[]>) => {
+        updateRelationList: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.relation = data.payload;
+        },
+        updateUserRoleList: (state, data: PayloadAction<DefaultOptionType[]>) => {
+            state.userRole = data.payload;
         },
     },
 
@@ -37,4 +42,4 @@ const CommonSlice = createSlice({
 
 export default CommonSlice.reducer;
 
-export const {updateBloodGroup, updateGender, updateRelation, updateReligion} = CommonSlice.actions;
+export const {updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList, updateUserRoleList} = CommonSlice.actions;

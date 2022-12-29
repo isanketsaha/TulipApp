@@ -1,7 +1,10 @@
-import { Row, Col, Form, Input, DatePicker, InputNumber, Divider } from "antd"
+import { Row, Col, Form, Input, DatePicker, InputNumber, Divider, Select } from "antd"
+import { useAppSelector } from "../../../store";
 
 export const AddAdditional = () => {
 
+    const selectList = useAppSelector(state => state.commonData);
+    
     return (
         <>
             <Row gutter={[40, 40]}>
@@ -25,7 +28,7 @@ export const AddAdditional = () => {
                 </Col>
                 <Col span={12}>
                     <Form.Item name="role" label="Role Offered" >
-                        <Input />
+                        <Select options={selectList.userRole}/>
                     </Form.Item>
                 </Col>
             </Row>
