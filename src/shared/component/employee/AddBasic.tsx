@@ -1,8 +1,10 @@
-import { Row, Col, Form, Input, DatePicker, InputNumber } from "antd";
+import { Row, Col, Form, Input, DatePicker, InputNumber, Select } from "antd";
+import { useAppSelector } from "../../../store";
 
 
 export const AddBasic = () => {
 
+   const selectList = useAppSelector(state => state.commonData);
     return (
         <>
             <Row  gutter={[40, 40]}>
@@ -44,26 +46,33 @@ export const AddBasic = () => {
             </Row>
             <Row  gutter={[40, 40]} >
                 <Col span={6}>
-                    <Form.Item name="gender" label="Gender" >
+                    <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
+                        <Select
+                        options={selectList.gender}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col span={6}>
+                    <Form.Item name="bloodGroup" label="Blood Group" rules={[{ required: true }]} >
+                    <Select
+                        options={selectList.bloodGroup}
+                        />
+                    </Form.Item>
+                </Col>
+                <Col span={6}>
+                    <Form.Item name="experince" label="Experince" rules={[{ required: true }]} >
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={6}>
-                    <Form.Item name="bloodGroup" label="Blood Group" >
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={6}>
-                    <Form.Item name="experince" label="Experince"  >
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={6}>
-                    <Form.Item name="religion" label="Religion" >
-                        <Input />
+                    <Form.Item name="religion" label="Religion" rules={[{ required: true }]} >
+                    <Select
+                        options={selectList.religion}
+                        />
                     </Form.Item>
                 </Col>
             </Row>
+            
         </>
     );
 }

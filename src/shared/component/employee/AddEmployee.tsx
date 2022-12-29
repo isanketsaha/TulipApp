@@ -8,14 +8,19 @@ import { AddAdditional } from "./AddAdditional";
 export const AddEmployee = () => {
 
     const [currentStep, setCurrentStep] = useState(0);
+    const [form] = Form.useForm();
 
     const onNext = () => {
-        setCurrentStep(currentStep+1);
+        setCurrentStep(currentStep + 1);
+        let form_vals = form.getFieldsValue();
     };
 
     const onPrev = () => {
         setCurrentStep(currentStep - 1);
     };
+
+
+
 
     const stepOptions = [
         {
@@ -58,12 +63,14 @@ export const AddEmployee = () => {
 
 
             <Form
+                form={form}
                 wrapperCol={{ span: 15 }}
                 labelCol={{ span: 9 }}
                 layout="horizontal"
                 labelAlign="left"
                 validateMessages={validateMessages}
                 size={"large"}
+                autoComplete={"off"}
             >
                 {stepOptions[currentStep].content}
 
@@ -75,7 +82,7 @@ export const AddEmployee = () => {
                             </Button>
                         </div>
                         <div hidden={currentStep == stepOptions.length - 1}>
-                            <Button style={{marginRight:'1vh'}} type="primary" onClick={() => { onPrev() }}>
+                            <Button style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
                                 Prev
                             </Button>
                             <Button type="primary" onClick={() => { onNext() }}>

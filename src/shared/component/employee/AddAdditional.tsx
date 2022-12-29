@@ -24,7 +24,7 @@ export const AddAdditional = () => {
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name="comments" label="Comments" >
+                    <Form.Item name="role" label="Role Offered" >
                         <Input />
                     </Form.Item>
                 </Col>

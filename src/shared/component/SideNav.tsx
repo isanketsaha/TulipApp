@@ -97,8 +97,6 @@ export const SideNav = () => {
 
         } : null);
 
-
-
     return (
         <Sider width={250} collapsible collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}

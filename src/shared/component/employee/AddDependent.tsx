@@ -1,7 +1,10 @@
 import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Space } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { useAppSelector } from "../../../store";
 
 export const AddDependent = () => {
+
+    const selectList = useAppSelector(state => state.commonData);
 
     return (<>
         <Form.List name="dependent" initialValue={[{
@@ -26,24 +29,14 @@ export const AddDependent = () => {
 
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "name"]} label="Name" rules={[{ required: true }]}>
                                         <Input />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item name="relation" label="Relation">
+                                    <Form.Item name={[name, "relation"]} label="Relation">
                                         <Select
-                                            style={{ width: '100%' }}
-                                            options={[
-                                                {
-                                                    value: 'father',
-                                                    label: 'Father',
-                                                },
-                                                {
-                                                    value: 'mother',
-                                                    label: 'Mother',
-                                                }
-                                            ]}
+                                            options={selectList.relation}
                                         />
 
                                     </Form.Item>
@@ -52,25 +45,25 @@ export const AddDependent = () => {
 
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name="contact" label="Phone Number" rules={[{ type: 'number', min: 0, max: 12, required: true }]}>
+                                    <Form.Item name={[name, "contact"]} label="Phone Number" rules={[{ type: 'number', min: 0, max: 12, required: true }]}>
                                         <InputNumber style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
 
                                 <Col span={12}>
-                                    <Form.Item name="qualification" label="Qualification" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "qualification"]} label="Qualification" rules={[{ required: true }]}>
                                         <Input />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name="aadhar" label="Aadhar" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "aadhar"]} label="Aadhar Number" rules={[{ required: true }]}>
                                         <Input />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item name="occupation" label="Occupation" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "occupation"]} label="Occupation" rules={[{ required: true }]}>
                                         <Input />
                                     </Form.Item>
                                 </Col>
