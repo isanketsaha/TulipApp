@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Space } from "antd";
+import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Space, Upload } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useAppSelector } from "../../../store";
 
@@ -51,7 +51,7 @@ export const AddDependent = () => {
                                 </Col>
 
                                 <Col span={12}>
-                                    <Form.Item name={[name, "qualification"]} label="Qualification" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "qualification"]} label="Qualification">
                                         <Input />
                                     </Form.Item>
                                 </Col>
@@ -59,7 +59,7 @@ export const AddDependent = () => {
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
                                     <Form.Item name={[name, "aadhar"]} label="Aadhar Number" rules={[{ required: true }]}>
-                                        <InputNumber />
+                                        <InputNumber style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

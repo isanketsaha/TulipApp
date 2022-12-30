@@ -8,9 +8,8 @@ import { Login } from "../module/Login";
 import { Fees } from "../pages/Fees";
 import { ProtectedRoutes } from "./ProtectedRoutes";
 import { EmployeePage } from "../pages/Employee";
-import { Onboarding } from "../pages/Onboarding";
 import { StudentPage } from "../pages/Students";
-import { AddStudent } from "../shared/component/student/AddStudent";
+import { Onboarding } from "../shared/component/onboarding/Onboarding";
 
 
 export const AppRouter = createBrowserRouter([
@@ -35,18 +34,18 @@ export const AppRouter = createBrowserRouter([
                     {
                         path: "purchase",
                         element: <Dashboard />,
-                    },{
-                        path:'staffs',
-                        element:<EmployeePage/>
-                    },{
-                        path:'onboarding',
-                        element: <Onboarding/>
-                    },{
-                        path:"students",
-                        element:<StudentPage/>
-                    },{
-                        path:'admisssion',
-                        element:<AddStudent/>
+                    }, {
+                        path: 'staffs',
+                        element: <EmployeePage />
+                    }, {
+                        path: 'onboarding',
+                        element: <Onboarding />
+                    }, {
+                        path: "students",
+                        element: <StudentPage />
+                    }, {
+                        path: 'admisssion',
+                        element: <Onboarding />
                     }
                 ]
             }

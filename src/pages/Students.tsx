@@ -7,7 +7,9 @@ export const StudentPage = () => {
     return (<>
         <Row>
             <Col span={1} >
-                <Link to="/admisssion">
+                <Link to="/onboarding" state={{
+                    type: 'student'
+                }}>
                     <Button type="primary" htmlType="submit">
                        New Admission
                     </Button>

@@ -8,9 +8,16 @@ import './index.scss'
 import { AppRouter } from './routes/AppRouter'
 import { store } from './store'
 
+const validateMessages = {
+  required: '${label} is required!',
+  types: {
+      email: '${label} is not a valid email!',
+      number: '${label} is not a valid number!',
+  },
+};
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <ConfigProvider
+    <ConfigProvider form={{validateMessages}}
       theme={{
         token: {
           colorPrimary: '#800000',

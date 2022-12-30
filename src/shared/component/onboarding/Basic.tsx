@@ -27,19 +27,20 @@ export const AddBasic = () => {
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name="qualification" label="Qualification" >
+                    <Form.Item name="address" label="Address" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                 </Col>
             </Row>
+            
             <Row  gutter={[40, 40]}>
                 <Col span={12}>
-                    <Form.Item name="aadhar" label="Aadhar" >
+                    <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name="address" label="Address" rules={[{ required: true }]}>
+                    <Form.Item name="qualification" label="Qualification" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                 </Col>
@@ -60,12 +61,12 @@ export const AddBasic = () => {
                     </Form.Item>
                 </Col>
                 <Col span={6}>
-                    <Form.Item name="experince" label="Experince" rules={[{ required: true }]} >
+                    <Form.Item name="experince" label="Experince" >
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={6}>
-                    <Form.Item name="religion" label="Religion" rules={[{ required: true }]} >
+                    <Form.Item name="religion" label="Religion" >
                     <Select
                         options={selectList.religion}
                         />

@@ -10,7 +10,9 @@ export const EmployeePage = () => {
         <>
             <Row>
                 <Col offset={20}>
-                    <Link to="/onboarding">
+                    <Link to="/onboarding"  state={{
+                    type: 'employee'
+                }}>
                     <Button type="primary" htmlType="submit">
                         Onboard Employee
                     </Button>
