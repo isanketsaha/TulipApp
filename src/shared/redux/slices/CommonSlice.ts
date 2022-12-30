@@ -9,7 +9,7 @@ interface ICommonSelect {
     relationList: DefaultOptionType[],
     userRoleList: DefaultOptionType[],
     sessionList: DefaultOptionType[],
-    selectedSession: DefaultOptionType | null,
+    selectedSession: number | null,
 }
 
 const commonSelect: ICommonSelect = {
@@ -43,7 +43,7 @@ const CommonSlice = createSlice({
         updateSessionList: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.sessionList = data.payload;
         },
-        updateSelectedSession: (state, data: PayloadAction<DefaultOptionType>) => {
+        updateSelectedSession: (state, data: PayloadAction<number>) => {
             state.selectedSession = data.payload;
         },
     },

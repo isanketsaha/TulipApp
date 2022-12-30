@@ -56,7 +56,7 @@ export const commonApi = createApi({
                 } catch (error) { }
             },
         }),
-        fetchCurrentFinancialYear : builder.query<DefaultOptionType,void>({
+        fetchCurrentFinancialYear : builder.query<number,void>({
             query: () => "/currentFinancialYear",
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {

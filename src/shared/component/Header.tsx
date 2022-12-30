@@ -4,16 +4,19 @@ import { DateTime } from "./DateTime"
 import { useState } from "react"
 import MenuItem from "antd/es/menu/MenuItem"
 import { Link } from "react-router-dom"
-import { useAppSelector } from "../../store"
+import { useAppDispatch, useAppSelector } from "../../store"
+import { updateSelectedSession } from "../redux/slices/CommonSlice"
+import { DefaultOptionType } from "antd/es/select"
 
 
 export const AppHeader = () => {
+    const dispatch = useAppDispatch();
 
     const selectList = useAppSelector(state => state.commonData);
-    
 
-
-    const [selectedFinancialYear, setSelectedFinancialYear] = useState<MenuItem>();
+    const onSessionChange = (data: any) =>{
+        dispatch(updateSelectedSession(data));
+    }
 
     return (
         <Header className="header" style={{ background: '#800000', color: 'white' }} >
@@ -28,6 +31,7 @@ export const AppHeader = () => {
                 <Col span={2} offset={12}>
                     <Select
                         style={{ width: '100%', marginTop: '4vh' }}
+                        onChange={onSessionChange }
                         value={selectList.selectedSession}
                         options={selectList.sessionList}
                     />

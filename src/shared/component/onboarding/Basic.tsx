@@ -36,68 +36,63 @@ export const AddBasic = () => {
             {   state.type == 'student' ?
            
             <Row gutter={[40, 40]} >
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item name="std" label="Class" rules={[{ required: true }]}>
                         <Select
                             options={selectList.genderList}
                         />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item name="session" label="Session" rules={[{ required: true }]} >
                         <Select
-                            options={selectList.bloodGroupList}
+                            options={selectList.sessionList}
                         />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
-                    <Form.Item name="experince" label="Experince" >
+                <Col span={8}>
+                    <Form.Item name="previousSchool" label="Previous School" >
                         <Input />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
-                    <Form.Item name="religion" label="Religion" >
-                        <Select
-                            options={selectList.religionList}
-                        />
-                    </Form.Item>
-                </Col>
+                
             </Row>
             : <Row gutter={[40, 40]}>
-            <Col span={12}>
+            <Col span={8}>
                 <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={8}>
                 <Form.Item name="qualification" label="Qualification" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
             </Col>
+            <Col span={8}>
+                    <Form.Item name="experince" label="Experince" >
+                        <Input />
+                    </Form.Item>
+                </Col>
         </Row>
         
 }
             <Row gutter={[40, 40]} >
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
                         <Select
                             options={selectList.genderList}
                         />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={8}>
                     <Form.Item name="bloodGroup" label="Blood Group" rules={[{ required: true }]} >
                         <Select
                             options={selectList.bloodGroupList}
                         />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
-                    <Form.Item name="experince" label="Experince" >
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={6}>
+                
+                <Col span={8}>
                     <Form.Item name="religion" label="Religion" >
                         <Select
                             options={selectList.religionList}
