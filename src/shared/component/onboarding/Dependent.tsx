@@ -36,7 +36,7 @@ export const AddDependent = () => {
                                 <Col span={12}>
                                     <Form.Item name={[name, "relation"]} label="Relation">
                                         <Select
-                                            options={selectList.relation}
+                                            options={selectList.relationList}
                                         />
 
                                     </Form.Item>

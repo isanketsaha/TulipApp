@@ -3,38 +3,48 @@ import { DefaultOptionType } from "antd/es/select";
 
 
 interface ICommonSelect {
-    gender: DefaultOptionType[],
-    religion: DefaultOptionType[],
-    bloodGroup: DefaultOptionType[],
-    relation: DefaultOptionType[],
-    userRole: DefaultOptionType[]
+    genderList: DefaultOptionType[],
+    religionList: DefaultOptionType[],
+    bloodGroupList: DefaultOptionType[],
+    relationList: DefaultOptionType[],
+    userRoleList: DefaultOptionType[],
+    sessionList: DefaultOptionType[],
+    selectedSession: DefaultOptionType | null,
 }
 
 const commonSelect: ICommonSelect = {
-    gender: [],
-    religion: [],
-    bloodGroup: [],
-    relation: [],
-    userRole:[]
+    genderList: [],
+    religionList: [],
+    bloodGroupList: [],
+    relationList: [],
+    userRoleList:[],
+    sessionList:[],
+    selectedSession: null,
 }
 const CommonSlice = createSlice({
     name: 'userAuth',
     initialState: commonSelect,
     reducers: {
         updateGenderList: (state, data: PayloadAction<DefaultOptionType[]>) => {
-            state.gender = data.payload;
+            state.genderList = data.payload;
         },
         updateReligionList: (state, data: PayloadAction<DefaultOptionType[]>) => {
-            state.religion = data.payload;
+            state.religionList = data.payload;
         },
         updateBloodGroupList: (state, data: PayloadAction<DefaultOptionType[]>) => {
-            state.bloodGroup = data.payload;
+            state.bloodGroupList = data.payload;
         },
         updateRelationList: (state, data: PayloadAction<DefaultOptionType[]>) => {
-            state.relation = data.payload;
+            state.relationList = data.payload;
         },
         updateUserRoleList: (state, data: PayloadAction<DefaultOptionType[]>) => {
-            state.userRole = data.payload;
+            state.userRoleList = data.payload;
+        },
+        updateSessionList: (state, data: PayloadAction<DefaultOptionType[]>) => {
+            state.sessionList = data.payload;
+        },
+        updateSelectedSession: (state, data: PayloadAction<DefaultOptionType>) => {
+            state.selectedSession = data.payload;
         },
     },
 
@@ -42,4 +52,4 @@ const CommonSlice = createSlice({
 
 export default CommonSlice.reducer;
 
-export const {updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList, updateUserRoleList} = CommonSlice.actions;
+export const {updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList, updateUserRoleList, updateSelectedSession, updateSessionList} = CommonSlice.actions;

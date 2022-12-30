@@ -28,7 +28,7 @@ export const AddAdditional = () => {
                 </Col>
                 <Col span={12}>
                     <Form.Item name="role" label="Role Offered" >
-                        <Select options={selectList.userRole}/>
+                        <Select options={selectList.userRoleList}/>
                     </Form.Item>
                 </Col>
             </Row>
