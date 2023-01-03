@@ -8,7 +8,7 @@ export const AddDependent = () => {
 
     return (<>
         <Form.List name="dependent" initialValue={[{
-            name: ''
+           
         }]}>
             {(fields, { add, remove }) => (
                 <>
@@ -34,7 +34,7 @@ export const AddDependent = () => {
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item name={[name, "relation"]} label="Relation">
+                                    <Form.Item name={[name, "relation"]} label="Relation" rules={[{ required: true }]}>
                                         <Select
                                             options={selectList.relationList}
                                         />
@@ -58,8 +58,8 @@ export const AddDependent = () => {
                             </Row>
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name={[name, "aadhar"]} label="Aadhar Number" rules={[{ required: true }]}>
-                                        <InputNumber style={{ width: '100%' }} />
+                                    <Form.Item name={[name, "aadhaar"]} label="Aadhar Number" rules={[{ required: true }]}>
+                                        <InputNumber maxLength={12} style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

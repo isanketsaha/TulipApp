@@ -17,8 +17,10 @@ const openNotification = (errorData: any) => {
 export const GlobalListener : Middleware = (api: MiddlewareAPI) => (next) => (action) => {
     
     if (isRejectedWithValue(action)) {
-        openNotification(action.payload.data);
         api.dispatch(hideSpinner())
+        openNotification(action.payload?.data);
+
+        
     }
     if(isPending(action)){
         api.dispatch(showSpinner())

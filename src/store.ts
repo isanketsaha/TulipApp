@@ -7,18 +7,20 @@ import GlobalAppSlice from './shared/redux/slices/GlobalAppSlice';
 import { employeeApi } from './shared/redux/api/feature/employee/api';
 import { commonApi } from './shared/redux/api/feature/common/api';
 import CommonSlice from './shared/redux/slices/CommonSlice';
+import { onboardingApi } from './shared/redux/api/feature/onboarding/api';
 
 export const store = configureStore({
   reducer: {
     [loginApi.reducerPath]: loginApi.reducer,
     [employeeApi.reducerPath]: employeeApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
+    [onboardingApi.reducerPath]: onboardingApi.reducer,
     userAuth: userAuthReducer,
     globalState: GlobalAppSlice,
     commonData: CommonSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware, commonApi.middleware),
+    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware,onboardingApi.middleware, commonApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

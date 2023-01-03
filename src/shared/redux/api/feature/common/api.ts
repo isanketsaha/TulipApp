@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { DefaultOptionType } from "antd/es/select";
-import { updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList, updateSelectedSession, updateSessionList, updateUserRoleList } from "../../../slices/CommonSlice";
+import { updateBloodGroupList, updateClassList, updateGenderList, updateRelationList, updateReligionList, updateSelectedSession, updateSessionList, updateUserRoleList } from "../../../slices/CommonSlice";
 
 
 
@@ -75,11 +75,20 @@ export const commonApi = createApi({
                 } catch (error) { }
             }
         }),
+        fetchAllClass: builder.query<DefaultOptionType[],void>({
+            query: () => "/classList",
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(updateClassList(data));
+                } catch (error) { }
+            }
+        }),
     }),
     
 });
 
 export const { useFetchBloodGroupListQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery,
-     useFetchReligionListQuery, useFetchUserRoleListQuery,useFetchAllFinacialYearQuery,useFetchCurrentFinancialYearQuery } = commonApi
+     useFetchReligionListQuery, useFetchUserRoleListQuery,useFetchAllFinacialYearQuery,useFetchCurrentFinancialYearQuery, useFetchAllClassQuery } = commonApi
 
 

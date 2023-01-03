@@ -4,25 +4,54 @@ import { useState } from "react";
 import { AddBasic } from "./Basic";
 import { AddDependent } from "./Dependent";
 import { AddAdditional } from "./Additional";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useOnboardUserMutation } from "../../redux/api/feature/onboarding/api";
 
 export const Onboarding = () => {
-
+    let navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [form] = Form.useForm();
 
+   const [onboardUser,{isSuccess, data}] = useOnboardUserMutation();
+
     const { state } = useLocation();
+
+    if(isSuccess){
+        console.log(data);
+        navigate("/", { replace: true , state: {data}});
+    }
 
 
     const onNext = () => {
-        console.log(state);
         form.validateFields().then(values => {
             setCurrentStep(currentStep + 1);
         });
     };
 
+    const onSubmit = () => {
+        form.validateFields().then(values => {
+            const formValues = form.getFieldsValue(true);
+            const interview = formValues['interview'] ? formValues['interview'][0] : null;
+            if (interview != null) {
+               var interviewDetails =  {
+                    ...interview,
+                    doj:interview.doj?.format('YYYY-MM-DD'),
+                    interviewDate : interview.interviewDate?.format('YYYY-MM-DD')
+                }
+            }
+            const data = {
+                ...formValues,
+                dob: formValues['dob'].format('YYYY-MM-DD'),
+                interview: interviewDetails
+            };
+            onboardUser(data);
+        });
+    }
+
     const onPrev = () => {
-        setCurrentStep(currentStep - 1);
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
     };
 
 
@@ -34,7 +63,6 @@ export const Onboarding = () => {
         {
             title: 'Dependent Details',
             content: <AddDependent />
-
         }
     ];
 
@@ -49,7 +77,7 @@ export const Onboarding = () => {
     return (<>
 
         {
-            state.type == 'student' ? <Title level={3}>Student Admission</Title> : <Title level={3}>Add Employee</Title>
+            state?.type == 'student' ? <Title level={3}>Student Admission</Title> : <Title level={3}>Onboarding Employee</Title>
         }
 
         <div style={{ margin: '4vh' }}>
@@ -72,6 +100,7 @@ export const Onboarding = () => {
                 size={"large"}
                 autoComplete={"off"}
                 scrollToFirstError
+                initialValues={{ type: state?.type }}
             >
                 {stepOptions[currentStep].content}
 
@@ -84,7 +113,7 @@ export const Onboarding = () => {
                     </Col>
                     <Col span={currentStep != stepOptions.length - 1 ? 0 : 2} >
                         <div hidden={currentStep != stepOptions.length - 1}>
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" onClick={() => { onSubmit() }} htmlType="submit">
                                 Submit
                             </Button>
                         </div>

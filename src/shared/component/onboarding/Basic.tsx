@@ -1,13 +1,24 @@
 import { Row, Col, Form, Input, DatePicker, InputNumber, Select } from "antd";
 import { useAppSelector } from "../../../store";
 import { useLocation } from "react-router-dom";
+import type { Dayjs } from 'dayjs';
 
 
 export const AddBasic = () => {
     const { state } = useLocation();
     const selectList = useAppSelector(state => state.commonData);
+
+    const disableDate = (currentDate: Dayjs)  =>{
+       return currentDate.isAfter(new Date());
+      };
+
+
+
     return (
         <>
+            <Form.Item hidden={true} name="type" >
+                <Input />
+            </Form.Item>
             <Row gutter={[40, 40]}>
                 <Col span={12}>
                     <Form.Item name="name" label="Name" rules={[{ required: true }]}>
@@ -16,15 +27,15 @@ export const AddBasic = () => {
                 </Col>
                 <Col span={12}>
                     <Form.Item name="dob" label="Date Of Birth" rules={[{ required: true }]}>
-                        <DatePicker style={{ width: '100%' }} />
+                        <DatePicker style={{ width: '100%' }} disabledDate={disableDate}/>
                     </Form.Item>
                 </Col>
             </Row>
 
             <Row gutter={[40, 40]}>
                 <Col span={12}>
-                    <Form.Item name="contact" label="Phone Number" rules={[{ required: true }]}>
-                        <InputNumber style={{ width: '100%' }} />
+                    <Form.Item name="contact" label="Phone Number" rules={[{ required: true,  type: 'number'}]} >
+                        <InputNumber maxLength={12}  style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -33,49 +44,49 @@ export const AddBasic = () => {
                     </Form.Item>
                 </Col>
             </Row>
-            {   state.type == 'student' ?
-           
-            <Row gutter={[40, 40]} >
-                <Col span={8}>
-                    <Form.Item name="std" label="Class" rules={[{ required: true }]}>
-                        <Select
-                            options={selectList.genderList}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item name="session" label="Session" rules={[{ required: true }]} >
-                        <Select
-                            options={selectList.sessionList}
-                        />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item name="previousSchool" label="Previous School" >
-                        <Input />
-                    </Form.Item>
-                </Col>
-                
-            </Row>
-            : <Row gutter={[40, 40]}>
-            <Col span={8}>
-                <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-            </Col>
-            <Col span={8}>
-                <Form.Item name="qualification" label="Qualification" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-            </Col>
-            <Col span={8}>
-                    <Form.Item name="experince" label="Experince" >
-                        <Input />
-                    </Form.Item>
-                </Col>
-        </Row>
-        
-}
+            {state.type == 'student' ?
+
+                <Row gutter={[40, 40]} >
+                    <Col span={8}>
+                        <Form.Item name="std" label="Class" rules={[{ required: true }]}>
+                            <Select
+                                options={selectList.classList}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item name="session" label="Session" rules={[{ required: true }]} >
+                            <Select
+                                options={selectList.sessionList}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item name="previousSchool" label="Previous School" >
+                            <Input />
+                        </Form.Item>
+                    </Col>
+
+                </Row>
+                : <Row gutter={[40, 40]}>
+                    <Col span={8}>
+                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true ,   type: 'number'}]}>
+                            <InputNumber maxLength={12}  style={{ width: '100%' }} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item name="qualification" label="Qualification" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item name="experince" label="Experince" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
+                            <InputNumber  style={{ width: '100%' }} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+            }
             <Row gutter={[40, 40]} >
                 <Col span={8}>
                     <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
@@ -91,7 +102,7 @@ export const AddBasic = () => {
                         />
                     </Form.Item>
                 </Col>
-                
+
                 <Col span={8}>
                     <Form.Item name="religion" label="Religion" >
                         <Select
