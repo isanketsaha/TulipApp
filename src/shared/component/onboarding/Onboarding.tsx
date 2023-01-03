@@ -18,7 +18,7 @@ export const Onboarding = () => {
 
     if(isSuccess){
         console.log(data);
-        navigate("/", { replace: true , state: {data}});
+        navigate("/onboardingDetails", { replace: true , state: {data}});
     }
 
 
