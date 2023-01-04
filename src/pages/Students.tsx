@@ -1,6 +1,8 @@
 import { Row, Col, Button } from "antd"
 import Search from "antd/es/input/Search"
 import { Link } from "react-router-dom"
+import { BasicDetails } from "../shared/component/BasicDetails"
+import { StudentBasicDetails } from "../shared/component/StudentBasicDetails"
 
 export const StudentPage = () => {
 
@@ -19,5 +21,6 @@ export const StudentPage = () => {
                     <Search placeholder="Student Name / ID" enterButton="Search" allowClear size="large" />
                 </Col>
         </Row>
+        <StudentBasicDetails/>
     </>)
 }

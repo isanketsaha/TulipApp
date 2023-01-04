@@ -48,7 +48,11 @@ export const AppRouter = createBrowserRouter([
                         path: 'admisssion',
                         element: <Onboarding />
                     },{
-                        path: 'onboardingDetails',
+                        path: 'employeeDetails/${id}',
+                        element:<OnboardingDetails/>
+                    },
+                    ,{
+                        path: 'studentDetails/${id}',
                         element:<OnboardingDetails/>
                     }
                 ]

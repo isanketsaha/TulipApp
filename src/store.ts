@@ -8,6 +8,7 @@ import { employeeApi } from './shared/redux/api/feature/employee/api';
 import { commonApi } from './shared/redux/api/feature/common/api';
 import CommonSlice from './shared/redux/slices/CommonSlice';
 import { onboardingApi } from './shared/redux/api/feature/onboarding/api';
+import { studentApi } from './shared/redux/api/feature/student/api';
 
 export const store = configureStore({
   reducer: {
@@ -15,12 +16,13 @@ export const store = configureStore({
     [employeeApi.reducerPath]: employeeApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
     [onboardingApi.reducerPath]: onboardingApi.reducer,
+    [studentApi.reducerPath]: studentApi.reducer,
     userAuth: userAuthReducer,
     globalState: GlobalAppSlice,
     commonData: CommonSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware,onboardingApi.middleware, commonApi.middleware),
+    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware, onboardingApi.middleware, commonApi.middleware, studentApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

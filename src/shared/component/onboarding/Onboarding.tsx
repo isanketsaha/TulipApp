@@ -12,13 +12,18 @@ export const Onboarding = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [form] = Form.useForm();
 
-   const [onboardUser,{isSuccess, data}] = useOnboardUserMutation();
+    const [onboardUser, { isSuccess, data: id }] = useOnboardUserMutation();
 
     const { state } = useLocation();
 
-    if(isSuccess){
-        console.log(data);
-        navigate("/onboardingDetails", { replace: true , state: {data}});
+    if (isSuccess) {
+        console.log(id);
+        if (state?.type == 'employee') {
+            navigate(`/employeeDetails/${id}`, { replace: true });
+        }
+        else if (state?.type == 'student') {
+            navigate(`/studentDetails/${id}`, { replace: true });
+        }
     }
 
 
@@ -33,16 +38,16 @@ export const Onboarding = () => {
             const formValues = form.getFieldsValue(true);
             const interview = formValues['interview'] ? formValues['interview'][0] : null;
             if (interview != null) {
-               var interviewDetails =  {
+                var interviewDetails = {
                     ...interview,
-                    doj:interview.doj?.format('YYYY-MM-DD'),
-                    interviewDate : interview.interviewDate?.format('YYYY-MM-DD')
+                    doj: interview.doj?.format('YYYY-MM-DD'),
+                    interviewDate: interview.interviewDate?.format('YYYY-MM-DD')
                 }
             }
             const data = {
                 ...formValues,
                 dob: formValues['dob'].format('YYYY-MM-DD'),
-                interview: interviewDetails
+                interview: [interviewDetails]
             };
             onboardUser(data);
         });

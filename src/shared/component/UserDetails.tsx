@@ -1,13 +1,14 @@
 import { Descriptions, Badge } from "antd"
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 export const UserDetails = () => {
-    const { state } = useLocation();
+    
+    const { id } = useParams();
     return (
 
         <>
             <Descriptions title="User Info" bordered>
-                <Descriptions.Item label="Student ID"> {state?.data}</Descriptions.Item>
+                <Descriptions.Item label="Student ID"> {id}</Descriptions.Item>
                 <Descriptions.Item label="Name">Prepaid</Descriptions.Item>
                 <Descriptions.Item label="Gender">YES</Descriptions.Item>
                 <Descriptions.Item label="Date Of Birth">2018-04-24 18:00:00</Descriptions.Item>
