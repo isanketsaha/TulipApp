@@ -14,7 +14,7 @@ export const studentApi = createApi({
             query: (id) => `/search/${id}`
         }),
         searchStudentByName: builder.query<IBasicDetails[], string>({
-            query: (name) => `/search/${name}`
+            query: (name) => `/searchByName/${name}`
         }),
     })
 });
