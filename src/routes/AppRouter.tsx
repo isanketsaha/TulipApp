@@ -10,7 +10,8 @@ import { ProtectedRoutes } from "./ProtectedRoutes";
 import { EmployeePage } from "../pages/Employee";
 import { StudentPage } from "../pages/Students";
 import { Onboarding } from "../shared/component/onboarding/Onboarding";
-import { OnboardingDetails } from "../pages/OnboardDetails";
+import { ViewDetails } from "../pages/ViewDetails";
+import { Classroom } from "../pages/Classroom";
 
 
 export const AppRouter = createBrowserRouter([
@@ -49,11 +50,15 @@ export const AppRouter = createBrowserRouter([
                         element: <Onboarding />
                     }, {
                         path: 'employeeDetails/:id',
-                        element: <OnboardingDetails />
+                        element: <ViewDetails />
                     }
                     , {
                         path: 'studentDetails/:id',
-                        element: <OnboardingDetails />
+                        element: <ViewDetails />
+                    },{
+                        path:'classroom',
+                        element: <Classroom/>
+                        
                     }
                 ]
             }

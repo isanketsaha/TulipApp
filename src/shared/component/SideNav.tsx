@@ -34,20 +34,6 @@ export const SideNav = () => {
         {
             label: 'Office',
             icon: <SnippetsFilled />,
-            children: [
-                {
-                    label: 'Fees',
-                    icon: <DashboardFilled />
-                },
-                {
-                    label: 'Purchase',
-                    icon: <HighlightFilled />
-                },
-                {
-                    label: 'Admission',
-                    icon: <EditFilled />
-                }
-            ]
         },
         {
             label: 'Students',
@@ -71,16 +57,7 @@ export const SideNav = () => {
             return {
                 key: `sub${key}`,
                 label: (<Link to={url}> {item.label} </Link>),
-                icon: item.icon,
-                children: item.children?.map((_, j) => {
-                    const subKey = index * 4 + j + 1;
-                    const childUrl: string = `/${_.label}`.toLowerCase();
-                    return {
-                        key: subKey,
-                        label: (<Link to={childUrl}> {_.label} </Link>),
-                        icon: _.icon
-                    };
-                }),
+                icon: item.icon
             };
         },
     );
