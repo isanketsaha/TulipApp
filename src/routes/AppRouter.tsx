@@ -12,6 +12,7 @@ import { StudentPage } from "../pages/Students";
 import { Onboarding } from "../shared/component/onboarding/Onboarding";
 import { ViewDetails } from "../pages/ViewDetails";
 import { Classroom } from "../pages/Classroom";
+import { Accounts } from "../pages/Account";
 
 
 export const AppRouter = createBrowserRouter([
@@ -58,7 +59,9 @@ export const AppRouter = createBrowserRouter([
                     },{
                         path:'classroom',
                         element: <Classroom/>
-                        
+                    },{
+                        path:'accounts',
+                        element:<Accounts/>
                     }
                 ]
             }

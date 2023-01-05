@@ -2,6 +2,7 @@ import { Avatar, Card, Descriptions, List, Space } from "antd"
 import { IClassDetails } from "../interface/IClassDetails"
 import { IBasicDetails } from "../interface/IBasicDetails"
 import { useFetchStudentListQuery } from "../redux/api/feature/classroom/api";
+import { Link } from "react-router-dom";
 
 interface IClassDetailsProsp {
     classDetails: IClassDetails,
@@ -9,7 +10,7 @@ interface IClassDetailsProsp {
 
 export const ClassroomDetails = ({ classDetails }: IClassDetailsProsp) => {
 
-    const { data : studentList } = useFetchStudentListQuery(classDetails.id);
+    const { data: studentList } = useFetchStudentListQuery(classDetails.id);
     return (
         <>
             <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
@@ -23,16 +24,23 @@ export const ClassroomDetails = ({ classDetails }: IClassDetailsProsp) => {
 
                 <Card title="Student List" style={{ width: '100%' }}>
                     <List
-                     size="small"
+                        size="small"
                         itemLayout="horizontal"
                         dataSource={studentList}
                         renderItem={(item, index) => (
-                            <List.Item>{item.name}</List.Item>
+                            <List.Item>
+
+                                <List.Item.Meta
+                                    title={item.name}
+                                    description={item.gender}
+                                />
+                                <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>
+                            </List.Item>
                         )}
                     />
-                </Card>
+            </Card>
 
-            </Space>
+        </Space>
         </>
     )
 }
