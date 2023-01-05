@@ -31,7 +31,7 @@ export const ClassroomDetails = ({ classDetails }: IClassDetailsProsp) => {
                             <List.Item>
 
                                 <List.Item.Meta
-                                    title={item.name}
+                                    title={`${index+1}. ${item.name}`}
                                     description={item.gender}
                                 />
                                 <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>

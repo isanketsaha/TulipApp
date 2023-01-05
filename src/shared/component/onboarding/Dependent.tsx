@@ -12,12 +12,12 @@ export const AddDependent = () => {
         }]}>
             {(fields, { add, remove }) => (
                 <>
-                    {fields.map(({ key, name, ...restField }) => (
+                    {fields.map(({ key, name, ...restField }, index) => (
                         <div key={key}>
                             <Row style={{ margin: '2vh' }}>
                                 <Col offset={20} span={4}>
                                     <Space>
-                                        <Button type="default" onClick={() => remove(name)} icon={<MinusCircleOutlined />} >
+                                        <Button disabled={index===0} type="default" onClick={() => remove(name)} icon={<MinusCircleOutlined />} >
                                             Remove
                                         </Button>
                                         <Button type="default" onClick={() => add()} icon={<PlusOutlined />} >
