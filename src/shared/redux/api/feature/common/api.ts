@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { DefaultOptionType } from "antd/es/select";
 import { updateBloodGroupList, updateClassList, updateGenderList, updateRelationList, updateReligionList, updateSelectedSession, updateSessionList, updateUserRoleList } from "../../../slices/CommonSlice";
+import { ISelectDefault } from "../../../../interface/ISelectDefault";
 
 
 
@@ -56,7 +57,7 @@ export const commonApi = createApi({
                 } catch (error) { }
             },
         }),
-        fetchCurrentFinancialYear : builder.query<number,void>({
+        fetchCurrentFinancialYear : builder.query<ISelectDefault,void>({
             query: () => "/currentFinancialYear",
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {

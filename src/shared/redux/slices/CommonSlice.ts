@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DefaultOptionType } from "antd/es/select";
+import { ISelectDefault } from "../../interface/ISelectDefault";
 
 
 interface ICommonSelect {
@@ -9,7 +10,7 @@ interface ICommonSelect {
     relationList: DefaultOptionType[],
     userRoleList: DefaultOptionType[],
     sessionList: DefaultOptionType[],
-    selectedSession: number | null,
+    selectedSession: ISelectDefault,
     classList: DefaultOptionType[]
 }
 
@@ -18,9 +19,9 @@ const commonSelect: ICommonSelect = {
     religionList: [],
     bloodGroupList: [],
     relationList: [],
-    userRoleList:[],
-    sessionList:[],
-    selectedSession: null,
+    userRoleList: [],
+    sessionList: [],
+    selectedSession: {} as ISelectDefault,
     classList: []
 }
 const CommonSlice = createSlice({
@@ -45,7 +46,7 @@ const CommonSlice = createSlice({
         updateSessionList: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.sessionList = data.payload;
         },
-        updateSelectedSession: (state, data: PayloadAction<number>) => {
+        updateSelectedSession: (state, data: PayloadAction<ISelectDefault>) => {
             state.selectedSession = data.payload;
         },
         updateClassList: (state, data: PayloadAction<DefaultOptionType[]>) => {
@@ -57,4 +58,5 @@ const CommonSlice = createSlice({
 
 export default CommonSlice.reducer;
 
-export const {updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList, updateUserRoleList, updateSelectedSession, updateSessionList, updateClassList} = CommonSlice.actions;
+export const { updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList,
+    updateUserRoleList, updateSelectedSession, updateSessionList, updateClassList } = CommonSlice.actions;

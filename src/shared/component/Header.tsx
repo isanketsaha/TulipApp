@@ -14,9 +14,13 @@ export const AppHeader = () => {
 
     const selectList = useAppSelector(state => state.commonData);
 
-    const onSessionChange = (data: any) =>{
+    const onSessionChange = (data: any) => {
         dispatch(updateSelectedSession(data));
     }
+
+    // const handleChange = (value: { value: string; label: React.ReactNode }) => {
+    //     console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+    // };
 
     return (
         <Header className="header" style={{ background: '#800000', color: 'white' }} >
@@ -30,8 +34,9 @@ export const AppHeader = () => {
                 </Col>
                 <Col span={2} offset={12}>
                     <Select
+                    labelInValue
                         style={{ width: '100%', marginTop: '4vh' }}
-                        onChange={onSessionChange }
+                        onChange={onSessionChange}
                         value={selectList.selectedSession}
                         options={selectList.sessionList}
                     />
