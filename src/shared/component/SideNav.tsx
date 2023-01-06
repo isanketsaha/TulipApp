@@ -12,14 +12,17 @@ interface nav {
     icon?: React.ReactNode
 
 }
-export const SideNav = () => {
+
+interface ISliderProps{
+    collapsed: boolean
+     setCollapsed : (value: boolean) => void
+}
+export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
 
     const { Text } = Typography;
     const userAuth = useAppSelector((state) => state.userAuth);
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
-
-    let [collapsed, setCollapsed] = useState<boolean>(false);
 
     const {
         token: { colorBgContainer },
@@ -80,7 +83,12 @@ export const SideNav = () => {
             style={{
                 background: colorBgContainer,
                 overflow: 'auto',
-                height: '100vh'
+                height: '100vh',
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                paddingTop:'8vh'
             }}>
             <div hidden={collapsed && userAuth.user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />

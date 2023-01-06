@@ -1,4 +1,4 @@
-import { Row, Col, Card, DatePicker } from "antd";
+import { Row, Col, Card, DatePicker, Tabs } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 
@@ -51,13 +51,13 @@ export const Accounts = () => {
 
     return (<>
         <Row>
-           
-                <Card
+
+            <Card
                 
                     style={{ width: '100%' }}
                     tabList={tabList}
                     extra={<div style={{ marginTop: '2vh' }}><RangePicker disabled={[false, true]} presets={rangePresets}
-                        defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
+                    defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
                     activeTabKey={activeTab}
                     onTabChange={(key) => {
                         onTabChange(key);
@@ -65,8 +65,28 @@ export const Accounts = () => {
                 >
                     {contentList[activeTab]}
                 </Card>
-            
 
+            {/* <Card type="inner" title="Accounts"  style={{ width: '100%' }}
+                extra={<div style={{ marginTop: '2vh' }}><RangePicker disabled={[false, true]} presets={rangePresets}
+                    defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
+            >
+                <Tabs
+                    size={"large"}
+                    defaultActiveKey="1"
+                    centered
+                    type="card"
+                    onChange={onTabChange}
+                    items={tabList?.map((_, i) => {
+                        const id = String(_.key);
+                        return {
+                            label: _.tab,
+                            key: id,
+                            children: ` Hey I Have open ${_.tab}`,
+                        };
+                    })}
+                />
+
+            </Card> */}
         </Row>
     </>)
 }

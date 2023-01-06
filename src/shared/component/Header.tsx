@@ -23,7 +23,7 @@ export const AppHeader = () => {
     // };
 
     return (
-        <Header className="header" style={{ background: '#800000', color: 'white' }} >
+        <Header className="header" style={{ background: '#800000', color: 'white', top: 0, right: 0, left: 0, zIndex: 10, position: 'fixed' }} >
             <Row style={{ marginTop: '-2vh' }}>
                 <Col >
                     <Link to="/">
@@ -34,7 +34,7 @@ export const AppHeader = () => {
                 </Col>
                 <Col span={2} offset={12}>
                     <Select
-                    labelInValue
+                        labelInValue
                         style={{ width: '100%', marginTop: '4vh' }}
                         onChange={onSessionChange}
                         value={selectList.selectedSession}

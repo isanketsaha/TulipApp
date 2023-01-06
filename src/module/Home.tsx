@@ -1,9 +1,10 @@
-import { Layout, theme } from 'antd';
+import { Breadcrumb, Layout, theme } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { AppHeader } from '../shared/component/Header';
 import { SideNav } from '../shared/component/SideNav';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { AppFooter } from '../shared/component/Footer';
+import { useState } from 'react';
 
 export const Home = () => {
 
@@ -11,19 +12,20 @@ export const Home = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    let [collapsed, setCollapsed] = useState<boolean>(false);
+
     return (
-        <Layout>
+        <Layout >
             <AppHeader />
-            <Layout>
-                <SideNav />
-                <Layout style={{ padding: '0 24px 24px' }}>
+            <Layout hasSider>
+                <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
+                <Layout style={{ marginLeft: !collapsed ? '25vh' : '10vh' }}>
                     <Content
                         style={{
-                            padding: 24,
-                            margin: 0,
+                            margin: '8vh 2vh',
                             overflow: 'initial',
-                            minHeight: '80vh',
-                            background: colorBgContainer,
+                            minHeight: '90vh',
+
                         }}
                     >
                         <Outlet />

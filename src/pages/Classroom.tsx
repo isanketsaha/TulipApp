@@ -19,6 +19,9 @@ export const Classroom = () => {
             size={"large"}
             defaultActiveKey="1"
             centered
+            type="card"
+            tabBarGutter={5}
+            
             onChange={onChange}
             items={classList?.map((_, i) => {
                 const id = String(_.id);
