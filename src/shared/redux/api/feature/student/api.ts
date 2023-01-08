@@ -17,7 +17,10 @@ export const studentApi = createApi({
         searchStudentByName: builder.query<IBasicDetails[], string>({
             query: (name) => `/searchByName/${name}`
         }),
+        basicSearchById: builder.query<IBasicDetails, string>({
+            query: (id) => `/basicSearch/${id}`
+        })
     })
 });
 
-export const { useFetchAllStudentQuery, useSearchStudentByNameQuery, useSearchStudentQuery } = studentApi;
+export const { useFetchAllStudentQuery, useSearchStudentByNameQuery, useSearchStudentQuery , useBasicSearchByIdQuery} = studentApi;

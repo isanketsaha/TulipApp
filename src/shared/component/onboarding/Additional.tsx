@@ -39,7 +39,7 @@ export const AddAdditional = () => {
                 {(fields) => (
                     <>
                         {fields.map(({ key, name, ...restField }) => (
-                            <div key={key}><Divider plain>Bank Details</Divider><Row gutter={[40, 40]}>
+                            <div key={key}><Divider plain> <h3>Bank Details</h3></Divider><Row gutter={[40, 40]}>
                                 <Col span={12}>
                                     <Form.Item name={[name, "accountNumber"]} label="Account Number">
                                         <InputNumber maxLength={12} style={{ width: '100%' }} />

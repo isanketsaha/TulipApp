@@ -1,5 +1,5 @@
 import { Footer } from "antd/es/layout/layout";
-import { useFetchAllClassQuery, useFetchAllFinacialYearQuery, useFetchBloodGroupListQuery, useFetchCurrentFinancialYearQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery, useFetchReligionListQuery, useFetchUserRoleListQuery } from "../redux/api/feature/common/api";
+import { useFetchAllClassQuery, useFetchAllFinacialYearQuery, useFetchAvailablePaymentOptionsQuery, useFetchBloodGroupListQuery, useFetchCurrentFinancialYearQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery, useFetchReligionListQuery, useFetchUserRoleListQuery } from "../redux/api/feature/common/api";
 
 
 
@@ -13,6 +13,7 @@ export const AppFooter = () => {
     const { data: allFinacialOption } = useFetchAllFinacialYearQuery();
     const { data: currentFinancialYear } = useFetchCurrentFinancialYearQuery();
     const { data: allClassList } = useFetchAllClassQuery();
+    useFetchAvailablePaymentOptionsQuery();
     return (
         <Footer style={{ textAlign: 'center' }}>Tulip School Estabilished on ©2018</Footer>
     );

@@ -7,5 +7,5 @@ export interface IBasicDetails {
     active: boolean,
     bloodGroup: string,
     address: string,
-    std?: string
+    std?: string,
 }

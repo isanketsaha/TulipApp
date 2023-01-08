@@ -11,7 +11,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
     const { data: employeeDataData } = useSearchEmployeeByIdQuery(employeeId, { skip: employeeId == "" });
     return (<>
 
-        <Divider orientation="left" plain> Basic Details </Divider>
+        <Divider orientation="left" plain><h3> Basic Details </h3></Divider>
 
         <Descriptions >
             <Descriptions.Item label="Employee ID"> {employeeDataData?.id}</Descriptions.Item>
@@ -41,7 +41,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
         </Descriptions>
 
     
-        <Divider orientation="left" plain> Dependent Details </Divider>
+        <Divider orientation="left" plain> <h3> Dependent Details </h3> </Divider>
         {
             employeeDataData?.dependent.map(item => {
                return( <>
@@ -58,7 +58,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
         }
        
 
-        <Divider orientation="left" plain> Bank Details </Divider>
+        <Divider orientation="left" plain> <h3>Bank Details </h3> </Divider>
 
         <Descriptions bordered>
             <Descriptions.Item label="Account Number"> {employeeDataData?.bank?.accountNumber}</Descriptions.Item>
@@ -66,7 +66,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
             <Descriptions.Item label="Bank Name">{employeeDataData?.bank?.bankName}</Descriptions.Item>
         </Descriptions>
 
-        <Divider orientation="left" plain> Interview Details </Divider>
+        <Divider orientation="left" plain> <h3> Interview Details </h3> </Divider>
         <Descriptions bordered>
             <Descriptions.Item label=" Interviewed On"> {dayjs(employeeDataData?.interview?.interviewDate).format("DD/MM/YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Joined On">{dayjs(employeeDataData?.interview?.doj).format("DD/MM/YYYY")}</Descriptions.Item>

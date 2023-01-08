@@ -5,7 +5,7 @@ import { Dashboard } from "../shared/component/Dashboard";
 import { Error404 } from "../error/Error404";
 import { Home } from "../module/Home"
 import { Login } from "../module/Login";
-import { Fees } from "../pages/Fees";
+import { Payment } from "../pages/Payment";
 import { ProtectedRoutes } from "./ProtectedRoutes";
 import { EmployeePage } from "../pages/Employee";
 import { StudentPage } from "../pages/Students";
@@ -28,8 +28,8 @@ export const AppRouter = createBrowserRouter([
                         index: true,
                         element: <Dashboard />,
                     }, {
-                        path: "fees",
-                        element: <Fees />,
+                        path: "payment/:id",
+                        element: <Payment />,
                     }, {
                         path: "admission",
                         element: <Dashboard />,

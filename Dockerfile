@@ -1,5 +1,7 @@
 # https://javascript.plainenglish.io/step-by-step-guide-to-dockerize-react-app-created-using-vite-90772423f7fb
 
+# https://github.com/sudiptob2/react-docker-travis
+
 FROM node
 WORKDIR /app
 COPY package.json .

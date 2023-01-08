@@ -5,9 +5,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t isanket/tulip-ui -f Dockerfile.dev .
+  - docker build -t isanket/tulip-ui -f Dockerfile .
+
+  #  docker build --pull --rm -f "Dockerfile" -t tulipapp:latest "." 
+
+# docker run --rm -d -p 5173:5173/tcp tulipapp:latest 
+
+# docker build -f "Dockerfile"  -t tulipui:latest .
+
+1 error
+failed to load config from /app/vite.config.ts
 
 script:
+
   - docker run -e CI=true isanket/tulip-ui npm run test
 
 after_success:
