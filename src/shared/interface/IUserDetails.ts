@@ -22,5 +22,5 @@ export interface IUserDetails {
     classDetails: IClassDetails,
     dependent: IDependent[],
     bank: IBank,
-    interview: IInterview
+    interview: IInterview,
 }

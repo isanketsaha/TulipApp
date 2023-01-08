@@ -1,4 +1,4 @@
-import { Descriptions, Badge, Calendar, Col, Radio, Row, Select, Typography, Space, Button } from "antd"
+import { Descriptions, Badge, Calendar, Col, Radio, Row, Select, Typography, Space, Button, Divider } from "antd"
 import dayjs, { Dayjs } from "dayjs";
 import { IUserDetails } from "../interface/IUserDetails";
 import { useSearchStudentQuery } from "../redux/api/feature/student/api";
@@ -26,7 +26,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                     <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
                     <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
                     <Descriptions.Item label="Admission On" span={1}>
-                        {dayjs(studentData?.dob).format("DD/MM/YYYY")}
+                        {dayjs(studentData?.admissionDate).format("DD/MM/YYYY")}
                     </Descriptions.Item>
                     <Descriptions.Item label="Active" span={1}>
                         <Badge status={studentData?.active ? "success" : "error"} text={studentData?.active ? "ACTIVE" : "INACTIVE"} />
@@ -48,6 +48,8 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
 
                     <Descriptions.Item label="Classroom">{studentData?.classDetails?.std}</Descriptions.Item>
                     <Descriptions.Item label="Class Teacher">{studentData?.classDetails?.headTeacher}</Descriptions.Item>
+                    <Descriptions.Item label="Previous School">{studentData?.religion}</Descriptions.Item>
+                    <Descriptions.Item label="Session">{studentData?.classDetails?.session}</Descriptions.Item>
                     <Descriptions.Item label="Payment">
                         <Link to={`/payment/${studentData?.id}`}>
                     <Button type="primary">
@@ -55,9 +57,21 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                     </Button>
                     </Link> 
                     </Descriptions.Item>
-                    <Descriptions.Item label="Session">{studentData?.classDetails?.session}</Descriptions.Item>
-                    
                 </Descriptions>
+
+                <Divider> <h3>Guardian Details</h3></Divider>
+
+                {
+                    studentData?.dependent.map(item=>{
+                        return (
+                            <Descriptions  bordered>
+                            <Descriptions.Item label="Name">{item.name}</Descriptions.Item>
+                            <Descriptions.Item label="Relation"> {item.relationship}</Descriptions.Item>
+                            <Descriptions.Item label="Contact">{item.contact}</Descriptions.Item>
+                            </Descriptions>
+                        )
+                    })
+                }
                 <FeesCalender />
             </Space>
         </>

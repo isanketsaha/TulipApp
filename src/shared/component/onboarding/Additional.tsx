@@ -58,7 +58,7 @@ export const AddAdditional = () => {
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name={[name, "bank"]} label="Bank">
+                                        <Form.Item name={[name, "bankName"]} label="Bank">
                                             <Input />
                                         </Form.Item>
                                     </Col>

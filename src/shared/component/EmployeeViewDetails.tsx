@@ -18,8 +18,8 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
             <Descriptions.Item label="Name">{employeeDataData?.name}</Descriptions.Item>
             <Descriptions.Item label="Gender">{employeeDataData?.gender}</Descriptions.Item>
             <Descriptions.Item label="Date Of Birth">{dayjs(employeeDataData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
-            <Descriptions.Item label="Admission On" span={1}>
-                {dayjs(employeeDataData?.dob).format("DD/MM/YYYY")}
+            <Descriptions.Item label="Joined On" span={1}>
+                {dayjs(employeeDataData?.interview.doj).format("DD/MM/YYYY")}
             </Descriptions.Item>
             <Descriptions.Item label="Active" span={1}>
                 <Badge status={employeeDataData?.active ? "success" : "error"} text={employeeDataData?.active ? "ACTIVE" : "INACTIVE"} />
