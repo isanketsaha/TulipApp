@@ -170,7 +170,7 @@ export const Fees = ({ form }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber bordered={false} disabled={true} />
+                                            <InputNumber bordered={false} placeholder="Amount" disabled={true} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3}>

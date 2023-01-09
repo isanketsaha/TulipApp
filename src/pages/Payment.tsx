@@ -1,4 +1,4 @@
-import { Button, Card, Col, Descriptions, Divider, Form, Input, Radio, Row, Select, Space } from "antd"
+import { Button, Card, Col, Descriptions, Divider, Form, Input, InputNumber, Radio, Row, Select, Space } from "antd"
 import Search from "antd/es/input/Search"
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
@@ -77,7 +77,7 @@ export const Payment = () => {
 
                             <Col span={3} offset={13}>
                                 <Form.Item name={"total"}>
-                                    <Input disabled={true} style={{fontWeight: 'bold'}} placeholder="Total" bordered={false} />
+                                    <InputNumber disabled={true} style={{fontWeight: 'bold'}} placeholder="Total" bordered={false} />
                                 </Form.Item>
                             </Col>
                             <Col span={1}>
