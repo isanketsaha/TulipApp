@@ -64,7 +64,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                 {
                     studentData?.dependent.map(item=>{
                         return (
-                            <Descriptions  bordered>
+                            <Descriptions key={item.id}  bordered>
                             <Descriptions.Item label="Name">{item.name}</Descriptions.Item>
                             <Descriptions.Item label="Relation"> {item.relationship}</Descriptions.Item>
                             <Descriptions.Item label="Contact">{item.contact}</Descriptions.Item>

@@ -37,7 +37,7 @@ export const AppHeader = () => {
                         labelInValue
                         style={{ width: '100%', marginTop: '4vh' }}
                         onChange={onSessionChange}
-                        value={selectList.selectedSession}
+                        value={selectList.selectedSession.value}
                         options={selectList.sessionList}
                     />
                 </Col>

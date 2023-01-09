@@ -27,9 +27,9 @@ export const FeesLineItem: React.FC<FeesInputProps> = ({ value = {}, onChange })
         <Form.Item  name="type">
           <Select
             value="Session Fees"
+            options={[]}
           >
-            <Option value="rmb">RMB</Option>
-            <Option value="dollar">Dollar</Option>
+           
           </Select>
 
         </Form.Item>
