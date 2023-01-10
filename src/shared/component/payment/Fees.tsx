@@ -154,10 +154,10 @@ export const Fees = ({ form }: IFeesPros) => {
                                     </Col>
                                     <Col span={3}>
                                         <Space>
-                                            <Button type="link" disabled={key == 0} onClick={() => {
+                                        {fields.length > 1 ?  <Button type="link" onClick={() => {
                                                 remove(name);
                                                 calculateTotal();
-                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} />
+                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null }
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>
                                     </Col>

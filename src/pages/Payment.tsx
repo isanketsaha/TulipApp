@@ -31,15 +31,15 @@ export const Payment = () => {
         if (id) {
             setStudentId(id);
         }
-        if (studentDetails?.std && paymentTypeValue == 'fees') {
+        if (paymentTypeValue == 'fees') {
             fetchAllfeesCatalog({
-                std: studentDetails?.std,
+                std: studentDetails?.std ?? '',
                 session: Number(selectedSession.value),
             });
         }
-        if (studentDetails?.std && paymentTypeValue == 'purchase') {
+        if ( paymentTypeValue == 'purchase') {
             fetchAllProductCatalog({
-                std: studentDetails?.std,
+                std: studentDetails?.std?? '',
                 session: Number(selectedSession.value),
             });
         }
@@ -71,7 +71,7 @@ export const Payment = () => {
                             </Col>
                         </Row>
                         {paymentTypeValue == 'fees' && <Fees form={form} />}
-                        {paymentTypeValue == 'purchase' && <Purchase />}
+                        {paymentTypeValue == 'purchase' && <Purchase form={form}/>}
                         <Row>
                             <Col span={4} offset={1}>
                                 <Form.Item label="Paid By" name={"paidBy"} rules={[{ required: true }]}>
