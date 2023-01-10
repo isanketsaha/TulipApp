@@ -10,7 +10,6 @@ export const onboardingApi = createApi({
             query: (onboardingVm: any) => {
                 return ({
                     url: '/',
-                    credentials: 'include',
                     method: 'POST',
                     body: onboardingVm 
                 });

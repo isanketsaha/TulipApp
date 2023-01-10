@@ -1,5 +1,4 @@
 import { Button, Card, Col, Descriptions, Divider, Form, Input, InputNumber, Radio, Row, Select, Space } from "antd"
-import Search from "antd/es/input/Search"
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
 import { useParams } from "react-router-dom";
@@ -7,8 +6,7 @@ import { useEffect, useState } from "react";
 import { Fees } from "../shared/component/payment/Fees";
 import { Purchase } from "../shared/component/payment/Purchase";
 import { useAppSelector } from "../store";
-import { useFetchAllfeesCatalogMutation } from "../shared/redux/api/feature/catalog/api";
-import { IFeesCatalog } from "../shared/interface/IFeesCatalog";
+import { useFetchAllfeesCatalogMutation, useFetchAllProductCatalogMutation } from "../shared/redux/api/feature/catalog/api";
 
 
 export const Payment = () => {
@@ -22,8 +20,10 @@ export const Payment = () => {
     let paymentTypeValue = Form.useWatch('payType', form);
 
     const [fetchAllfeesCatalog] = useFetchAllfeesCatalogMutation();
+    const [fetchAllProductCatalog] = useFetchAllProductCatalogMutation();
+
     const submit = (value: any) => {
-            console.log(value);
+        console.log(value);
     }
 
 
@@ -33,6 +33,12 @@ export const Payment = () => {
         }
         if (studentDetails?.std && paymentTypeValue == 'fees') {
             fetchAllfeesCatalog({
+                std: studentDetails?.std,
+                session: Number(selectedSession.value),
+            });
+        }
+        if (studentDetails?.std && paymentTypeValue == 'purchase') {
+            fetchAllProductCatalog({
                 std: studentDetails?.std,
                 session: Number(selectedSession.value),
             });
@@ -77,7 +83,7 @@ export const Payment = () => {
 
                             <Col span={3} offset={13}>
                                 <Form.Item name={"total"}>
-                                    <InputNumber disabled={true} style={{fontWeight: 'bold'}} placeholder="Total" bordered={false} />
+                                    <InputNumber disabled={true} style={{ fontWeight: 'bold' }} placeholder="Total" bordered={false} />
                                 </Form.Item>
                             </Col>
                             <Col span={1}>

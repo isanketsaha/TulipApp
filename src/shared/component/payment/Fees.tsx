@@ -10,15 +10,10 @@ interface IFeesPros {
     form: FormInstance
 }
 
-
-
 export const Fees = ({ form }: IFeesPros) => {
 
     const { Text } = Typography;
-    const [error, setError] = useState<{
-        validateStatus?: ValidateStatus;
-        errorMsg?: string | null;
-    }>({});
+  
 
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
@@ -82,26 +77,14 @@ export const Fees = ({ form }: IFeesPros) => {
         if(currentFees.from){
             return currentDate.isBefore(currentFees.from);
         }
-        return false;
+        return true;
        };
 
     const { feesCatalog } = useAppSelector(state => state.catalog);
 
 
     return (<>
-        <Form.List name="feeItem"
-            rules={[
-                {
-                    validator: async (_, names) => {
-                        //     names.map((item: any) => {
-                        //         if (item.from && item.to && item.from.get('month') < item.to.get('month')) {
-                        //             return Promise.reject(new Error("From Date cannot be bigger than to date"));
-                        //         }
-                        //     })
-                    },
-                },
-            ]}
-        >
+        <Form.List name="feeItem">
             {(fields, { add, remove }, { errors }) => (
                 <>
                     {fields.map(({ key, name, ...restField }, index) => (
@@ -137,8 +120,6 @@ export const Fees = ({ form }: IFeesPros) => {
                                         <Form.Item
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
-                                            validateStatus={error.validateStatus}
-                                            help={error.errorMsg}
                                         >
                                             <DatePicker onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
                                         </Form.Item>
@@ -147,8 +128,6 @@ export const Fees = ({ form }: IFeesPros) => {
                                         <Form.Item
                                             name={[name, "to"]}
                                             rules={[{ required: true }]}
-                                            validateStatus={error.validateStatus}
-                                            help={error.errorMsg}
                                         >
 
                                             <DatePicker picker="month" onSelect={(value) => onMonthSelection(value, name,"to")} disabledDate={(value) => disableDate(value, name)}/>
@@ -188,7 +167,6 @@ export const Fees = ({ form }: IFeesPros) => {
 
                         </Space>
                     ))}
-                    <Form.ErrorList errors={errors} />
                 </>
             )}
 
