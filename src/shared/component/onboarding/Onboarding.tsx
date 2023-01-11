@@ -94,7 +94,10 @@ export const Onboarding = () => {
             />
 
             <Divider />
+        <>   {currentStep} </> 
+<> {stepOptions.length}</>
 
+<>EQUALS : {(currentStep === stepOptions.length - 1 )}</>
 
             <Form
                 form={form}
@@ -109,12 +112,15 @@ export const Onboarding = () => {
             >
                 {stepOptions[currentStep].content}
 
+
                 <Row>
 
-                    <Col span={2} offset={20}>
-                        <Button hidden={currentStep > 0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
+
+                     <Col span={2} offset={20}>
+                        
+                     {currentStep != 0 &&   <Button hidden={currentStep > 0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
                             Prev
-                        </Button>
+                        </Button>}
                     </Col>
                     <Col span={currentStep != stepOptions.length - 1 ? 0 : 2} >
                         <div hidden={currentStep != stepOptions.length - 1}>
@@ -123,13 +129,14 @@ export const Onboarding = () => {
                             </Button>
                         </div>
                     </Col>
-                    <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
-                        <div hidden={currentStep == stepOptions.length - 1}>
-                            <Button type="primary" onClick={() => { onNext() }}>
-                                Next
-                            </Button>
-                        </div>
-                    </Col>
+
+                    {currentStep != (stepOptions.length - 1 )&& <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
+
+                        <Button type="primary" onClick={() => { onNext() }}>
+                            Next
+                        </Button>
+
+                    </Col>}
 
                 </Row>
             </Form>

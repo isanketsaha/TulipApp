@@ -9,7 +9,7 @@ const initialState: IAppGlobal = {
 }
 
 const GlobalAppSlice = createSlice({
-    name: 'userAuth',
+    name: 'globalAppState',
     initialState,
     reducers: {
         showSpinner : (state) => {

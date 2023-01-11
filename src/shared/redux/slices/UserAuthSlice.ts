@@ -28,6 +28,7 @@ const UserAuth = createSlice({
             state.user =  data.payload;
         },
         logout: (state) => {
+            sessionStorage.removeItem("tulipAuth");
             state.user = null;
         },
     },

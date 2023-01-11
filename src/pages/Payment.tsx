@@ -31,15 +31,15 @@ export const Payment = () => {
         if (id) {
             setStudentId(id);
         }
-        if (paymentTypeValue == 'fees') {
+        if (studentDetails?.std && paymentTypeValue == 'fees') {
             fetchAllfeesCatalog({
-                std: studentDetails?.std ?? '',
+                std: studentDetails?.std ,
                 session: Number(selectedSession.value),
             });
         }
-        if ( paymentTypeValue == 'purchase') {
+        if (studentDetails?.std && paymentTypeValue == 'purchase') {
             fetchAllProductCatalog({
-                std: studentDetails?.std?? '',
+                std: studentDetails?.std,
                 session: Number(selectedSession.value),
             });
         }

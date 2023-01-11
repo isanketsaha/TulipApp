@@ -11,7 +11,7 @@ const baseQuery = (baseUrl: string) => fetchBaseQuery({
         const auth = (getState() as RootState);
         if (auth.userAuth.user != null) {
             headers.set('authorization', `Bearer ${auth.userAuth.user.idToken}`);
-            headers.set("session_year", auth.commonData.selectedSession.label);
+            headers.set("session_year", auth.commonData.selectedSession.value);
         }
         return headers
     },
