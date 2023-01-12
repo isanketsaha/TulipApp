@@ -94,10 +94,6 @@ export const Onboarding = () => {
             />
 
             <Divider />
-        <>   {currentStep} </> 
-<> {stepOptions.length}</>
-
-<>EQUALS : {(currentStep === stepOptions.length - 1 )}</>
 
             <Form
                 form={form}

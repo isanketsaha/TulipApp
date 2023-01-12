@@ -6,6 +6,7 @@ export interface IBasicDetails {
     gender: string,
     active: boolean,
     bloodGroup: string,
+    age: number,
     address: string,
     std?: string,
 }

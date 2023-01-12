@@ -13,7 +13,7 @@ interface IFeesPros {
 export const Fees = ({ form }: IFeesPros) => {
 
     const { Text } = Typography;
-  
+
 
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
@@ -21,29 +21,29 @@ export const Fees = ({ form }: IFeesPros) => {
         return feeItem;
     }
     const onMonthSelection = (date: Dayjs, rowKey: number, inputType: string) => {
-       const input =  date.get('month');
+        const input = date.get('month');
         const feeItem = fetchFeeRows();
-        const currentFees = feeItem[rowKey]; 
-        if ( inputType == 'to' && currentFees.from) {
+        const currentFees = feeItem[rowKey];
+        if (inputType == 'to' && currentFees.from) {
             const monthNumber = input - currentFees.from.get('month');
-            calculateAmount(rowKey, monthNumber);
+            calculateAmount(rowKey, monthNumber + 1);
         }
-        else if(inputType == 'from' && currentFees.to){
+        else if (inputType == 'from' && currentFees.to) {
             const monthNumber = currentFees.to.get('month') - input;
-            calculateAmount(rowKey, monthNumber);
+            calculateAmount(rowKey, monthNumber + 1);
         }
     }
 
-    const calculateAmount = (rowKey: number, monthNumber: number) =>{
+    const calculateAmount = (rowKey: number, monthNumber: number) => {
         const feeItem = fetchFeeRows();
-        const currentFees = feeItem[rowKey]; 
+        const currentFees = feeItem[rowKey];
         const selectedFees = feesCatalog.find(item => item.id === currentFees.feesId);
-            
-        if (monthNumber > 0 ) {
+
+        if (monthNumber > 0) {
             feeItem[rowKey] = {
                 ...feeItem[rowKey],
                 unitPrice: selectedFees?.amount,
-                amount: (selectedFees?.applicableRule == 'Monthly') ? monthNumber * (selectedFees?.amount ? selectedFees?.amount : 0): selectedFees?.amount
+                amount: (selectedFees?.applicableRule.toUpperCase() == 'Monthly'.toUpperCase()) ? monthNumber * (selectedFees?.amount ? selectedFees?.amount : 0) : selectedFees?.amount
             }
             form.setFieldsValue({ feeItem: [...feeItem] });
             calculateTotal();
@@ -71,14 +71,14 @@ export const Fees = ({ form }: IFeesPros) => {
         form.setFieldsValue({ total });
     }
 
-    const disableDate = (currentDate: Dayjs, rowKey: number )  =>{
+    const disableDate = (currentDate: Dayjs, rowKey: number) => {
         const feeItem = fetchFeeRows();
-        const currentFees = feeItem[rowKey]; 
-        if(currentFees.from){
+        const currentFees = feeItem[rowKey];
+        if (currentFees.from) {
             return currentDate.isBefore(currentFees.from);
         }
         return true;
-       };
+    };
 
     const { feesCatalog } = useAppSelector(state => state.catalog);
 
@@ -121,7 +121,7 @@ export const Fees = ({ form }: IFeesPros) => {
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
                                         >
-                                            <DatePicker onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
+                                            <DatePicker format="MMM-YYYY" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -130,7 +130,7 @@ export const Fees = ({ form }: IFeesPros) => {
                                             rules={[{ required: true }]}
                                         >
 
-                                            <DatePicker picker="month" onSelect={(value) => onMonthSelection(value, name,"to")} disabledDate={(value) => disableDate(value, name)}/>
+                                            <DatePicker format="MMM-YYYY" picker="month" onSelect={(value) => onMonthSelection(value, name, "to")} disabledDate={(value) => disableDate(value, name)} />
                                         </Form.Item>
                                     </Col>
 
@@ -154,10 +154,10 @@ export const Fees = ({ form }: IFeesPros) => {
                                     </Col>
                                     <Col span={3}>
                                         <Space>
-                                        {fields.length > 1 ?  <Button type="link" onClick={() => {
+                                            {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 remove(name);
                                                 calculateTotal();
-                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null }
+                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>
                                     </Col>

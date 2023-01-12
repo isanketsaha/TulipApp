@@ -1,9 +1,12 @@
+import { IFeePay } from "./IFeePay";
 import { IPurchasePay } from "./IPurchasePay"
 
 export interface IPay{
-paidBy: string,
+studentId: number;
+paymentMode: string,
 payType: string,
-puchaseItems : IPurchasePay[],
+purchaseItems : IPurchasePay[],
+feeItem : IFeePay[], 
 total: number,
 }
 

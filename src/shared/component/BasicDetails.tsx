@@ -12,12 +12,13 @@ export const BasicDetails: FC<ItemProps> = ({data}: ItemProps) => {
         <Descriptions>
             <Descriptions.Item label="ID">{data.id}</Descriptions.Item>
             <Descriptions.Item label="Name">{data.name}</Descriptions.Item>
-            <Descriptions.Item label="Telephone">{data.phoneNumber}</Descriptions.Item>
-            <Descriptions.Item label="Date Of Birth">{dayjs(data.dob).format('DD/MM/YYYY')}</Descriptions.Item>
-            <Descriptions.Item label="Gender">{data.gender}</Descriptions.Item>
-            <Descriptions.Item label="Blood Group">
-                {data.bloodGroup}
+            <Descriptions.Item label="Class">
+                {data.std}
             </Descriptions.Item>
+            <Descriptions.Item label="Age">{data.age}</Descriptions.Item>
+            <Descriptions.Item label="Gender">{data.gender}</Descriptions.Item>
+            
+            <Descriptions.Item label="Telephone">{data.phoneNumber}</Descriptions.Item>
             <Descriptions.Item label="Address">
                 {data.address}
             </Descriptions.Item>

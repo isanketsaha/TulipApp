@@ -7,6 +7,8 @@ import { Fees } from "../shared/component/payment/Fees";
 import { Purchase } from "../shared/component/payment/Purchase";
 import { useAppSelector } from "../store";
 import { useFetchAllfeesCatalogMutation, useFetchAllProductCatalogMutation } from "../shared/redux/api/feature/catalog/api";
+import { IPay } from "../shared/interface/IPay";
+import { usePaymentMutation } from "../shared/redux/api/feature/payment/api";
 
 
 export const Payment = () => {
@@ -22,8 +24,27 @@ export const Payment = () => {
     const [fetchAllfeesCatalog] = useFetchAllfeesCatalogMutation();
     const [fetchAllProductCatalog] = useFetchAllProductCatalogMutation();
 
+    const [payment] = usePaymentMutation();
+
     const submit = (value: any) => {
         console.log(value);
+
+        const payData = {
+            ...value,
+            studentId: studentDetails?.id,
+            feeItem: value.feeItem ? value.feeItem.map((item: any) => {
+                return {
+                    ...item,
+                    from: item.from.format("MMM/YYYY"),
+                    to: item.to.format("MMM/YYYY")
+                }
+            }) : []
+
+        } as IPay;
+
+        payment(payData).then(id => {
+            console.log(id);
+        });
     }
 
 
@@ -33,7 +54,7 @@ export const Payment = () => {
         }
         if (studentDetails?.std && paymentTypeValue == 'fees') {
             fetchAllfeesCatalog({
-                std: studentDetails?.std ,
+                std: studentDetails?.std,
                 session: Number(selectedSession.value),
             });
         }
@@ -71,10 +92,10 @@ export const Payment = () => {
                             </Col>
                         </Row>
                         {paymentTypeValue == 'fees' && <Fees form={form} />}
-                        {paymentTypeValue == 'purchase' && <Purchase form={form}/>}
+                        {paymentTypeValue == 'purchase' && <Purchase form={form} />}
                         <Row>
-                            <Col span={4} offset={1}>
-                                <Form.Item label="Paid By" name={"paidBy"} rules={[{ required: true }]}>
+                            <Col span={5} >
+                                <Form.Item label="Mode Of Payment" name={"paymentMode"} rules={[{ required: true }]}>
                                     <Select
                                         style={{ width: '100%' }}
                                         options={paymentOptions} />
