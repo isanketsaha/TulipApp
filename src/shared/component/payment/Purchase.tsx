@@ -17,8 +17,8 @@ export const Purchase = ({form}:IPurchaseProps) => {
 
     const fetchProductRows = () => {
         const fields = form.getFieldsValue();
-        const { puchaseItems } = fields;
-        return puchaseItems;
+        const { purchaseItems } = fields;
+        return purchaseItems;
     }
 
     const onSelectProduct = (elementId: number, rowKey: number) => {
@@ -31,7 +31,7 @@ export const Purchase = ({form}:IPurchaseProps) => {
             qty: 1,
             amount: selectedProduct?.price
         }
-        form.setFieldsValue({ puchaseItems: [...products] });
+        form.setFieldsValue({ purchaseItems: [...products] });
         calculateTotal();
     }
 
@@ -42,7 +42,7 @@ export const Purchase = ({form}:IPurchaseProps) => {
         ...products[rowKey],
         amount: ((selectedProduct?.price ?? 0) * Number(qty))
     }
-    form.setFieldsValue({ puchaseItems: [...products] });
+    form.setFieldsValue({ purchaseItems: [...products] });
     calculateTotal();
     }
 
@@ -57,7 +57,7 @@ export const Purchase = ({form}:IPurchaseProps) => {
 
 
     return (<>
-        <Form.List name="puchaseItems">
+        <Form.List name="purchaseItems">
             {(fields, { add, remove }) => (
                 <>
                     {fields.map(({ key, name, ...restField }, index) => (

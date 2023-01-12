@@ -76,7 +76,7 @@ export const Payment = () => {
             </Row>
 
             <Form form={form} name="fees-collection-form" size="large" onFinish={submit}
-                initialValues={{ payType: 'fees', feeItem: [{}], puchaseItems: [{}] }}>
+                initialValues={{ payType: 'fees', feeItem: [{}], purchaseItems: [{}] }}>
                 <Card>
 
 
