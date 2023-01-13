@@ -1,7 +1,7 @@
 import { Button, Card, Col, Descriptions, Divider, Form, Input, InputNumber, Radio, Row, Select, Space } from "antd"
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Fees } from "../shared/component/payment/Fees";
 import { Purchase } from "../shared/component/payment/Purchase";
@@ -18,6 +18,7 @@ export const Payment = () => {
     const [studentId, setStudentId] = useState<string>("");
     const { data: studentDetails } = useBasicSearchByIdQuery(studentId, { skip: studentId == '' });
     const [form] = Form.useForm();
+    let navigate = useNavigate();
 
     let paymentTypeValue = Form.useWatch('payType', form);
 
@@ -42,8 +43,10 @@ export const Payment = () => {
 
         } as IPay;
 
-        payment(payData).then(id => {
-            console.log(id);
+        payment(payData).then((id :any) => {
+            if(id?.data){
+                navigate(`/purchaseSummary/${paymentTypeValue}/${id.data}`);
+            }
         });
     }
 

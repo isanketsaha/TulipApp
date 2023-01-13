@@ -13,6 +13,7 @@ import { Onboarding } from "../shared/component/onboarding/Onboarding";
 import { ViewDetails } from "../pages/ViewDetails";
 import { Classroom } from "../pages/Classroom";
 import { Accounts } from "../pages/Account";
+import { PurchaseSummary } from "../pages/PurchaseSummary";
 
 
 export const AppRouter = createBrowserRouter([
@@ -56,12 +57,15 @@ export const AppRouter = createBrowserRouter([
                     , {
                         path: 'studentDetails/:id',
                         element: <ViewDetails />
-                    },{
-                        path:'classroom',
-                        element: <Classroom/>
-                    },{
-                        path:'accounts',
-                        element:<Accounts/>
+                    }, {
+                        path: 'classroom',
+                        element: <Classroom />
+                    }, {
+                        path: 'accounts',
+                        element: <Accounts />
+                    }, {
+                        path: 'purchaseSummary/:payType/:id',
+                        element: <PurchaseSummary />
                     }
                 ]
             }
