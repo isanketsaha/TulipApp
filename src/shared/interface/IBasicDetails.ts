@@ -8,5 +8,6 @@ export interface IBasicDetails {
     bloodGroup: string,
     age: number,
     address: string,
-    std?: string,
+    std: string,
+    classId: string
 }

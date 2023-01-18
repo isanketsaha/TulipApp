@@ -64,7 +64,7 @@ export const AppRouter = createBrowserRouter([
                         path: 'accounts',
                         element: <Accounts />
                     }, {
-                        path: 'purchaseSummary/:payType/:id',
+                        path: 'purchaseSummary/:id',
                         element: <PurchaseSummary />
                     }
                 ]

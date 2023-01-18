@@ -11,7 +11,6 @@ import { onboardingApi } from './shared/redux/api/feature/onboarding/api';
 import { studentApi } from './shared/redux/api/feature/student/api';
 import { classroomApi } from './shared/redux/api/feature/classroom/api';
 import { catalogApi } from './shared/redux/api/feature/catalog/api';
-import CatalogSlice from './shared/redux/slices/CatalogSlice';
 import { paymentApi } from './shared/redux/api/feature/payment/api';
 
 export const store = configureStore({
@@ -25,7 +24,6 @@ export const store = configureStore({
     [catalogApi.reducerPath] : catalogApi.reducer,
     [paymentApi.reducerPath] : paymentApi.reducer,
     userAuth: userAuthReducer,
-    catalog: CatalogSlice,
     globalState: GlobalAppSlice,
     commonData: CommonSlice,
   },

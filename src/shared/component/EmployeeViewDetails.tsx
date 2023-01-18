@@ -1,4 +1,4 @@
-import { Descriptions, Badge, Divider } from "antd";
+import { Descriptions, Badge, Divider, Space } from "antd";
 import dayjs from "dayjs";
 import { useSearchEmployeeByIdQuery } from "../redux/api/feature/employee/api";
 
@@ -42,6 +42,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
 
     
         <Divider orientation="left" plain> <h3> Dependent Details </h3> </Divider>
+        <Space  direction="vertical" style={{ width: '100%' }}  size={"small"}>
         {
             employeeDataData?.dependent.map(item => {
                return( <>
@@ -56,6 +57,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                 </>);
             })
         }
+       </Space>
        
 
         <Divider orientation="left" plain> <h3>Bank Details </h3> </Divider>

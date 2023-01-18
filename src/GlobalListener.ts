@@ -30,7 +30,6 @@ export const GlobalListener : Middleware = (api: MiddlewareAPI) => (next) => (ac
                 status: action.payload?.status,
                   details: action.payload?.data?.detail ??  action.error.message
             });
-
         if(action.payload?.status == "401"){
             api.dispatch(logout())
             window.location.reload();

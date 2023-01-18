@@ -1,4 +1,4 @@
-import { Card, Descriptions, Divider, Space, Switch, Table, Tag } from "antd";
+import { Card, Descriptions, Divider, Space, Switch, Table, Tag, Typography } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
@@ -9,17 +9,16 @@ import { useFetchPaymentDetailsByIdQuery } from "../shared/redux/api/feature/pay
 import dayjs from "dayjs";
 
 export const PurchaseSummary = () => {
-    const { id, payType } = useParams();
+
+    const { Text } = Typography;
+
+    const { id } = useParams();
 
 
-    const { data: paySummary } = useFetchPaymentDetailsByIdQuery({
-        paymentType: payType ?? '',
-        paymentId: Number(id)
-    }, { skip: !(payType && id) });
+    const { data: paySummary } = useFetchPaymentDetailsByIdQuery(id ?? ''
+        , { skip: id == undefined });
 
     const { data: item } = useBasicSearchByIdQuery(String(paySummary?.studentId) ?? '', { skip: !paySummary?.studentId });
-
-    const [fixedTop, setFixedTop] = useState(false);
 
     const feesColumns = [
         {
@@ -88,6 +87,7 @@ export const PurchaseSummary = () => {
 
 
     return (<>
+
         <Space direction="vertical" style={{ width: '100%' }} size="large">
             <Divider>Purchase Summary</Divider>
             <Card key={item?.id}>
@@ -98,23 +98,27 @@ export const PurchaseSummary = () => {
                     <Descriptions.Item label="Date Time"> {dayjs(paySummary?.paymentDateTime).format('dddd, MMMM D, YYYY h:mm A')}</Descriptions.Item>
 
                     <Descriptions.Item label="Purchase Type">  <Tag color={"purple"}>
-                                    {paySummary?.payType}
-                                </Tag></Descriptions.Item>
+                        {paySummary?.payType}
+                    </Tag></Descriptions.Item>
                 </Descriptions>
             </Card>
 
-            {payType?.toUpperCase() == 'Fees'.toUpperCase() && <Table columns={feesColumns}
+            {paySummary?.payType == 'FEES' && <Table columns={feesColumns}
                 dataSource={paySummary?.feesItem}
                 pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
                             <Table.Summary.Cell colSpan={5} index={1}>
-                            Pay Mode :  <Tag color={paySummary?.paymentMode=="CASH" ? "green" : "cyan"}>
+                                Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {paySummary?.paymentMode}
                                 </Tag>
                             </Table.Summary.Cell>
-                            <Table.Summary.Cell index={10}>{paySummary?.total}</Table.Summary.Cell>
+                            <Table.Summary.Cell index={10}>
+                                <Text mark>
+                                    {paySummary?.total}
+                                </Text>
+                            </Table.Summary.Cell>
                         </Table.Summary.Row>
                     </Table.Summary>
                 )}
@@ -122,18 +126,22 @@ export const PurchaseSummary = () => {
             />
             }
 
-            {payType?.toUpperCase() == 'PURCHASE'.toUpperCase() && <Table columns={purchaseColumns}
+            {(paySummary?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
                 dataSource={paySummary?.purchaseItems}
                 pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
                             <Table.Summary.Cell colSpan={4} index={1}>
-                            Pay Mode :  <Tag color={paySummary?.paymentMode=="CASH" ? "green" : "cyan"}>
+                                Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {paySummary?.paymentMode}
                                 </Tag>
                             </Table.Summary.Cell>
-                            <Table.Summary.Cell index={10}>{paySummary?.total}</Table.Summary.Cell>
+                            <Table.Summary.Cell index={10}>
+                                <Text mark>
+                                    {paySummary?.total}
+                                </Text>
+                            </Table.Summary.Cell>
                         </Table.Summary.Row>
                     </Table.Summary>
                 )}

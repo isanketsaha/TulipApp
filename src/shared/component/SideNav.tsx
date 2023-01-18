@@ -29,7 +29,6 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
     } = theme.useToken();
 
     const logoutUser = () => {
-        sessionStorage.removeItem("tulipAuth");
         dispatch(logout());
         navigate("/login");
     }

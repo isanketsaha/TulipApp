@@ -2,18 +2,20 @@ import { Button, Col, DatePicker, Form, FormInstance, InputNumber, Row, Select, 
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { useAppSelector } from "../../../store";
 import staticMethods from "antd/es/message";
+import { IProductCatlog } from "../../interface/IProductCatalog";
+import { useFetchAllProductCatalogQuery } from "../../redux/api/feature/catalog/api";
 
 interface IPurchaseProps {
-    form: FormInstance
+    form: FormInstance,
+    classId: string
 }
 
 
-export const Purchase = ({form}:IPurchaseProps) => {
+export const Purchase = ({form , classId}:IPurchaseProps) => {
 
-
+    const {data : productCatalog} = useFetchAllProductCatalogQuery(classId);
+    
     const { Text } = Typography;
-
-    const { productCatalog } = useAppSelector(state => state.catalog);
 
     const fetchProductRows = () => {
         const fields = form.getFieldsValue();
@@ -23,7 +25,7 @@ export const Purchase = ({form}:IPurchaseProps) => {
 
     const onSelectProduct = (elementId: number, rowKey: number) => {
         const products = fetchProductRows();
-        const selectedProduct = productCatalog.find(item => item.id === elementId)
+        const selectedProduct = productCatalog?.find(item => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
             unitPrice: selectedProduct?.price,
@@ -37,7 +39,7 @@ export const Purchase = ({form}:IPurchaseProps) => {
 
    const reCalculateAmount = (qty: string, rowKey: number) =>{
     const products = fetchProductRows();
-    const selectedProduct = productCatalog.find(item => item.id === products[rowKey].productTitle)
+    const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productTitle)
     products[rowKey] = {
         ...products[rowKey],
         amount: ((selectedProduct?.price ?? 0) * Number(qty))

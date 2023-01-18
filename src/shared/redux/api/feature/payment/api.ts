@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { IPay } from "../../../../interface/IPay";
 import { IPayDetailsSummary } from "../../../../interface/IPayDetailsSummary";
-import { IPayDetailsFilter } from "../../../../interface/IPayDetailsFIlter";
+import { IPayDetailsFilter } from "../../../../interface/IPayDetailsFilter";
 
 
 
@@ -19,8 +19,8 @@ export const paymentApi = createApi({
                 });
             },
         }),
-        fetchPaymentDetailsById: builder.query<IPayDetailsSummary, IPayDetailsFilter>({
-            query: (item) => `/details/${item.paymentType}/${item.paymentId}`
+        fetchPaymentDetailsById: builder.query<IPayDetailsSummary, string>({
+            query: (payId) => `/details/${payId}`
         }),
 
     })

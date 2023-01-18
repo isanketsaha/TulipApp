@@ -63,8 +63,9 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                 </Descriptions>
 
                 <Divider> <h3>Guardian Details</h3></Divider>
-
+                <Space  direction="vertical" style={{ width: '100%' }} size={"small"}>
                 {
+                    
                     studentData?.dependent.map(item=>{
                         return (
                             <Descriptions key={item.id}  bordered>
@@ -74,7 +75,9 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             </Descriptions>
                         )
                     })
+                    
                 }
+                </Space>
                 <FeesCalender />
                 <PurchaseHistory/>
             </Space>

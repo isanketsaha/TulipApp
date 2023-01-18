@@ -4,16 +4,20 @@ import { useAppSelector } from "../../../store";
 import { Dayjs } from "dayjs";
 import { ValidateStatus } from "antd/es/form/FormItem";
 import { useState } from "react";
+import { IFeesCatalog } from "../../interface/IFeesCatalog";
+import { useFetchAllfeesCatalogQuery } from "../../redux/api/feature/catalog/api";
 
 
 interface IFeesPros {
-    form: FormInstance
+    form: FormInstance,
+    classId: string
 }
 
-export const Fees = ({ form }: IFeesPros) => {
+export const Fees = ({ form, classId}: IFeesPros) => {
 
     const { Text } = Typography;
 
+    const {data: feesCatalog} = useFetchAllfeesCatalogQuery(classId);
 
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
@@ -37,7 +41,7 @@ export const Fees = ({ form }: IFeesPros) => {
     const calculateAmount = (rowKey: number, monthNumber: number) => {
         const feeItem = fetchFeeRows();
         const currentFees = feeItem[rowKey];
-        const selectedFees = feesCatalog.find(item => item.id === currentFees.feesId);
+        const selectedFees = feesCatalog?.find(item => item.id === currentFees.feesId);
 
         if (monthNumber > 0) {
             feeItem[rowKey] = {
@@ -52,7 +56,7 @@ export const Fees = ({ form }: IFeesPros) => {
 
     const onSelectFees = (elementId: number, rowKey: number) => {
         const feeItem = fetchFeeRows();
-        const selectedFees = feesCatalog.find(item => item.id === elementId)
+        const selectedFees = feesCatalog?.find(item => item.id === elementId)
         feeItem[rowKey] = {
             ...feeItem[rowKey],
             unitPrice: selectedFees?.amount,
@@ -80,7 +84,6 @@ export const Fees = ({ form }: IFeesPros) => {
         return true;
     };
 
-    const { feesCatalog } = useAppSelector(state => state.catalog);
 
 
     return (<>

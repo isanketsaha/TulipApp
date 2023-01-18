@@ -37,6 +37,7 @@ export const Onboarding = () => {
         form.validateFields().then(values => {
             const formValues = form.getFieldsValue(true);
             const interview = formValues['interview'] ? formValues['interview'][0] : null;
+            const bank = formValues['bank'] ? formValues['bank'][0] : null;
             if (interview != null) {
                 var interviewDetails = {
                     ...interview,
@@ -47,7 +48,8 @@ export const Onboarding = () => {
             const data = {
                 ...formValues,
                 dob: formValues['dob'].format('YYYY-MM-DD'),
-                interview: [interviewDetails]
+                interview: interviewDetails,
+                bank
             };
             onboardUser(data);
         });
