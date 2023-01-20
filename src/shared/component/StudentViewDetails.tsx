@@ -5,7 +5,7 @@ import { useSearchStudentQuery } from "../redux/api/feature/student/api";
 import { CalendarMode } from "antd/es/calendar/generateCalendar";
 import { FeesCalender } from "./FeesCalender";
 import { Link } from "react-router-dom";
-import { PurchaseHistory } from "./PurchaseHistory";
+import { TransactionHistory } from "./TransactionHistory";
 
 interface IStudentViewProps {
     studentId: string
@@ -21,7 +21,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
     return (
         <>
         <Divider> <h3>Student Detail</h3></Divider>
-            <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
+            <Space direction="vertical" style={{ width: '100%' }} size={"small"}>
                 
                 <Descriptions bordered>
                     <Descriptions.Item label="Student ID"> {studentData?.id}</Descriptions.Item>
@@ -79,7 +79,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                 }
                 </Space>
                 <FeesCalender />
-                <PurchaseHistory/>
+               { studentData?.id && <TransactionHistory studentId={studentData?.id}/>}
             </Space>
         </>
     )

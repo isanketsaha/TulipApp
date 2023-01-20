@@ -9,6 +9,7 @@ export interface IPayDetailsSummary {
     purchaseItems: IPurchaseItemSummary[],
     feesItem: IFeesItemSummary[],
     total: number,
+    paymentId: number,
     paymentDateTime: Date,
     paymentReceivedBy: string
 }

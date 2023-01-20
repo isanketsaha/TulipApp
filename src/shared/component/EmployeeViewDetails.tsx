@@ -19,7 +19,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
             <Descriptions.Item label="Gender">{employeeDataData?.gender}</Descriptions.Item>
             <Descriptions.Item label="Date Of Birth">{dayjs(employeeDataData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Joined On" span={1}>
-                {dayjs(employeeDataData?.interview.doj).format("DD/MM/YYYY")}
+                {employeeDataData?.interview.doj ? dayjs(employeeDataData?.interview.doj).format("DD/MM/YYYY") : 'N/A'}
             </Descriptions.Item>
             <Descriptions.Item label="Active" span={1}>
                 <Badge status={employeeDataData?.active ? "success" : "error"} text={employeeDataData?.active ? "ACTIVE" : "INACTIVE"} />
@@ -40,25 +40,25 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
             </Descriptions.Item>
         </Descriptions>
 
-    
+
         <Divider orientation="left" plain> <h3> Dependent Details </h3> </Divider>
-        <Space  direction="vertical" style={{ width: '100%' }}  size={"small"}>
-        {
-            employeeDataData?.dependent.map(item => {
-               return( <>
-                <Descriptions bordered>
-                    <Descriptions.Item label=" Name"> {item.name}</Descriptions.Item>
-                    <Descriptions.Item label="Relation">{item.relationship}</Descriptions.Item>
-                    <Descriptions.Item label="Phone Number">{item.contact}</Descriptions.Item>
-                    <Descriptions.Item label=" Aadhaar Number"> {item.aadhaarNo}</Descriptions.Item>
-                    <Descriptions.Item label="Occupation">{item.occupation}</Descriptions.Item>
-                    <Descriptions.Item label="Qualification">{item.qualification}</Descriptions.Item>
-                    </Descriptions>
-                </>);
-            })
-        }
-       </Space>
-       
+        <Space direction="vertical" style={{ width: '100%' }} size={"small"}>
+            {
+                employeeDataData?.dependent.map(item => {
+                    return (<>
+                        <Descriptions bordered>
+                            <Descriptions.Item label=" Name"> {item.name}</Descriptions.Item>
+                            <Descriptions.Item label="Relation">{item.relationship}</Descriptions.Item>
+                            <Descriptions.Item label="Phone Number">{item.contact}</Descriptions.Item>
+                            <Descriptions.Item label=" Aadhaar Number"> {item.aadhaarNo}</Descriptions.Item>
+                            <Descriptions.Item label="Occupation">{item.occupation}</Descriptions.Item>
+                            <Descriptions.Item label="Qualification">{item.qualification}</Descriptions.Item>
+                        </Descriptions>
+                    </>);
+                })
+            }
+        </Space>
+
 
         <Divider orientation="left" plain> <h3>Bank Details </h3> </Divider>
 
@@ -69,12 +69,13 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
         </Descriptions>
 
         <Divider orientation="left" plain> <h3> Interview Details </h3> </Divider>
-        <Descriptions bordered>
+        {employeeDataData?.interview && <Descriptions bordered>
             <Descriptions.Item label=" Interviewed On"> {dayjs(employeeDataData?.interview?.interviewDate).format("DD/MM/YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Joined On">{dayjs(employeeDataData?.interview?.doj).format("DD/MM/YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Salary">{employeeDataData?.interview?.salary}</Descriptions.Item>
             <Descriptions.Item label="Comments">{employeeDataData?.interview?.comments}</Descriptions.Item>
         </Descriptions>
+        }
 
     </>)
 }
