@@ -22,27 +22,25 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
   });
 
   return (<>
-    <Divider><h3>Purchase History</h3></Divider>
+    {data && data.content.length >0 &&
 
-    <Card>
+      <><Divider><h3>Purchase History</h3></Divider><Card>
 
-      {data && <List header={<Row>
-        <Col offset={19} span={4}>
-          <Pagination defaultCurrent={page} onChange={setPage} total={data?.totalElements} showTotal={(total) => `Total ${total} `} />
-        </Col>
-      </Row>}
-      >
-
-        <VirtualList
-          data={data.content}
-          height={300}
-          itemKey="email"
+        <List header={<Row>
+          <Col offset={19} span={4}>
+            <Pagination defaultCurrent={page} onChange={setPage} total={data?.totalElements} showTotal={(total) => `Total ${total} `} />
+          </Col>
+        </Row>}
         >
-          {(item: IPayDetailsSummary, index) => (
-            <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
-              <List.Item.Meta
-                description={
-                  <Row>
+
+          <VirtualList
+            data={data.content}
+            itemKey="email"
+          >
+            {(item: IPayDetailsSummary, index) => (
+              <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
+                <List.Item.Meta
+                  description={<Row>
                     <Col span={1}>{index + 1}.</Col>
                     <Col span={4}>
                       {dayjs(item.paymentDateTime).format("DD/MM/YYYY")}
@@ -54,21 +52,19 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
                     <Col span={7}>
                       <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item?.paymentMode}</Tag>
                     </Col>
-                  </Row>
-
-                }
-              />
-              <div>
-              <Typography.Text mark>{item.total.toLocaleString('en-IN', {
-                        maximumFractionDigits: 2,
-                        style: 'currency',
-                        currency: 'INR'
-                      })} </Typography.Text>
-              </div>
-            </List.Item>
-          )}
-        </VirtualList>
-      </List>}
-    </Card>
+                  </Row>} />
+                <div>
+                  <Typography.Text mark>{item.total.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                  })} </Typography.Text>
+                </div>
+              </List.Item>
+            )}
+          </VirtualList>
+        </List>
+      </Card></>
+    }
   </>)
 }

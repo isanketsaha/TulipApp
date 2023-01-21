@@ -18,7 +18,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
         console.log(value.format('YYYY-MM-DD'), mode);
     };
 
-    const { data: studentData } = useSearchStudentQuery(studentId, { skip: studentId == "" });
+    const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" });
     return (
         <>
             {studentData &&
@@ -80,7 +80,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                 </Space></>
             }
             {
-                !studentData && <Error500/>
+                !studentData && !isFetching  && <Error500/>
             }
         </>
     )

@@ -174,7 +174,7 @@ export const Fees = ({ form, classId }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} />
+                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} style={{ width: '100%' }}/>
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -183,10 +183,10 @@ export const Fees = ({ form, classId }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber bordered={false} placeholder="Amount" disabled={true} />
+                                            <InputNumber bordered={false} placeholder="Amount" disabled={true} style={{ width: '100%' }}/>
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3}>
+                                    <Col span={2} offset={1}>
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 remove(name);

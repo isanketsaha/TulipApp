@@ -141,7 +141,7 @@ export const Purchase = ({ form, classId }: IPurchaseProps) => {
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}
                                         >
-                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} />
+                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -149,10 +149,10 @@ export const Purchase = ({ form, classId }: IPurchaseProps) => {
                                             name={[name, "amount"]}
                                             rules={[{ required: true, message: "Amount is required" }]}
                                         >
-                                            <InputNumber bordered={false} disabled={true} />
+                                            <InputNumber bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={2}>
+                                    <Col span={2} offset={1}>
 
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {

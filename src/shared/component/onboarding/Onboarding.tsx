@@ -22,7 +22,7 @@ export const Onboarding = () => {
             navigate(`/employeeDetails/${id}`, { replace: true });
         }
         else if (state?.type == 'student') {
-            navigate(`/studentDetails/${id}`, { replace: true });
+            navigate(`/payment/${id}`, { replace: true });
         }
     }
 

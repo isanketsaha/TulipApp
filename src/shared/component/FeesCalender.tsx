@@ -37,13 +37,14 @@ export const FeesCalender = ({ studentId, classId }: IFeesGraphProps) => {
                 return "lightyellow";
             }
         }
+        return "lightyellow";
     }
 
     return (
         <><Divider> <h3>Fees </h3></Divider>
             <Card>
 
-                {data && months.map(_ => {
+                {months.map(_ => {
                     return <Card.Grid style={gridStyle(_) as React.CSSProperties} key={_}>{_}</Card.Grid>;
                 })}
             </Card></>

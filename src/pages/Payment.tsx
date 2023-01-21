@@ -28,10 +28,21 @@ export const Payment = () => {
 
         const payData = {
             ...value,
+            total: Number(value.total.replace(/[^0-9-]+/g, "")) / 100,
             studentId: studentDetails?.id,
+            purchaseItems: value.purchaseItems ? value.purchaseItems.map((item: any) => {
+                return {
+                    ...item,
+                    unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
+                    amount: Number(item.amount.replace(/[^0-9-]+/g, "")) / 100
+                }
+
+            }) : [],
             feeItem: value.feeItem ? value.feeItem.map((item: any) => {
                 return {
                     ...item,
+                    unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
+                    amount: Number(value.amount.total.replace(/[^0-9-]+/g, "")) / 100,
                     from: item.from.format("MMM/YYYY"),
                     to: item.to.format("MMM/YYYY")
                 }
@@ -39,8 +50,8 @@ export const Payment = () => {
 
         } as IPay;
 
-        payment(payData).then((id :any) => {
-            if(id?.data){
+        payment(payData).then((id: any) => {
+            if (id?.data) {
                 navigate(`/purchaseSummary/${id.data}`);
             }
         });
@@ -77,8 +88,8 @@ export const Payment = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId}/>}
-                        {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} classId={studentDetails?.classId}/>}
+                        {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId} />}
+                        {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} classId={studentDetails?.classId} />}
                         <Row>
                             <Col span={5} >
                                 <Form.Item label="Mode Of Payment" name={"paymentMode"} rules={[{ required: true }]}>
@@ -90,10 +101,10 @@ export const Payment = () => {
 
                             <Col span={3} offset={13}>
                                 <Form.Item name={"total"}>
-                                    <InputNumber disabled={true} style={{ fontWeight: 'bold' }} placeholder="Total" bordered={false} />
+                                    <InputNumber disabled={true} style={{ fontWeight: 'bold' , width: '100%'}}  placeholder="Total" bordered={false}/>
                                 </Form.Item>
                             </Col>
-                            <Col span={1}>
+                            <Col span={1} offset={1}>
                                 <Button htmlType={"submit"} type={"primary"}>Confirm</Button>
                             </Col>
                         </Row>

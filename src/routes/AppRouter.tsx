@@ -32,13 +32,6 @@ export const AppRouter = createBrowserRouter([
                         path: "payment/:id",
                         element: <Payment />,
                     }, {
-                        path: "admission",
-                        element: <Dashboard />,
-                    },
-                    {
-                        path: "purchase",
-                        element: <Dashboard />,
-                    }, {
                         path: 'staffs',
                         element: <EmployeePage />
                     }, {
