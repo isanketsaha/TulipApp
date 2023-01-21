@@ -13,11 +13,11 @@ interface IFeesPros {
     classId: string
 }
 
-export const Fees = ({ form, classId}: IFeesPros) => {
+export const Fees = ({ form, classId }: IFeesPros) => {
 
     const { Text } = Typography;
 
-    const {data: feesCatalog} = useFetchAllfeesCatalogQuery(classId);
+    const { data: feesCatalog } = useFetchAllfeesCatalogQuery(classId);
 
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
@@ -46,8 +46,21 @@ export const Fees = ({ form, classId}: IFeesPros) => {
         if (monthNumber > 0) {
             feeItem[rowKey] = {
                 ...feeItem[rowKey],
-                unitPrice: selectedFees?.amount,
-                amount: (selectedFees?.applicableRule.toUpperCase() == 'Monthly'.toUpperCase()) ? monthNumber * (selectedFees?.amount ? selectedFees?.amount : 0) : selectedFees?.amount
+                unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                }),
+                amount: ((selectedFees?.applicableRule.toUpperCase() == 'Monthly'.toUpperCase())
+                    ? (monthNumber * (selectedFees?.amount ? selectedFees?.amount : 0)).toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                        style: 'currency',
+                        currency: 'INR'
+                    }) : selectedFees?.amount.toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                        style: 'currency',
+                        currency: 'INR'
+                    }))
             }
             form.setFieldsValue({ feeItem: [...feeItem] });
             calculateTotal();
@@ -59,8 +72,16 @@ export const Fees = ({ form, classId}: IFeesPros) => {
         const selectedFees = feesCatalog?.find(item => item.id === elementId)
         feeItem[rowKey] = {
             ...feeItem[rowKey],
-            unitPrice: selectedFees?.amount,
-            amount: selectedFees?.amount
+            unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }),
+            amount: selectedFees?.amount.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            })
         }
         form.setFieldsValue({ feeItem: [...feeItem] });
         calculateTotal();
@@ -70,9 +91,19 @@ export const Fees = ({ form, classId}: IFeesPros) => {
         const allForm = form.getFieldsValue();
         let total = 0;
         fetchFeeRows().map((item: any) => {
-            total += item.amount ? item.amount : 0;
+            if (item.amount) {
+                const amount: number = Number(item.amount.replace(/[^0-9-]+/g, "")) / 100;
+                total += amount;
+            }
         });
-        form.setFieldsValue({ total });
+
+        form.setFieldsValue({
+            total: total.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            })
+        });
     }
 
     const disableDate = (currentDate: Dayjs, rowKey: number) => {

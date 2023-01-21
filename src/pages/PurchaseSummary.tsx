@@ -43,11 +43,25 @@ export const PurchaseSummary = () => {
             title: ' Unit Price',
             dataIndex: 'unitPrice',
             key: 'unitPrice',
+            render: (item: number) => {
+                return item.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                }) 
+            }
         },
         {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
+            render: (item: number) => {
+                return item.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
+            }
         }
     ];
 
@@ -77,11 +91,25 @@ export const PurchaseSummary = () => {
             title: ' Unit Price',
             dataIndex: 'unitPrice',
             key: 'unitPrice',
+            render: (item: number) => {
+               return item.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
+            }
         },
         {
             title: 'Amount',
             dataIndex: 'amount',
             key: 'amount',
+            render: (item: number) => {
+                return item.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
+            }
         }
     ];
 
@@ -116,7 +144,11 @@ export const PurchaseSummary = () => {
                             </Table.Summary.Cell>
                             <Table.Summary.Cell index={10}>
                                 <Text mark>
-                                    {paySummary?.total}
+                                    {paySummary?.total.toLocaleString('en-IN', {
+                                        maximumFractionDigits: 2,
+                                        style: 'currency',
+                                        currency: 'INR'
+                                    })}
                                 </Text>
                             </Table.Summary.Cell>
                         </Table.Summary.Row>
@@ -139,7 +171,11 @@ export const PurchaseSummary = () => {
                             </Table.Summary.Cell>
                             <Table.Summary.Cell index={10}>
                                 <Text mark>
-                                    {paySummary?.total}
+                                    {paySummary?.total.toLocaleString('en-IN', {
+                                        maximumFractionDigits: 2,
+                                        style: 'currency',
+                                        currency: 'INR'
+                                    })}
                                 </Text>
                             </Table.Summary.Cell>
                         </Table.Summary.Row>

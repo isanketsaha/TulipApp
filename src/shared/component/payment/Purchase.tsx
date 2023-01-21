@@ -11,10 +11,10 @@ interface IPurchaseProps {
 }
 
 
-export const Purchase = ({form , classId}:IPurchaseProps) => {
+export const Purchase = ({ form, classId }: IPurchaseProps) => {
 
-    const {data : productCatalog} = useFetchAllProductCatalogQuery(classId);
-    
+    const { data: productCatalog } = useFetchAllProductCatalogQuery(classId);
+
     const { Text } = Typography;
 
     const fetchProductRows = () => {
@@ -28,33 +28,53 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
         const selectedProduct = productCatalog?.find(item => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
-            unitPrice: selectedProduct?.price,
-            size: selectedProduct?.size ?  selectedProduct?.size  : '',
+            unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }),
+            size: selectedProduct?.size ? selectedProduct?.size : '',
             qty: 1,
-            amount: selectedProduct?.price
+            amount: selectedProduct?.price.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            })
         }
         form.setFieldsValue({ purchaseItems: [...products] });
         calculateTotal();
     }
 
-   const reCalculateAmount = (qty: string, rowKey: number) =>{
-    const products = fetchProductRows();
-    const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productTitle)
-    products[rowKey] = {
-        ...products[rowKey],
-        amount: ((selectedProduct?.price ?? 0) * Number(qty))
-    }
-    form.setFieldsValue({ purchaseItems: [...products] });
-    calculateTotal();
+    const reCalculateAmount = (qty: string, rowKey: number) => {
+        const products = fetchProductRows();
+        const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productTitle)
+        products[rowKey] = {
+            ...products[rowKey],
+            amount: (((selectedProduct?.price ?? 0) * Number(qty)).toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }))
+        }
+        form.setFieldsValue({ purchaseItems: [...products] });
+        calculateTotal();
     }
 
     const calculateTotal = () => {
-        const allForm = form.getFieldsValue();
-        let total = 0;
+        let total: number = 0;
         fetchProductRows().map((item: any) => {
-            total += item.amount ? item.amount : 0;
+            if (item.amount) {
+                const amount: number = Number(item.amount.replace(/[^0-9-]+/g, "")) / 100;
+                total += amount;
+            }
         });
-        form.setFieldsValue({ total });
+        form.setFieldsValue({
+            total: total.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            })
+        });
     }
 
 
@@ -72,27 +92,27 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
                                     <Col span={4}>
                                         <Form.Item
                                             name={[name, "productTitle"]}
-                                            rules={[{ required: true, message:"Select a product" }]}
+                                            rules={[{ required: true, message: "Select a product" }]}
                                         >
                                             <Select showSearch clearIcon placeholder="Select Product"
-                                            onSelect={(e)=> onSelectProduct(e,name)}
-                                            filterOption={(input, option) => (option?.title.toUpperCase() ?? '').includes(input.toUpperCase())}
-                                            filterSort={(optionA, optionB) =>
-                                              (optionA?.title ?? '').toLowerCase().localeCompare((optionB?.title ?? '').toLowerCase())
-                                            }
-                                            options={productCatalog?.map((d) => ({
-                                                value: d.id,
-                                                title:d.itemName,
-                                                label: <>
-                                                    <Row>
-                                                        {d.itemName}
-                                                    </Row>
-                                                    <Text type="secondary">
-                                                        {`${d.std ? d.std : ''} ${d.std && (d.tag || d.size)? " | ": ''} 
-                                                        ${d.tag ? d.tag : ''}  ${d.tag ? ' | ' : ''} ${d.size ? d.size:'' } `}
-                                                    </Text>
-                                                </>,
-                                            }))}>
+                                                onSelect={(e) => onSelectProduct(e, name)}
+                                                filterOption={(input, option) => (option?.title.toUpperCase() ?? '').includes(input.toUpperCase())}
+                                                filterSort={(optionA, optionB) =>
+                                                    (optionA?.title ?? '').toLowerCase().localeCompare((optionB?.title ?? '').toLowerCase())
+                                                }
+                                                options={productCatalog?.map((d) => ({
+                                                    value: d.id,
+                                                    title: d.itemName,
+                                                    label: <>
+                                                        <Row>
+                                                            {d.itemName}
+                                                        </Row>
+                                                        <Text type="secondary">
+                                                            {`${d.std ? d.std : ''} ${d.std && (d.tag || d.size) ? " | " : ''} 
+                                                        ${d.tag ? d.tag : ''}  ${d.tag ? ' | ' : ''} ${d.size ? d.size : ''} `}
+                                                        </Text>
+                                                    </>,
+                                                }))}>
                                             </Select>
                                         </Form.Item>
                                     </Col>
@@ -100,7 +120,7 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
                                     <Col span={2} offset={1}>
                                         <Form.Item
                                             name={[name, "size"]}
-                                            
+
                                         >
                                             <InputNumber placeholder="Size" disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
@@ -109,9 +129,9 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
                                     <Col span={2} offset={1}>
                                         <Form.Item
                                             name={[name, "qty"]}
-                                            rules={[{ required: true, message:"Enter Quantity" }]}
+                                            rules={[{ required: true, message: "Enter Quantity" }]}
                                         >
-                                            <InputNumber onInput={(value)=>reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
+                                            <InputNumber onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
@@ -119,7 +139,7 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
                                     <Col span={3} offset={3}>
                                         <Form.Item
                                             name={[name, "unitPrice"]}
-                                            rules={[{ required: true , message:"Unit Price is required"}]}
+                                            rules={[{ required: true, message: "Unit Price is required" }]}
                                         >
                                             <InputNumber min={1} max={10000} bordered={false} disabled={true} />
                                         </Form.Item>
@@ -127,7 +147,7 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
                                     <Col span={3} offset={1}>
                                         <Form.Item
                                             name={[name, "amount"]}
-                                            rules={[{ required: true , message:"Amount is required"}]}
+                                            rules={[{ required: true, message: "Amount is required" }]}
                                         >
                                             <InputNumber bordered={false} disabled={true} />
                                         </Form.Item>
@@ -135,10 +155,10 @@ export const Purchase = ({form , classId}:IPurchaseProps) => {
                                     <Col span={2}>
 
                                         <Space>
-                                           {fields.length > 1 ? <Button type="link" onClick={() => {
+                                            {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 remove(name);
                                                 calculateTotal();
-                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null }
+                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>
                                     </Col>

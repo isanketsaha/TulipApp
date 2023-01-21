@@ -1,4 +1,4 @@
-import { Avatar, Card, Col, Divider, List, Pagination, Row, Tag, message } from "antd"
+import { Avatar, Card, Col, Divider, List, Pagination, Row, Tag, Typography, message } from "antd"
 import VirtualList from 'rc-virtual-list';
 import { useState, useEffect } from "react";
 import { IPageRequest } from "../interface/IPageRequest";
@@ -23,47 +23,48 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
 
   return (<>
     <Divider><h3>Purchase History</h3></Divider>
-    <Row>
-      <Col offset={18} span={6}>
-        <Pagination defaultCurrent={page} onChange={setPage} total={data?.totalElements} showTotal={(total) => `Total ${total} `} />
-      </Col>
-    </Row>
+
     <Card>
 
-      {data && <List>
+      {data && <List header={<Row>
+        <Col offset={19} span={4}>
+          <Pagination defaultCurrent={page} onChange={setPage} total={data?.totalElements} showTotal={(total) => `Total ${total} `} />
+        </Col>
+      </Row>}
+      >
 
         <VirtualList
           data={data.content}
           height={300}
-          itemHeight={47}
           itemKey="email"
         >
           {(item: IPayDetailsSummary, index) => (
-            <List.Item key={index}>
+            <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
               <List.Item.Meta
                 description={
                   <Row>
+                    <Col span={1}>{index + 1}.</Col>
                     <Col span={4}>
-                    {dayjs(item.paymentDateTime).format("DD/MM/YYYY")}
-                    </Col>
-                    <Col span ={7}>
-                   
-                    <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>  {item.payType}</Tag>
+                      {dayjs(item.paymentDateTime).format("DD/MM/YYYY")}
                     </Col>
                     <Col span={7}>
-                    <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item?.paymentMode}</Tag>
+
+                      <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>  {item.payType}</Tag>
                     </Col>
-                    
-                    <Col span={3}>
-                {item.total}
-                </Col>
+                    <Col span={7}>
+                      <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item?.paymentMode}</Tag>
+                    </Col>
                   </Row>
 
                 }
               />
               <div>
-                <Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>
-                </div>
+              <Typography.Text mark>{item.total.toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                        style: 'currency',
+                        currency: 'INR'
+                      })} </Typography.Text>
+              </div>
             </List.Item>
           )}
         </VirtualList>
