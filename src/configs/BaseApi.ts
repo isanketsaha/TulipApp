@@ -17,6 +17,6 @@ const baseQuery = (baseUrl: string) => fetchBaseQuery({
     },
 })
 
-export const baseQueryWithRetry = (baseUrl: string) => retry(baseQuery(baseUrl), { maxRetries: 1 })
+export const baseQueryWithRetry = (baseUrl: string) => retry(baseQuery(baseUrl), { maxRetries: 0 })
 
 

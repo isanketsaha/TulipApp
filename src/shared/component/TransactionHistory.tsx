@@ -26,11 +26,12 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
 
       <><Divider><h3>Purchase History</h3></Divider><Card>
 
-        <List header={<Row>
-          <Col offset={19} span={4}>
-            <Pagination defaultCurrent={page} onChange={setPage} total={data?.totalElements} showTotal={(total) => `Total ${total} `} />
-          </Col>
-        </Row>}
+        <List 
+         pagination={{
+          onChange: (page: number, pageSize: number) => {setPage(page-1)},
+          pageSize: 10,
+          total: data?.totalElements
+        }}
         >
 
           <VirtualList
@@ -41,7 +42,7 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
               <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
                 <List.Item.Meta
                   description={<Row>
-                    <Col span={1}>{index + 1}.</Col>
+                    <Col span={1}>{(index + 1)*(page+1)}.</Col>
                     <Col span={4}>
                       {dayjs(item.paymentDateTime).format("DD/MM/YYYY")}
                     </Col>

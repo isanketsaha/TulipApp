@@ -42,7 +42,7 @@ export const Payment = () => {
                 return {
                     ...item,
                     unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
-                    amount: Number(value.amount.total.replace(/[^0-9-]+/g, "")) / 100,
+                    amount: Number(item.amount.replace(/[^0-9-]+/g, "")) / 100,
                     from: item.from.format("MMM/YYYY"),
                     to: item.to.format("MMM/YYYY")
                 }

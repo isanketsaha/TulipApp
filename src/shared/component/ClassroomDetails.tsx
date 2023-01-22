@@ -1,4 +1,4 @@
-import { Avatar, Card, Descriptions, List, Space } from "antd"
+import { Avatar, Card, Col, Descriptions, List, Row, Space } from "antd"
 import { IClassDetails } from "../interface/IClassDetails"
 import { IBasicDetails } from "../interface/IBasicDetails"
 import { useFetchStudentListQuery } from "../redux/api/feature/classroom/api";
@@ -31,8 +31,22 @@ export const ClassroomDetails = ({ classDetails }: IClassDetailsProsp) => {
                             <List.Item>
 
                                 <List.Item.Meta
-                                    title={`${index+1}. ${item.name}`}
-                                    description={item.gender}
+                                    title={<Row>
+                                        <Col span={1}>
+                                        {index+1}
+                                        </Col>
+                                        <Col>
+                                        {item.name}
+                                        </Col>
+                                    </Row>}
+                                    description={
+                                        <Row>
+                                            <Col offset={1}>
+                                           { item.gender}
+                                            </Col>
+                                        </Row>
+
+                                    }
                                 />
                                 <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>
                             </List.Item>
