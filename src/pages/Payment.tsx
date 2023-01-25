@@ -88,8 +88,8 @@ export const Payment = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId} />}
-                        {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} classId={studentDetails?.classId} />}
+                        {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId} calculate={paymentTypeValue == 'FEES'}/>}
+                        {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE'} />}
                         <Row>
                             <Col span={5} >
                                 <Form.Item label="Mode Of Payment" name={"paymentMode"} rules={[{ required: true }]}>

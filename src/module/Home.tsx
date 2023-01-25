@@ -19,7 +19,7 @@ export const Home = () => {
             <AppHeader />
             <Layout hasSider>
                 <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
-                <Layout style={{ marginLeft: !collapsed ? '25vh' : '10vh' }}>
+                <Layout style={{ marginLeft: !collapsed ? '30vh' : '10vh' }}>
                     <Content
                         style={{
                             margin: '8vh 2vh',

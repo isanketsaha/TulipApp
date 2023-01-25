@@ -3,22 +3,28 @@ import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { useAppSelector } from "../../../store";
 import { Dayjs } from "dayjs";
 import { ValidateStatus } from "antd/es/form/FormItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IFeesCatalog } from "../../interface/IFeesCatalog";
 import { useFetchAllfeesCatalogQuery } from "../../redux/api/feature/catalog/api";
 
 
 interface IFeesPros {
     form: FormInstance,
-    classId: string
+    classId: string,
+    calculate: boolean
 }
 
-export const Fees = ({ form, classId }: IFeesPros) => {
+export const Fees = ({ form, classId, calculate }: IFeesPros) => {
 
     const { Text } = Typography;
 
     const { data: feesCatalog } = useFetchAllfeesCatalogQuery(classId);
 
+    useEffect(() => {
+        if (calculate) {
+            calculateTotal();
+        }
+    }, [calculate])
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
         const { feeItem } = fields;
@@ -88,7 +94,6 @@ export const Fees = ({ form, classId }: IFeesPros) => {
     }
 
     const calculateTotal = () => {
-        const allForm = form.getFieldsValue();
         let total = 0;
         fetchFeeRows().map((item: any) => {
             if (item.amount) {
@@ -174,7 +179,7 @@ export const Fees = ({ form, classId }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} style={{ width: '100%' }}/>
+                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -183,7 +188,7 @@ export const Fees = ({ form, classId }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber bordered={false} placeholder="Amount" disabled={true} style={{ width: '100%' }}/>
+                                            <InputNumber bordered={false} placeholder="Amount" disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2} offset={1}>

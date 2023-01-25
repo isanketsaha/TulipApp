@@ -4,19 +4,27 @@ import { useAppSelector } from "../../../store";
 import staticMethods from "antd/es/message";
 import { IProductCatlog } from "../../interface/IProductCatalog";
 import { useFetchAllProductCatalogQuery } from "../../redux/api/feature/catalog/api";
+import { useEffect } from "react";
 
 interface IPurchaseProps {
     form: FormInstance,
-    classId: string
+    classId: string,
+    calculate: boolean,
 }
 
 
-export const Purchase = ({ form, classId }: IPurchaseProps) => {
+export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
 
     const { data: productCatalog } = useFetchAllProductCatalogQuery(classId);
 
     const { Text } = Typography;
 
+    useEffect(()=> {
+        if(calculate){
+        calculateTotal();
+        }
+    },[calculate])
+    
     const fetchProductRows = () => {
         const fields = form.getFieldsValue();
         const { purchaseItems } = fields;

@@ -23,7 +23,7 @@ export const AppHeader = () => {
     // };
 
     return (
-        <Header className="header" style={{ background: '#800000', color: 'white', top: 0, right: 0, left: 0, zIndex: 10, position: 'fixed' }} >
+        <Header className="header" style={{ background: '#800000', color: 'white', top: 0, right: 0, left: 0, zIndex: 10, position: 'fixed' , overflow:"hidden"}} >
             <Row style={{ marginTop: '-2vh' }}>
                 <Col >
                     <Link to="/">
@@ -42,7 +42,7 @@ export const AppHeader = () => {
                         options={selectList?.sessionList}
                     />
                 </Col>
-                <Col offset={3}>
+                <Col offset={1}>
                     <DateTime />
                 </Col>
             </Row>
