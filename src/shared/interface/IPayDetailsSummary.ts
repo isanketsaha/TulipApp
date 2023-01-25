@@ -1,3 +1,4 @@
+import { IExpenseItem } from "./IExpenseItems";
 import { IFeesItemSummary } from "./IFeesItemSummary";
 import { IPurchaseItemSummary } from "./IPurchaseItemSummary";
 
@@ -8,6 +9,7 @@ export interface IPayDetailsSummary {
     payType: string,
     purchaseItems: IPurchaseItemSummary[],
     feesItem: IFeesItemSummary[],
+    expenseItems: IExpenseItem[],
     total: number,
     paymentId: number,
     paymentDateTime: Date,

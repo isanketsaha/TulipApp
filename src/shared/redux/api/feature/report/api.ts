@@ -5,6 +5,7 @@ import { IPayDetailsSummary } from "/src/shared/interface/IPayDetailsSummary";
 import { IPageResponse } from "/src/shared/interface/IPageResponse";
 import { IAdmissionReport } from "/src/shared/interface/IAdmissionReport";
 import { IStaffReport } from "/src/shared/interface/IStaffReport";
+import { IStockReport } from "/src/shared/interface/IStockReport";
 
 
 export const reportApi = createApi({
@@ -19,8 +20,11 @@ export const reportApi = createApi({
         }),
         fetchStaffReport: builder.query<IStaffReport, void>({
             query: () => '/staff'
+        }),
+        fetchInventoryReport: builder.query<IStockReport[], void>({
+            query: () => '/inventory'
         })
     })
 })
 
-export const {  useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery } = reportApi;
+export const {  useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery, useFetchInventoryReportQuery } = reportApi;

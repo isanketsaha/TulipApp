@@ -9,6 +9,7 @@ import { IPayDetailsSummary } from "/src/shared/interface/IPayDetailsSummary";
 import { IPageResponse } from "/src/shared/interface/IPageResponse";
 import { IPayGraph } from "/src/shared/interface/IPayGraph";
 import { IPayGraphFilter } from "/src/shared/interface/IFeesGraphFilter";
+import { IExpenseItem } from "/src/shared/interface/IExpenseItems";
 
 
 
@@ -33,10 +34,19 @@ export const paymentApi = createApi({
         }),
         fetchFeesGraph: builder.query<IPayGraph, IPayGraphFilter>({
             query: (item) => `/feesgraph/${item.studentId}/${item.classId}`
-        })
+        }),
+        addExpense: builder.mutation<number, IExpenseItem[]>({
+            query: (expense) => {
+                return ({
+                    url: '/expense',
+                    method: 'POST',
+                    body: expense 
+                });
+            },
+        }),
 
     })
 });
 
-export const {usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery,useFetchFeesGraphQuery} = paymentApi
+export const {usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery,useFetchFeesGraphQuery, useAddExpenseMutation} = paymentApi
 

@@ -113,14 +113,53 @@ export const PurchaseSummary = () => {
         }
     ];
 
+    const expenseColumns = [
+        {
+            title: 'Item',
+            dataIndex: 'itemName',
+            key: 'itemName',
+            render: (title: string) => {
+                return title.toUpperCase();
+            }
+        },
+        {
+            title: 'Category',
+            dataIndex: 'category',
+            key: 'category',
+            
+        }
+        ,
+        {
+            title: 'Received By',
+            dataIndex: 'receivedBy',
+            key: 'receivedBy',
+            
+        },
+        {
+            title: 'Quantity',
+            dataIndex: 'qty',
+            key: 'qty',
+        },
+        {
+            title: 'Amount',
+            dataIndex: 'amount',
+            key: 'amount',
+            render: (item: number) => {
+                return item.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
+            }
+        }
+    ];
 
     return (<>
-
         <Space direction="vertical" style={{ width: '100%' }} size="large">
-            <Divider>Purchase Summary</Divider>
+            <Divider>Payment Summary</Divider>
             <Card key={item?.id}>
-                <BasicDetails data={item ?? {} as IBasicDetails} key={item?.id} />
-                <Divider></Divider>
+            {paySummary?.payType != 'EXPENSE' && <BasicDetails data={item ?? {} as IBasicDetails} key={item?.id} /> }
+                <Divider></Divider> 
                 <Descriptions>
                     <Descriptions.Item label="Recieved by">{paySummary?.paymentReceivedBy}</Descriptions.Item>
                     <Descriptions.Item label="Date Time"> {dayjs(paySummary?.paymentDateTime).format('dddd, MMMM D, YYYY h:mm A')}</Descriptions.Item>
@@ -160,6 +199,34 @@ export const PurchaseSummary = () => {
 
             {(paySummary?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
                 dataSource={paySummary?.purchaseItems}
+                pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
+                summary={() => (
+                    <Table.Summary fixed={'bottom'} >
+                        <Table.Summary.Row >
+                            <Table.Summary.Cell colSpan={4} index={1}>
+                                Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
+                                    {paySummary?.paymentMode}
+                                </Tag>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell index={10}>
+                                <Text mark>
+                                    {paySummary?.total.toLocaleString('en-IN', {
+                                        maximumFractionDigits: 2,
+                                        style: 'currency',
+                                        currency: 'INR'
+                                    })}
+                                </Text>
+                            </Table.Summary.Cell>
+                        </Table.Summary.Row>
+                    </Table.Summary>
+                )}
+                sticky
+            />
+            }
+
+            {
+                paySummary?.payType == 'EXPENSE' && <Table columns={expenseColumns}
+                dataSource={paySummary?.expenseItems}
                 pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >

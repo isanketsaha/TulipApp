@@ -1,18 +1,18 @@
-import { Row, Col, Card, DatePicker, Tabs } from "antd";
+import { Row, Col, Card, DatePicker, Tabs, Space } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
+import { Audit } from "../shared/component/reports/Audit";
+import { TransactionReport } from "../shared/component/reports/TransactionReports";
 
 
 export const Accounts = () => {
 
     const { RangePicker } = DatePicker;
 
-    const dateFormat = 'DD-MM-YY';
-
     const tabList = [
         {
-            key: 'fees',
-            tab: 'Fees Collected',
+            key: 'transaction',
+            tab: 'Transaction',
         },
         {
             key: 'admission',
@@ -21,13 +21,9 @@ export const Accounts = () => {
         {
             key: 'expense',
             tab: 'Expense',
-        },
-        {
-            key: 'purchase',
-            tab: 'Purchases',
-        },
+        }
     ];
-    const [activeTab, setActiveTab] = useState<string>('fees');
+    const [activeTab, setActiveTab] = useState<string>('transaction');
 
     const onTabChange = (key: string) => {
         setActiveTab(key);
@@ -35,8 +31,9 @@ export const Accounts = () => {
 
 
     const contentList: Record<string, React.ReactNode> = {
-        tab1: <p>content1</p>,
-        tab2: <p>content2</p>,
+        transaction: <TransactionReport/>,
+        admission: <p>content2</p>,
+
     };
 
     const rangePresets: {
@@ -50,14 +47,14 @@ export const Accounts = () => {
         ];
 
     return (<>
-        <Row>
+        <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
+            <Row>
+                <Card
 
-            <Card
-                
                     style={{ width: '100%' }}
                     tabList={tabList}
                     extra={<div style={{ marginTop: '2vh' }}><RangePicker disabled={[false, true]} presets={rangePresets}
-                    defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
+                        defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
                     activeTabKey={activeTab}
                     onTabChange={(key) => {
                         onTabChange(key);
@@ -65,28 +62,14 @@ export const Accounts = () => {
                 >
                     {contentList[activeTab]}
                 </Card>
+            </Row>
+            <Row>
+                <Card
 
-            {/* <Card type="inner" title="Accounts"  style={{ width: '100%' }}
-                extra={<div style={{ marginTop: '2vh' }}><RangePicker disabled={[false, true]} presets={rangePresets}
-                    defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
-            >
-                <Tabs
-                    size={"large"}
-                    defaultActiveKey="1"
-                    centered
-                    type="card"
-                    onChange={onTabChange}
-                    items={tabList?.map((_, i) => {
-                        const id = String(_.key);
-                        return {
-                            label: _.tab,
-                            key: id,
-                            children: ` Hey I Have open ${_.tab}`,
-                        };
-                    })}
-                />
-
-            </Card> */}
-        </Row>
+                    style={{ width: '100%' }}>
+                    <Audit />
+                </Card>
+            </Row>
+        </Space>
     </>)
 }

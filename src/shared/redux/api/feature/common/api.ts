@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { DefaultOptionType } from "antd/es/select";
-import { updateBloodGroupList, updateClassList, updateGenderList, updatePaymentOptions, updateRelationList, updateReligionList, updateSelectedSession, updateSessionList, updateUserRoleList } from "../../../slices/CommonSlice";
+import { updateBloodGroupList, updateClassList, updateExpenseCategoryOptions, updateGenderList, updatePaymentOptions, updateRelationList, updateReligionList, updateSelectedSession, updateSessionList, updateUserRoleList } from "../../../slices/CommonSlice";
 import { ISelectDefault } from "../../../../interface/ISelectDefault";
 
 
@@ -93,12 +93,22 @@ export const commonApi = createApi({
                     dispatch(updatePaymentOptions(data));
                 } catch (error) { }
             }
+        }),
+        fetchExpenseCategoryOptions: builder.query<DefaultOptionType[],void>({
+            query: () => "/expenseCategory",
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    dispatch(updateExpenseCategoryOptions(data));
+                } catch (error) { }
+            }
         })
     }),
-    
+   
 });
 
 export const { useFetchBloodGroupListQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery,
-     useFetchReligionListQuery, useFetchUserRoleListQuery,useFetchAllFinacialYearQuery,useFetchCurrentFinancialYearQuery, useFetchAllClassQuery, useFetchAvailablePaymentOptionsQuery } = commonApi
+     useFetchReligionListQuery, useFetchUserRoleListQuery,useFetchAllFinacialYearQuery,useFetchCurrentFinancialYearQuery,
+      useFetchAllClassQuery, useFetchAvailablePaymentOptionsQuery , useFetchExpenseCategoryOptionsQuery} = commonApi
 
 

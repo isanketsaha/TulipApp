@@ -13,6 +13,7 @@ interface ICommonSelect {
     selectedSession: ISelectDefault,
     classList: DefaultOptionType[],
     paymentOptions: DefaultOptionType[],
+    expenseCategoryOptions: DefaultOptionType[],
 }
 
 const commonSelect: ICommonSelect = {
@@ -24,7 +25,8 @@ const commonSelect: ICommonSelect = {
     sessionList: [],
     paymentOptions:[],
     selectedSession: {} as ISelectDefault,
-    classList: []
+    classList: [],
+    expenseCategoryOptions:[]
 }
 const CommonSlice = createSlice({
     name: 'userAuth',
@@ -56,6 +58,9 @@ const CommonSlice = createSlice({
         },
         updatePaymentOptions: (state, data: PayloadAction<DefaultOptionType[]>) => {
             state.paymentOptions = data.payload;
+        },
+        updateExpenseCategoryOptions: (state, data: PayloadAction<DefaultOptionType[]>) => {
+            state.expenseCategoryOptions = data.payload;
         }
     },
 
@@ -64,4 +69,4 @@ const CommonSlice = createSlice({
 export default CommonSlice.reducer;
 
 export const { updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList,
-    updateUserRoleList, updateSelectedSession, updateSessionList, updateClassList, updatePaymentOptions } = CommonSlice.actions;
+    updateUserRoleList, updateSelectedSession, updateSessionList, updateClassList, updatePaymentOptions, updateExpenseCategoryOptions } = CommonSlice.actions;

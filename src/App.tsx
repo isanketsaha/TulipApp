@@ -19,7 +19,7 @@ const App = () => {
 
 
   return (
-     <Spin size="large" spinning={showSpinner} >
+     <Spin size="large" spinning={showSpinner} style={{zIndex:'10'}}>
       <RouterProvider router={AppRouter} />
       </Spin> 
   );

@@ -13,6 +13,7 @@ import { classroomApi } from './shared/redux/api/feature/classroom/api';
 import { catalogApi } from './shared/redux/api/feature/catalog/api';
 import { paymentApi } from './shared/redux/api/feature/payment/api';
 import { reportApi } from './shared/redux/api/feature/report/api';
+import { auditApi } from './shared/redux/api/feature/audit/api';
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     [catalogApi.reducerPath] : catalogApi.reducer,
     [paymentApi.reducerPath] : paymentApi.reducer,
     [reportApi.reducerPath] : reportApi.reducer,
+    [auditApi.reducerPath] : auditApi.reducer,
     userAuth: userAuthReducer,
     globalState: GlobalAppSlice,
     commonData: CommonSlice,
@@ -32,7 +34,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware,
        onboardingApi.middleware, commonApi.middleware, studentApi.middleware, classroomApi.middleware, catalogApi.middleware,
-       paymentApi.middleware, reportApi.middleware),
+       paymentApi.middleware, reportApi.middleware, auditApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

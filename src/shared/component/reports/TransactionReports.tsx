@@ -21,7 +21,7 @@ export const TransactionReport = () => {
     }, [transactionReport])
     return (<>
         {transactionReport && <List
-            header={totalCollection > 0 ? <Row><Col offset={16}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
+            header={totalCollection > 0 ? <Row><Col offset={17}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
                 currency: 'INR'
@@ -35,12 +35,13 @@ export const TransactionReport = () => {
            >
             <VirtualList
             height={200}
+            fullHeight={false}
             data={transactionReport.content}
             itemKey="email"
           >
             {(item: IPayDetailsSummary, index) => (
                 <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
-                    <List.Item.Meta
+                    <List.Item.Meta key={index}
                         description={
                             <Row >
                                 <Col span={1}>
@@ -50,7 +51,8 @@ export const TransactionReport = () => {
                                     {dayjs(item.paymentDateTime).format('MMM D, YYYY h:mm A')}
                                 </Col>
                                 <Col span={5}>
-                                    <Link to={`studentDetails/${item.studentId}`}>{item.studentName}</Link>
+
+                                   { item.payType !='EXPENSE' ? <Link to={`studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
                                 </Col>
                                 <Col span={3} offset={1}>
                                     <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>
@@ -59,7 +61,8 @@ export const TransactionReport = () => {
                                     <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
                                 </Col>
                                 <Col span={5} >
-                                    {item.total.toLocaleString('en-IN', {
+                                    {
+                                    item.total.toLocaleString('en-IN', {
                                         maximumFractionDigits: 2,
                                         style: 'currency',
                                         currency: 'INR'

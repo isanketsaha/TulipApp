@@ -1,5 +1,5 @@
 import { Footer } from "antd/es/layout/layout";
-import { useFetchAllClassQuery, useFetchAllFinacialYearQuery, useFetchAvailablePaymentOptionsQuery, useFetchBloodGroupListQuery, useFetchCurrentFinancialYearQuery, useFetchDependentRelationListQuery, useFetchGenderListQuery, useFetchReligionListQuery, useFetchUserRoleListQuery } from "../redux/api/feature/common/api";
+import { useFetchAllClassQuery, useFetchAllFinacialYearQuery, useFetchAvailablePaymentOptionsQuery, useFetchBloodGroupListQuery, useFetchCurrentFinancialYearQuery, useFetchDependentRelationListQuery, useFetchExpenseCategoryOptionsQuery, useFetchGenderListQuery, useFetchReligionListQuery, useFetchUserRoleListQuery } from "../redux/api/feature/common/api";
 
 
 
@@ -12,6 +12,8 @@ export const AppFooter = () => {
     const { data: userRoleList } = useFetchUserRoleListQuery();
     const { data: allFinacialOption } = useFetchAllFinacialYearQuery();
     const { data: currentFinancialYear } = useFetchCurrentFinancialYearQuery();
+    const { data: expenseCategory } = useFetchExpenseCategoryOptionsQuery();
+
     const { data: allClassList } = useFetchAllClassQuery();
     useFetchAvailablePaymentOptionsQuery();
     return (
