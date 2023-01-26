@@ -35,7 +35,7 @@ export const AddBasic = () => {
             <Row gutter={[40, 40]}>
                 <Col span={12}>
                     <Form.Item name="contact" label="Phone Number" rules={[{ required: true,  type: 'number'}]} >
-                        <InputNumber maxLength={12}  style={{ width: '100%' }} />
+                        <InputNumber maxLength={12} controls={false}  style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -71,7 +71,7 @@ export const AddBasic = () => {
                 : <Row gutter={[40, 40]}>
                     <Col span={8}>
                         <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true ,   type: 'number'}]}>
-                            <InputNumber maxLength={12}  style={{ width: '100%' }} />
+                            <InputNumber maxLength={12} controls={false} style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -80,8 +80,8 @@ export const AddBasic = () => {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item name="experince" label="Experince" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
-                            <InputNumber  style={{ width: '100%' }} />
+                        <Form.Item name="experince"  label="Experince" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
+                            <InputNumber controls={false}  style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>
                 </Row>

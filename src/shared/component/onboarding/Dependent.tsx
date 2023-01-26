@@ -46,7 +46,7 @@ export const AddDependent = () => {
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
                                     <Form.Item name={[name, "contact"]} label="Phone Number" rules={[{ type: 'number', required: true }]}>
-                                        <InputNumber style={{ width: '100%' }} />
+                                        <InputNumber controls={false} style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
 
@@ -59,7 +59,7 @@ export const AddDependent = () => {
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
                                     <Form.Item name={[name, "aadhaar"]} label="Aadhar Number" rules={[{ required: true }]}>
-                                        <InputNumber maxLength={12} style={{ width: '100%' }} />
+                                        <InputNumber maxLength={12} controls={false} style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

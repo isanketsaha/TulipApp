@@ -73,7 +73,7 @@ export const AddExpense = ({onExpenseSubmit}:IExpenseProps) => {
                                                 name={[name, "amount"]}
                                                 rules={[{ required: true, message: "Provide amount" }]}
                                             >
-                                                <InputNumber placeholder="Amount" style={{ width: '100%' }} onInput={(value) => reCalculateAmount(value, name)} />
+                                                <InputNumber placeholder="Amount" controls={false} style={{ width: '100%' }} onInput={(value) => reCalculateAmount(value, name)} />
                                             </Form.Item>
                                         </Col>
 
@@ -82,7 +82,7 @@ export const AddExpense = ({onExpenseSubmit}:IExpenseProps) => {
                                                 name={[name, "qty"]}
                                                 rules={[{ required: true, message: "Enter Quantity" }]}
                                             >
-                                                <InputNumber placeholder="Quantity" style={{ width: '100%' }} />
+                                                <InputNumber placeholder="Quantity" controls={false} style={{ width: '100%' }} />
                                             </Form.Item>
                                         </Col>
 
@@ -117,7 +117,7 @@ export const AddExpense = ({onExpenseSubmit}:IExpenseProps) => {
                         name={"total"}
                         rules={[{ required: true, message: "Total is required" }]}
                     >
-                        <InputNumber placeholder="Total" disabled style={{ width: '100%' }} />
+                        <InputNumber placeholder="Total" controls={false} disabled style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>
                 <Col offset={4}>

@@ -130,7 +130,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "size"]}
 
                                         >
-                                            <InputNumber placeholder="Size" disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber placeholder="Size" controls={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
@@ -139,7 +139,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "qty"]}
                                             rules={[{ required: true, message: "Enter Quantity" }]}
                                         >
-                                            <InputNumber onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
+                                            <InputNumber min={1} onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
@@ -149,7 +149,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}
                                         >
-                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber min={1} max={10000}  controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -157,7 +157,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "amount"]}
                                             rules={[{ required: true, message: "Amount is required" }]}
                                         >
-                                            <InputNumber bordered={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber bordered={false} controls={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2} offset={1}>

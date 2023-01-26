@@ -101,7 +101,7 @@ export const Payment = () => {
 
                             <Col span={3} offset={13}>
                                 <Form.Item name={"total"}>
-                                    <InputNumber disabled={true} style={{ fontWeight: 'bold' , width: '100%'}}  placeholder="Total" bordered={false}/>
+                                    <InputNumber disabled={true} controls={false} style={{ fontWeight: 'bold' , width: '100%'}}  placeholder="Total" bordered={false}/>
                                 </Form.Item>
                             </Col>
                             <Col span={1} offset={1}>

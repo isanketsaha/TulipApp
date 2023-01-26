@@ -179,7 +179,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber min={1} max={10000} bordered={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber min={1} max={10000} controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -188,7 +188,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             rules={[{ required: true }]}
 
                                         >
-                                            <InputNumber bordered={false} placeholder="Amount" disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber bordered={false} controls={false} placeholder="Amount" disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={2} offset={1}>
