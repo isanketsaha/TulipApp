@@ -14,6 +14,8 @@ import { ViewDetails } from "../pages/ViewDetails";
 import { Classroom } from "../pages/Classroom";
 import { Accounts } from "../pages/Account";
 import { PurchaseSummary } from "../pages/PurchaseSummary";
+import { AuthRotes } from "./AuthRoters";
+import { ROLE } from "../Role";
 
 
 export const AppRouter = createBrowserRouter([
@@ -55,7 +57,7 @@ export const AppRouter = createBrowserRouter([
                         element: <Classroom />
                     }, {
                         path: 'accounts',
-                        element: <Accounts />
+                        element: <Accounts />,
                     }, {
                         path: 'purchaseSummary/:id',
                         element: <PurchaseSummary />
