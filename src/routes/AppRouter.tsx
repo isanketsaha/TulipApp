@@ -15,7 +15,7 @@ import { Classroom } from "../pages/Classroom";
 import { Accounts } from "../pages/Account";
 import { PurchaseSummary } from "../pages/PurchaseSummary";
 import { AuthRotes } from "./AuthRoters";
-import { ROLE } from "../Role";
+import { Role } from "../Role";
 
 
 export const AppRouter = createBrowserRouter([
@@ -57,7 +57,7 @@ export const AppRouter = createBrowserRouter([
                         element: <Classroom />
                     }, {
                         path: 'accounts',
-                        element: <AuthRotes roles={[ROLE.Admin]}><Accounts /></AuthRotes>,
+                        element: <AuthRotes roles={[Role.Admin]}><Accounts /></AuthRotes>,
                     }, {
                         path: 'purchaseSummary/:id',
                         element: <PurchaseSummary />
