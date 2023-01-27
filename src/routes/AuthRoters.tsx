@@ -1,8 +1,6 @@
-import { Outlet } from "react-router-dom";
 import { ROLE } from "../Role";
-import { Error404 } from "../error/Error404";
 import { useAppSelector } from "../store";
-import { FC } from "react";
+import { Error403 } from "../error/Error403";
 
 export const AuthRotes= ({
     children,
@@ -13,8 +11,8 @@ export const AuthRotes= ({
 }) => {
     const { user } = useAppSelector(state => state.userAuth);
     const userHasRequiredRole = user && roles.includes(user.authority) ? true : false;
-    if (user && roles.includes(user.authority)) {
-        return <Error404 />; // build your won access denied page (sth like 404)
+    if (user && !roles.includes(user.authority)) {
+        return <Error403 />; // build your won access denied page (sth like 404)
     }
 
     return children;
