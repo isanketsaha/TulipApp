@@ -2,19 +2,20 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { IClassDetails } from "../../../../interface/IClassDetails";
 import { IBasicDetails } from "../../../../interface/IBasicDetails";
+import { IClassList } from "/src/shared/interface/IClassList";
 
 
 export const classroomApi = createApi({
     reducerPath: 'classroomApi',
     baseQuery: baseQueryWithRetry("classroom"),
     endpoints: (builder) => ({
-        fetchAllClassroom: builder.query<IClassDetails[], void>({
+        fetchAllClassroom: builder.query<IClassList[], void>({
             query: () => "/all"
         }),
-        fetchStudentList: builder.query<IBasicDetails[], number>({
-            query: (id) => `/studentList/${id}`
+        fetchClassroomDetails: builder.query<IClassDetails, number>({
+            query: (id) => `/details/${id}`
         }),
     })
 });
 
-export const {useFetchAllClassroomQuery, useFetchStudentListQuery} = classroomApi;
+export const {useFetchAllClassroomQuery, useFetchClassroomDetailsQuery} = classroomApi;

@@ -1,5 +1,5 @@
 import { Divider, Tabs } from "antd";
-import { useFetchAllClassroomQuery, useFetchStudentListQuery } from "../shared/redux/api/feature/classroom/api";
+import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { ClassroomDetails } from "../shared/component/ClassroomDetails";
 
 
@@ -9,8 +9,7 @@ export const Classroom = () => {
     const { data : classList } = useFetchAllClassroomQuery();
     
 
-    return (<>
-        <Divider><h1>Classroom</h1></Divider>
+    return (
 
         <Tabs
             size={"large"}
@@ -23,9 +22,9 @@ export const Classroom = () => {
                 return {
                     label: _.std,
                     key: id,
-                    children: <ClassroomDetails classDetails={_} />,
+                    children: <ClassroomDetails stdList={_} />,
                 };
             })}
         />
-    </>)
+    )
 }
