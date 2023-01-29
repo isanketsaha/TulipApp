@@ -22,7 +22,7 @@ export const Home = () => {
                 <Layout style={{ marginLeft: !collapsed ? '30vh' : '10vh' }}>
                     <Content
                         style={{
-                            margin: '8vh 2vh',
+                            margin: '8vh 3vh',
                             overflow: 'initial',
                             minHeight: '90vh',
 

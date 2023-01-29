@@ -52,7 +52,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
 
                         <Descriptions.Item label="Classroom">{studentData?.classDetails?.std}</Descriptions.Item>
                         <Descriptions.Item label="Class Teacher">{studentData?.classDetails?.headTeacher}</Descriptions.Item>
-                        <Descriptions.Item label="Previous School">{studentData?.religion}</Descriptions.Item>
+                        <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
                         <Descriptions.Item label="Session">{studentData?.classDetails?.session}</Descriptions.Item>
                         <Descriptions.Item label="Payment">
                             <Link to={`/payment/${studentData?.id}`}>

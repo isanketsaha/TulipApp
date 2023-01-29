@@ -32,7 +32,7 @@ export const AppHeader = () => {
 
                     </Link>
                 </Col>
-                <Col span={2} offset={12}>
+                <Col span={3} offset={12}>
                     <Select
                         labelInValue
                         style={{ width: '100%', marginTop: '4vh' , background:'white'}}

@@ -19,6 +19,7 @@ export interface IUserDetails {
     qualification: string,
     religion: string,
     authority: string,
+    previousSchool: string,
     classDetails: IClassDetails,
     dependent: IDependent[],
     bank: IBank,

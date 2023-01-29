@@ -1,4 +1,4 @@
-import { List, Row, Col, Typography, Tag } from "antd"
+import { List, Row, Col, Typography, Tag, Button } from "antd"
 import dayjs from "dayjs"
 import { useFetchAuditQuery } from "../../redux/api/feature/audit/api"
 
@@ -39,17 +39,23 @@ export const Audit = () => {
                                             <Col span={1} >
                                                 {(index + 1) }.
                                             </Col>
-                                            <Col span={6} offset={1}>
+                                            <Col span={4}>
                                                 {dayjs(item.dateTime).format('DD/MM/YYYY hh:mm a')}
                                             </Col>
-                                            <Col span={5}>
+                                            <Col span={2}>
                                                 <Tag color="red">  {item.type}</Tag>
                                             </Col>
-                                            <Col span={3}>
+                                            <Col span={2}>
                                                 <Text type="warning"> {item.status} </Text>
                                             </Col>
-                                            <Col span={8}>
+                                            <Col span={4}>
                                                 {item.endpoint}
+                                            </Col>
+                                            <Col span={8}>
+                                                {item.description}
+                                            </Col>
+                                            <Col span={2}>
+                                               <Button> Resolved </Button>
                                             </Col>
                                         </Row>
                                     }

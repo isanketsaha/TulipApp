@@ -51,13 +51,14 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
         {
             key: '1',
             label: `Summary`,
-            children: <><Card style={{ width: '100%' }}>
+            children: <Space  direction="vertical" style={{ width: '100%' }}><Card style={{ width: '100%' }}>
                 <Descriptions>
                     <Descriptions.Item label="Head Teacher">{classDetails?.headTeacher}</Descriptions.Item>
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
                 </Descriptions>
             </Card>
+            <Card style={{ width: '100%' }}>
             <List
                     size="small"
                     itemLayout="horizontal"
@@ -80,7 +81,9 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                 </Row>} />
                             <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>
                         </List.Item>
-                    )} /></>
+                    )} />
+                    </Card>
+                    </Space>
             ,
         },
         {
