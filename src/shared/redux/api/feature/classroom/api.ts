@@ -7,13 +7,16 @@ import { IClassList } from "/src/shared/interface/IClassList";
 
 export const classroomApi = createApi({
     reducerPath: 'classroomApi',
+    tagTypes: ['Classroom', 'Student'],
     baseQuery: baseQueryWithRetry("classroom"),
     endpoints: (builder) => ({
         fetchAllClassroom: builder.query<IClassList[], void>({
-            query: () => "/all"
+            query: () => "/all",
+            
         }),
         fetchClassroomDetails: builder.query<IClassDetails, number>({
-            query: (id) => `/details/${id}`
+            query: (id) => `/details/${id}`,
+            providesTags: () => [{ type: 'Student' }]
         }),
     })
 });

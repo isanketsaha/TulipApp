@@ -8,13 +8,16 @@ import { IPageRequest } from "/src/shared/interface/IPageRequest";
 
 export const studentApi = createApi({
     reducerPath: 'studentApi',
+    tagTypes: ['Student'],
     baseQuery: baseQueryWithRetry("student"),
     endpoints: (builder) => ({
         fetchAllStudent: builder.query<IPageResponse<IBasicDetails>, number>({
-            query: (page) => `/all?page=${page}`
+            query: (page) => `/all?page=${page}`,
+            providesTags: () => [{ type: 'Student' }]
         }),
         searchStudent: builder.query<IUserDetails, String>({
-            query: (id) => `/search/${id}`
+            query: (id) => `/search/${id}`,
+            providesTags: () => [{ type: 'Student' }]
         }),
         searchStudentByName: builder.query<IBasicDetails[], string>({
             query: (name) => `/searchByName/${name}`

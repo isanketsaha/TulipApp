@@ -16,31 +16,37 @@ import { IExpenseItem } from "/src/shared/interface/IExpenseItems";
 export const paymentApi = createApi({
     reducerPath: 'paymentApi',
     baseQuery: baseQueryWithRetry("payment"),
+    tagTypes: ['Payment'],
     endpoints: (builder) => ({
         payment: builder.mutation<number, IPay>({
+            invalidatesTags: [{ type: 'Payment', id: 'LIST' }],
             query: (pay) => {
                 return ({
                     url: '/',
                     method: 'POST',
-                    body: pay 
+                    body: pay
                 });
             },
         }),
         fetchPaymentDetailsById: builder.query<IPayDetailsSummary, string>({
-            query: (payId) => `/details/${payId}`
+            query: (payId) => `/details/${payId}`,
+            providesTags: (result, error, id) => [{ type: 'Payment', id }]
         }),
         fetchPaymentHistory: builder.query<IPageResponse<IPayDetailsSummary>, IPageRequest<number>>({
-            query: (pay) => `/history/${pay.data}?page=${pay.page}`
+            query: (pay) => `/history/${pay.data}?page=${pay.page}`,
+            providesTags: (result, error, id) => [{ type: 'Payment' }]
+
         }),
         fetchFeesGraph: builder.query<IPayGraph, IPayGraphFilter>({
-            query: (item) => `/feesgraph/${item.studentId}/${item.classId}`
+            query: (item) => `/feesgraph/${item.studentId}/${item.classId}`,
+            providesTags: (result, error, id) => [{ type: 'Payment' }]
         }),
         addExpense: builder.mutation<number, IExpenseItem[]>({
             query: (expense) => {
                 return ({
                     url: '/expense',
                     method: 'POST',
-                    body: expense 
+                    body: expense
                 });
             },
         }),
@@ -48,5 +54,5 @@ export const paymentApi = createApi({
     })
 });
 
-export const {usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery,useFetchFeesGraphQuery, useAddExpenseMutation} = paymentApi
+export const { usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery, useFetchFeesGraphQuery, useAddExpenseMutation } = paymentApi
 

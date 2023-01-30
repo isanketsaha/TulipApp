@@ -6,16 +6,18 @@ import { IProductCatlog } from "../../../../interface/IProductCatalog";
 
 export const catalogApi = createApi({
     reducerPath: 'catalogApi',
+    tagTypes: ['Catalog'],
     baseQuery: baseQueryWithRetry("catalog"),
     endpoints: (builder) => ({
         fetchAllProductCatalog: builder.query<IProductCatlog[], string>({
-            query: (id) => `/product/${id}`
-            
+            query: (id) => `/product/${id}`,
+            providesTags: () => [{ type: 'Catalog' }]
         }),
 
 
         fetchAllfeesCatalog: builder.query<IFeesCatalog[], string>({
-            query: (id) => `/fees/${id}`
+            query: (id) => `/fees/${id}`,
+            providesTags: () => [{ type: 'Catalog' }]
             
         }),
     })

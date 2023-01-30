@@ -4,7 +4,7 @@ import { NotificationPlacement } from "antd/es/notification/interface";
 import { hideSpinner, showSpinner } from "./shared/redux/slices/GlobalAppSlice";
 import { logout } from "./shared/redux/slices/UserAuthSlice";
 import { useNavigate } from "react-router-dom";
- 
+
 interface NotificationProps {
     status: number,
     details: string
@@ -13,35 +13,47 @@ interface NotificationProps {
 
 const openNotification = (errorData: NotificationProps) => {
     notification.error({
-      message: `Error ${errorData.status}`,
-      description: errorData.details
+        message: `Error ${errorData.status}`,
+        description: errorData.details
     });
-  };
+};
 
-  
-export const GlobalListener : Middleware = (api: MiddlewareAPI) => (next) => (action) => {
-    
-    
+
+export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
+
+
     if (isRejectedWithValue(action)) {
         api.dispatch(hideSpinner())
 
-        if(action.payload){
-            openNotification({
-                status: action.payload?.status,
-                  details: action.payload?.data?.detail ??  action.error.message
-            });
-        if(action.payload?.status == "401"){
-            api.dispatch(logout())
-            window.location.reload();
+        if (action.payload) {
+            if ('status' in action.error) {
+                // you can access all properties of `FetchBaseQueryError` here
+                const errMsg = 'error' in action.error ? action.error.error : JSON.stringify(action.error.data)
+                openNotification({
+                    status: action.payload?.status,
+                    details: errMsg
+                });
+            }
+            else {
+                openNotification({
+                    status: action.payload?.status,
+                    details: action.error.message
+                });
+            }
+
+
+            if (action.payload?.status == "401") {
+                api.dispatch(logout())
+                window.location.reload();
+            }
+
         }
-       
-        }
-        
+
     }
-    if(isPending(action)){
+    if (isPending(action)) {
         api.dispatch(showSpinner())
     }
-    if(isFulfilled(action)){
+    if (isFulfilled(action)) {
         api.dispatch(hideSpinner())
     }
     return next(action);
