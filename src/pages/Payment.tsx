@@ -91,7 +91,7 @@ export const Payment = () => {
                         {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId} calculate={paymentTypeValue == 'FEES'}/>}
                         {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE'} />}
                         <Row>
-                            <Col span={5} >
+                            <Col span={6} >
                                 <Form.Item label="Mode Of Payment" name={"paymentMode"} rules={[{ required: true }]}>
                                     <Select
                                         style={{ width: '100%' }}
@@ -99,12 +99,12 @@ export const Payment = () => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={3} offset={13}>
+                            <Col span={3} offset={8}>
                                 <Form.Item name={"total"}>
                                     <InputNumber disabled={true} controls={false} style={{ fontWeight: 'bold' , width: '100%'}}  placeholder="Total" bordered={false}/>
                                 </Form.Item>
                             </Col>
-                            <Col span={1} offset={1}>
+                            <Col span={1} offset={2}>
                                 <Button htmlType={"submit"} type={"primary"}>Confirm</Button>
                             </Col>
                         </Row>
