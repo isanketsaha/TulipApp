@@ -5,7 +5,7 @@ import { DateTime } from "../shared/component/DateTime"
 import { LoginDTO } from "../shared/interface/login";
 import { useAppDispatch, useAppSelector } from "../store";
 import { useLoginUserMutation } from "../shared/redux/api/feature/auth/loginApi";
-
+import logo from '../assets/logo.png'
 
 export const Login = () => {
     let navigate = useNavigate();
@@ -50,7 +50,7 @@ export const Login = () => {
          
             <Row style={{ marginTop: '3vh' }}>
                 <Col span={2} offset={5}>
-                    <img width={100} src="../src/assets/logo.png" />
+                    <img width={100} src={logo} />
                 </Col>
                 <Col span={8} offset={2}> <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1></Col>
                 <Col span={3} offset={3}><DateTime /></Col></Row>
