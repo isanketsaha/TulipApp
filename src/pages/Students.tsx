@@ -12,7 +12,7 @@ export const StudentPage = () => {
     const { data, isFetching } = useSearchStudentByNameQuery(debouncedSearchTerm,{ skip: debouncedSearchTerm == "" });
 
     return (<>
-        <Row>
+        <Row >
             <Col span={1} >
                 <Link to="/onboarding" state={{
                     type: 'student'
@@ -25,7 +25,7 @@ export const StudentPage = () => {
             <Col span={6} offset={16}>
                 <Select
                     allowClear
-                    showSearch placeholder="Student Name / ID" size="large"
+                    showSearch placeholder="Student Name" size="large"
                     onSearch={(value) => setSearchValue(value)} loading={isFetching} showArrow={false}
                     filterOption={false} style={{ width: '100%' }} notFoundContent={null} options={data?.map((d) => ({
                         value: d.id,

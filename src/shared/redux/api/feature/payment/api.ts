@@ -34,7 +34,7 @@ export const paymentApi = createApi({
         }),
         fetchPaymentHistory: builder.query<IPageResponse<IPayDetailsSummary>, IPageRequest<number>>({
             query: (pay) => `/history/${pay.data}?page=${pay.page}`,
-            providesTags: (result, error, id) => [{ type: 'Payment' }]
+            providesTags: () => [{ type: 'Payment' }]
 
         }),
         fetchFeesGraph: builder.query<IPayGraph, IPayGraphFilter>({
