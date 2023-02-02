@@ -1,7 +1,5 @@
-import { Button, Col, DatePicker, Form, FormInstance, InputNumber, Row, Select, Space, Typography } from "antd"
+import { Button, Col, Form, FormInstance, InputNumber, Row, Select, Space, Typography } from "antd"
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
-import { useAppSelector } from "../../../store";
-import staticMethods from "antd/es/message";
 import { IProductCatlog } from "../../interface/IProductCatalog";
 import { useFetchAllProductCatalogQuery } from "../../redux/api/feature/catalog/api";
 import { useEffect } from "react";
@@ -23,8 +21,10 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         if(calculate){
         calculateTotal();
         }
+
     },[calculate])
-    
+
+   
     const fetchProductRows = () => {
         const fields = form.getFieldsValue();
         const { purchaseItems } = fields;
@@ -33,9 +33,10 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
 
     const onSelectProduct = (elementId: number, rowKey: number) => {
         const products = fetchProductRows();
-        const selectedProduct = productCatalog?.find(item => item.id === elementId)
+        const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
+            productTitle: selectedProduct?.itemName,
             unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -50,12 +51,14 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
             })
         }
         form.setFieldsValue({ purchaseItems: [...products] });
+        
         calculateTotal();
+
     }
 
     const reCalculateAmount = (qty: string, rowKey: number) => {
         const products = fetchProductRows();
-        const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productTitle)
+        const selectedProduct = productCatalog?.find(item => item.itemName === products[rowKey].productTitle)
         products[rowKey] = {
             ...products[rowKey],
             amount: (((selectedProduct?.price ?? 0) * Number(qty)).toLocaleString('en-IN', {
@@ -65,6 +68,10 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
             }))
         }
         form.setFieldsValue({ purchaseItems: [...products] });
+        calculateTotal();
+    }
+
+    const removeLineItem = (index: number)  => {
         calculateTotal();
     }
 
@@ -84,7 +91,6 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
             })
         });
     }
-
 
     return (<>
         <Form.List name="purchaseItems">
@@ -130,7 +136,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "size"]}
 
                                         >
-                                            <InputNumber placeholder="Size" controls={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber placeholder="Size" min={0} controls={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
@@ -139,7 +145,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "qty"]}
                                             rules={[{ required: true, message: "Enter Quantity" }]}
                                         >
-                                            <InputNumber min={1} onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
+                                            <InputNumber min={1}  onStep={(value: number) => reCalculateAmount(String(value), name)} onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
@@ -165,7 +171,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 remove(name);
-                                                calculateTotal();
+                                                removeLineItem(name)
                                             }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>
