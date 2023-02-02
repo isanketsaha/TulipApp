@@ -26,6 +26,14 @@ export const Stock = () => {
 
     const columns : ColumnsType<IStockReport>= [
         {
+            title: '',
+            dataIndex: '',
+            key: '',
+            width: 30,
+            
+            
+        },
+        {
             title: 'Product Title',
             dataIndex: 'product',
             key: 'product',
@@ -40,6 +48,16 @@ export const Stock = () => {
             key: 'product',
             width: 120,
             render: (item: IProductCatlog) => item.size ? item.size : item.std
+        }
+        ,
+        {
+            title: 'Category',
+            dataIndex: 'product',
+            key: 'product',
+            width: 200,
+            render: (item: IProductCatlog) => <Tag color="green"> {item.type} </Tag>,
+            filters: [...new Map(categoryFilter?.map((m) => [m.text, m])).values()],
+            onFilter: (value, record) => record.product.type.indexOf(String(value)) === 0
         },
         {
             title: 'Quantity',
@@ -54,19 +72,6 @@ export const Stock = () => {
             key: 'product',
             width: 150,
             render: (item: IProductCatlog) => item.price ? item.price : 'N/A'
-        },
-        {
-            title: 'Category',
-            dataIndex: 'product',
-            key: 'product',
-            width: 200,
-            render: (item: IProductCatlog) => <Tag color="green"> {item.type} </Tag>,
-            filters: [...new Map(categoryFilter?.map((m) => [m.text, m])).values()],
-            onFilter: (value, record) => record.product.type.indexOf(String(value)) === 0
-        }, {
-            title: 'Vendor',
-            dataIndex: 'vendor',
-            key: 'vendor'
         }
     ];
 

@@ -11,9 +11,11 @@ import { IStockReport } from "/src/shared/interface/IStockReport";
 export const reportApi = createApi({
     reducerPath: 'reportApi',
     baseQuery: baseQueryWithRetry("report"),
+    tagTypes: ['Payment'],
     endpoints: (builder) => ({
         fetchTransactionHistory: builder.query<IPageResponse<IPayDetailsSummary>, void>({
-            query: () => '/transaction'
+            query: () => '/transaction',
+            providesTags: ['Payment']
         }),
         fetchStudentReport: builder.query<IAdmissionReport, void>({
             query: () => '/admission'

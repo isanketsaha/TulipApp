@@ -1,6 +1,6 @@
 import { List, Row, Col, Typography, Tag, Button } from "antd"
 import dayjs from "dayjs"
-import { useFetchAuditQuery } from "../../redux/api/feature/audit/api"
+import { useFetchAuditQuery, useUpdateResolvedMutation } from "../../redux/api/feature/audit/api"
 
 import VirtualList from 'rc-virtual-list';
 import { IAudit } from "../../interface/IAudit"
@@ -9,6 +9,7 @@ import { useState } from "react"
 
 export const Audit = () => {
     const [pagination, setPagination] = useState<number>(0);
+    const [updateResolved] = useUpdateResolvedMutation();
     const { data } = useFetchAuditQuery(pagination);
     const { Text } = Typography;
     return (
@@ -55,7 +56,7 @@ export const Audit = () => {
                                                 {item.description}
                                             </Col>
                                             <Col span={2}>
-                                               <Button> Resolved </Button>
+                                               <Button onClick={() => updateResolved(item.id)}> Resolved </Button>
                                             </Col>
                                         </Row>
                                     }

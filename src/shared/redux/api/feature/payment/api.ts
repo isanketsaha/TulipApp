@@ -19,7 +19,7 @@ export const paymentApi = createApi({
     tagTypes: ['Payment'],
     endpoints: (builder) => ({
         payment: builder.mutation<number, IPay>({
-            invalidatesTags: [{ type: 'Payment', id: 'LIST' }],
+            invalidatesTags: ['Payment'],
             query: (pay) => {
                 return ({
                     url: '/',
@@ -27,6 +27,7 @@ export const paymentApi = createApi({
                     body: pay
                 });
             },
+           
         }),
         fetchPaymentDetailsById: builder.query<IPayDetailsSummary, string>({
             query: (payId) => `/details/${payId}`,
@@ -34,12 +35,12 @@ export const paymentApi = createApi({
         }),
         fetchPaymentHistory: builder.query<IPageResponse<IPayDetailsSummary>, IPageRequest<number>>({
             query: (pay) => `/history/${pay.data}?page=${pay.page}`,
-            providesTags: () => [{ type: 'Payment' }]
+            providesTags: () => ['Payment']
 
         }),
         fetchFeesGraph: builder.query<IPayGraph, IPayGraphFilter>({
             query: (item) => `/feesgraph/${item.studentId}/${item.classId}`,
-            providesTags: (result, error, id) => [{ type: 'Payment' }]
+            providesTags:  ['Payment']
         }),
         addExpense: builder.mutation<number, IExpenseItem[]>({
             query: (expense) => {
@@ -49,8 +50,8 @@ export const paymentApi = createApi({
                     body: expense
                 });
             },
+            invalidatesTags: ['Payment']
         }),
-
     })
 });
 
