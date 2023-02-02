@@ -39,9 +39,9 @@ export const Dashboard = () => {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <Card title="Stock Report">
+                           
                                 <Stock />
-                            </Card>
+                           
                         </Col>
                     </Row>
                     <Row gutter={16}>
