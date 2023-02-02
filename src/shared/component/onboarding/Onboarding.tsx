@@ -84,7 +84,6 @@ export const Onboarding = () => {
 
 
     return (<>
-
         {
             state?.type == 'student' ? <Title level={3}>Student Admission</Title> : <Title level={3}>Onboarding Employee</Title>
         }

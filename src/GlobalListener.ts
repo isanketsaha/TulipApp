@@ -27,7 +27,6 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
 
         if (action.payload) {
             if ('status' in action.error) {
-                // you can access all properties of `FetchBaseQueryError` here
                 const errMsg = 'error' in action.error ? action.error.error : JSON.stringify(action.error.data)
                 openNotification({
                     status: action.payload?.status,
