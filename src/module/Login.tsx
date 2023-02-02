@@ -63,7 +63,7 @@ export const Login = () => {
 
                             <div hidden={!isError} style={{margin: ' 2vh 0'}}>
                                 <Space  direction="vertical" style={{ width: '100%' }}>
-                                    <Alert message= {(error as any)?.data?.detail} type="error" />
+                                    <Alert message= {(error as any)?.data?.detail} type="error" closable/>
                                 </Space>
                             </div>
                             <Form
