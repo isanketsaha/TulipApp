@@ -1,5 +1,4 @@
 import { Row, Col, Button, Select } from "antd"
-import Search from "antd/es/input/Search"
 import { Link, useNavigate } from "react-router-dom"
 import { StudentBasicDetails } from "../shared/component/StudentBasicDetails"
 import { useSearchStudentByNameQuery } from "../shared/redux/api/feature/student/api"
