@@ -40,7 +40,7 @@ export const Dashboard = () => {
                         <Col span={24}>
                             <Card title="Collection Report" 
                             extra={ <Space size={"large"}>
-                                <DatePicker format={dateFormat} onChange={(date, dateString) => date && setTransactionDate(date.startOf('date'))} disabledDate={disableDate} defaultValue={dayjs(new Date())} />
+                                <DatePicker allowClear={false} format={dateFormat} onChange={(date, dateString) => date && setTransactionDate(date.startOf('date'))} disabledDate={disableDate} defaultValue={dayjs(new Date())} />
                                 <Button onClick={() => setIsExpenseModelOpen(true)}>Add Expense</Button></Space>} >
                                 <TransactionReport transactionDate={transactionDate}/>
                             </Card>
