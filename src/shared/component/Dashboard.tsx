@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Modal, Row } from "antd"
+import { Button, Card, Col, DatePicker, Form, Modal, Row } from "antd"
 import { useState } from "react";
 import { Space } from 'antd';
 import { TransactionReport } from "./reports/TransactionReports";
@@ -8,13 +8,16 @@ import { Stock } from "./reports/Stock";
 import { AddExpense } from "./AddExpense"
 import { useAddExpenseMutation } from "../redux/api/feature/payment/api";
 import { useNavigate } from "react-router-dom";
+import dayjs, { Dayjs } from "dayjs";
 
 
 
 export const Dashboard = () => {
 
+   const [transactionDate, setTransactionDate] = useState<Dayjs>(dayjs(new Date()).startOf('date'));
     const [addExpense] = useAddExpenseMutation();
     const [isExpenseModelOpen, setIsExpenseModelOpen] = useState(false);
+    const dateFormat = 'DD-MMM-YYYY';
 
     let navigate = useNavigate();
     const onExpenseSubmit = (value: any) => {
@@ -25,6 +28,9 @@ export const Dashboard = () => {
             navigate(`/purchaseSummary/${id.data}`);
         })
     }
+    const disableDate = (currentDate: Dayjs)  =>{
+        return currentDate.isAfter(new Date()) || currentDate.isBefore(dayjs().add(-7,"days")) ;
+       };
 
     return (
         <>
@@ -32,8 +38,11 @@ export const Dashboard = () => {
                 <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Card title="Collection Report" extra={<Button onClick={() => setIsExpenseModelOpen(true)}>Add Expense</Button>} >
-                                <TransactionReport />
+                            <Card title="Collection Report" 
+                            extra={ <Space size={"large"}>
+                                <DatePicker format={dateFormat} onChange={(date, dateString) => date && setTransactionDate(date.startOf('date'))} disabledDate={disableDate} defaultValue={dayjs(new Date())} />
+                                <Button onClick={() => setIsExpenseModelOpen(true)}>Add Expense</Button></Space>} >
+                                <TransactionReport transactionDate={transactionDate}/>
                             </Card>
                         </Col>
                     </Row>

@@ -31,7 +31,7 @@ export const Accounts = () => {
 
 
     const contentList: Record<string, React.ReactNode> = {
-        transaction: <TransactionReport/>,
+        transaction: <TransactionReport transactionDate={dayjs()}/>,
         admission: <p>content2</p>,
 
     };

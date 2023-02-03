@@ -26,11 +26,10 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
         api.dispatch(hideSpinner())
 
         if (action.payload) {
-            if ('status' in action.error) {
-                const errMsg = 'error' in action.error ? action.error.error : JSON.stringify(action.error.data)
+            if ('status' in action.payload) {
                 openNotification({
-                    status: action.payload?.status,
-                    details: errMsg
+                    status: action.payload.data.title,
+                    details: action.payload.data.detail
                 });
             }
             else {
