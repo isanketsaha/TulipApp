@@ -1,4 +1,4 @@
-import { List, Row, Col, Typography, Tag, Button } from "antd"
+import { List, Row, Col, Typography, Tag, Button, Card } from "antd"
 import dayjs from "dayjs"
 import { useFetchAuditQuery, useUpdateResolvedMutation } from "../../redux/api/feature/audit/api"
 
@@ -36,6 +36,7 @@ export const Audit = () => {
                             <List.Item key={index}>
                                 <List.Item.Meta
                                     description={
+                                        <Card>
                                         <Row >
                                             <Col span={1} >
                                                 {(index + 1) }.
@@ -46,10 +47,10 @@ export const Audit = () => {
                                             <Col span={2}>
                                                 <Tag color="red">  {item.type}</Tag>
                                             </Col>
-                                            <Col span={2}>
+                                            <Col span={1}>
                                                 <Text type="warning"> {item.status} </Text>
                                             </Col>
-                                            <Col span={4}>
+                                            <Col span={5}>
                                                 {item.endpoint}
                                             </Col>
                                             <Col span={8}>
@@ -59,6 +60,7 @@ export const Audit = () => {
                                                <Button onClick={() => updateResolved(item.id)}> Resolved </Button>
                                             </Col>
                                         </Row>
+                                        </Card>
                                     }
                                 >
 

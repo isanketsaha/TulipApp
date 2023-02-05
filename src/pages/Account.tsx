@@ -1,40 +1,16 @@
-import { Row, Col, Card, DatePicker, Tabs, Space } from "antd";
-import dayjs, { Dayjs } from "dayjs";
+import { Row, Col, Card, DatePicker, Tabs, Space, TabsProps } from "antd";
 import { useState } from "react";
 import { Audit } from "../shared/component/reports/Audit";
-import { TransactionReport } from "../shared/component/reports/TransactionReports";
+import { FinanceReport } from "../shared/component/reports/FinanceReport";
+import dayjs, { Dayjs } from "dayjs";
 
 
 export const Accounts = () => {
 
     const { RangePicker } = DatePicker;
 
-    const tabList = [
-        {
-            key: 'transaction',
-            tab: 'Transaction',
-        },
-        {
-            key: 'admission',
-            tab: 'New Admission',
-        },
-        {
-            key: 'expense',
-            tab: 'Expense',
-        }
-    ];
-    const [activeTab, setActiveTab] = useState<string>('transaction');
-
-    const onTabChange = (key: string) => {
-        setActiveTab(key);
-    };
-
-
-    const contentList: Record<string, React.ReactNode> = {
-        transaction: <TransactionReport transactionDate={dayjs()}/>,
-        admission: <p>content2</p>,
-
-    };
+    const [fromDate, setFromDate] = useState<string>(dayjs(new Date()).add(-30, 'd').format('DD/MMM/YYYY'));
+    const [toDate, setToDate] = useState<string>(dayjs(new Date()).format('DD/MMM/YYYY'));
 
     const rangePresets: {
         label: string;
@@ -46,30 +22,35 @@ export const Accounts = () => {
             { label: 'Last 90 Days', value: [dayjs().add(-90, 'd'), dayjs()] },
         ];
 
+
+    const tabList: TabsProps['items'] = [
+        {
+            key: '1',
+            label: 'Report',
+            children: <FinanceReport from={fromDate} to={toDate}/>
+        }, {
+            key: '2',
+            label: 'Audit',
+            children: <Audit />
+        }
+    ];
+
+    const dateRangeChanged = (values: any, formatString: [string, string]) =>{
+        setFromDate(formatString[0]);
+        setToDate(formatString[1]);
+    }
+
+
     return (<>
+
         <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
-            <Row>
-                <Card
-
-                    style={{ width: '100%' }}
-                    tabList={tabList}
-                    extra={<div style={{ marginTop: '2vh' }}><RangePicker disabled={[false, true]} presets={rangePresets}
-                        defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} /> </div>}
-                    activeTabKey={activeTab}
-                    onTabChange={(key) => {
-                        onTabChange(key);
-                    }}
-                >
-                    {contentList[activeTab]}
-                </Card>
+            <Row >
+                <Tabs style={{ width: '100%' }}  size="large" defaultActiveKey="1" 
+                tabBarExtraContent={<RangePicker disabled={[false, true]} format={"DD/MMM/YYYY"} presets={rangePresets} onChange={dateRangeChanged}
+                    defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} />} items={tabList} />
             </Row>
-            <Row>
-                <Card
 
-                    style={{ width: '100%' }}>
-                    <Audit />
-                </Card>
-            </Row>
         </Space>
+      
     </>)
 }

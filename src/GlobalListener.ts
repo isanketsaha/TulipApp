@@ -26,7 +26,7 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
         api.dispatch(hideSpinner())
 
         if (action.payload) {
-            if ('status' in action.payload) {
+            if (action.payload?.data) {
                 openNotification({
                     status: action.payload.data.title,
                     details: action.payload.data.detail

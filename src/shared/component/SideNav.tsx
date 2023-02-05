@@ -5,6 +5,7 @@ import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../redux/slices/UserAuthSlice";
+import { Role } from "/src/Role";
 interface nav {
     label: string,
     link?: string,
@@ -46,11 +47,15 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
         }, {
             label: 'Classroom',
             icon: <FolderOpenFilled />,
-        }, {
-            label: 'Accounts',
-            icon: <FundFilled />,
         }
     ]
+
+    if(userAuth.user?.authority.includes(Role.Admin)){
+        navigatons.push({
+            label: 'Accounts',
+            icon: <FundFilled />,
+        })
+    }
 
     const options: MenuProps['items'] = navigatons.map(
         (item, index) => {

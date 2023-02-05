@@ -1,5 +1,4 @@
 import { List, Row, Col, Tag, Typography, Table } from "antd"
-import VirtualList from 'rc-virtual-list';
 import { useFetchInventoryReportQuery } from "../../redux/api/feature/report/api";
 import { IStockReport } from "../../interface/IStockReport";
 import { IProductCatlog } from "../../interface/IProductCatalog";
@@ -30,8 +29,6 @@ export const Stock = () => {
             dataIndex: '',
             key: '',
             width: 30,
-            
-            
         },
         {
             title: 'Product Title',

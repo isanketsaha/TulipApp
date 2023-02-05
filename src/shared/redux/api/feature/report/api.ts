@@ -16,7 +16,7 @@ export const reportApi = createApi({
     tagTypes: ['Payment'],
     endpoints: (builder) => ({
         fetchTransactionHistory: builder.query<IPageResponse<IPayDetailsSummary>, IPageRequest<string>>({
-            query: (item) => `/transaction/${item.data}`,
+            query: (item) => `/transaction/${item.data}?page=${item.page}`,
             providesTags: ['Payment']
         }),
         fetchStudentReport: builder.query<IAdmissionReport, void>({
