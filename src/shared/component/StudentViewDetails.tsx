@@ -7,12 +7,16 @@ import { FeesCalender } from "./FeesCalender";
 import { Link } from "react-router-dom";
 import { TransactionHistory } from "./TransactionHistory";
 import { Error500 } from "/src/error/Error500";
+import {CaretLeftOutlined, CaretRightOutlined} from '@ant-design/icons';
+import { useState } from "react";
 
 interface IStudentViewProps {
     studentId: string
 }
 
 export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
+
+    const [sessionIndex, setSessionIndex] = useState<number>(0);
 
     const onPanelChange = (value: Dayjs, mode: CalendarMode) => {
         console.log(value.format('YYYY-MM-DD'), mode);
@@ -50,10 +54,10 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             {studentData?.phoneNumber}
                         </Descriptions.Item>
 
-                        <Descriptions.Item label="Classroom">{studentData?.classDetails?.std}</Descriptions.Item>
-                        <Descriptions.Item label="Class Teacher">{studentData?.classDetails?.headTeacher}</Descriptions.Item>
+                        <Descriptions.Item label="Classroom">{studentData?.classDetails[sessionIndex]?.std}</Descriptions.Item>
+                        <Descriptions.Item label="Class Teacher">{studentData?.classDetails[sessionIndex]?.headTeacher}</Descriptions.Item>
                         <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
-                        <Descriptions.Item label="Session">{studentData?.classDetails?.session}</Descriptions.Item>
+                        <Descriptions.Item label="Session"> {studentData?.classDetails.length>1 && !(studentData?.classDetails.length == sessionIndex+1) && <Button onClick={() => setSessionIndex(sessionIndex +1)} type="link" icon={<CaretLeftOutlined />}/> }{studentData?.classDetails[sessionIndex]?.session} { studentData?.classDetails.length>1 && !( sessionIndex ==0 ) && <Button  onClick={() => setSessionIndex(sessionIndex -1)} type="link" icon={<CaretRightOutlined />}/> }</Descriptions.Item>
                         <Descriptions.Item label="Payment">
                             <Link to={`/payment/${studentData?.id}`}>
                                 <Button type="primary">
@@ -75,7 +79,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             );
                         })}
                     </Space>
-                    {studentData?.id && <FeesCalender studentId={studentData?.id} classId={studentData.classDetails?.id} />}
+                    {studentData?.id && <FeesCalender studentId={studentData?.id} classId={studentData.classDetails[sessionIndex]?.id} />}
                     {studentData?.id && <TransactionHistory studentId={studentData?.id} />}
                 </Space></>
             }

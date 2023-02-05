@@ -53,11 +53,11 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
 
     return (<>
         <Space direction="vertical" style={{ width: '100%' }}>
-            <Row>
+            {/* <Row>
                 <Col span={4} offset={20}>
                     <Select style={{ width: '100%' }} options={[]}></Select>
                 </Col>
-            </Row>
+            </Row> */}
           <Table<ITransactionReport> dataSource={financeReportData} columns={columns} />
         </Space>
     </>)
