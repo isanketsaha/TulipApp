@@ -52,9 +52,11 @@ export const Login = () => {
                 <Col span={2} offset={5}>
                     <img width={100} src={logo} />
                 </Col>
-                <Col span={8} offset={2}> <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1></Col>
+                <Col span={8} offset={2}> <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>
+                <div> <h4 style={{ fontFamily: 'EB Garamond, serif', marginLeft:'4vmin' }}>Shaping the lives of those who will shape the nation.</h4></div>
+                </Col>
                 <Col span={3} offset={3}><DateTime /></Col></Row>
-            <div style={{ marginTop: '20vh' }}>
+            <div style={{ marginTop: '10vh' }}>
                 <Row>
 
                     <Col span={8} offset={9}>
@@ -90,9 +92,9 @@ export const Login = () => {
                                 >
                                     <Input.Password />
                                 </Form.Item>
-                                <Form.Item name="rememberMe" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+                                {/* <Form.Item name="rememberMe" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
                                     <Checkbox>Remember me</Checkbox>
-                                </Form.Item>
+                                </Form.Item> */}
 
                                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                                     <Button type="default" htmlType="reset" style={{ marginRight: '4vh' }}>
