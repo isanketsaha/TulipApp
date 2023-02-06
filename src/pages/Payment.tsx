@@ -99,12 +99,12 @@ export const Payment = () => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={3} offset={8}>
+                            <Col span={3} offset={12}>
                                 <Form.Item name={"total"}>
                                     <InputNumber disabled={true} controls={false} style={{ fontWeight: 'bold' , width: '100%'}}  placeholder="Total" bordered={false}/>
                                 </Form.Item>
                             </Col>
-                            <Col span={1} offset={2}>
+                            <Col span={1} offset={1}>
                                 <Button htmlType={"submit"} type={"primary"}>Confirm</Button>
                             </Col>
                         </Row>

@@ -36,7 +36,6 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
-            productTitle: selectedProduct?.itemName,
             unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -58,7 +57,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
 
     const reCalculateAmount = (qty: string, rowKey: number) => {
         const products = fetchProductRows();
-        const selectedProduct = productCatalog?.find(item => item.itemName === products[rowKey].productTitle)
+        const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productTitle)
         products[rowKey] = {
             ...products[rowKey],
             amount: (((selectedProduct?.price ?? 0) * Number(qty)).toLocaleString('en-IN', {
