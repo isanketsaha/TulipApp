@@ -1,14 +1,14 @@
-import { Descriptions, Badge, Calendar, Col, Radio, Row, Select, Typography, Space, Button, Divider } from "antd"
-import dayjs, { Dayjs } from "dayjs";
-import { IUserDetails } from "../interface/IUserDetails";
-import { useSearchStudentQuery } from "../redux/api/feature/student/api";
-import { CalendarMode } from "antd/es/calendar/generateCalendar";
+import { Descriptions, Badge,  Space, Button, Divider, Switch, Modal } from "antd"
+import dayjs from "dayjs";
+import { useDeactivateStudentMutation, useSearchStudentQuery } from "../redux/api/feature/student/api";
 import { FeesCalender } from "./FeesCalender";
 import { Link } from "react-router-dom";
 import { TransactionHistory } from "./TransactionHistory";
 import { Error500 } from "/src/error/Error500";
-import {CaretLeftOutlined, CaretRightOutlined} from '@ant-design/icons';
+import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { useState } from "react";
+import { useAppSelector } from "/src/store";
+import { Role } from "/src/Role";
 
 interface IStudentViewProps {
     studentId: string
@@ -16,18 +16,20 @@ interface IStudentViewProps {
 
 export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
 
+    const { user } = useAppSelector(state => state.userAuth);
     const [sessionIndex, setSessionIndex] = useState<number>(0);
-
-    const onPanelChange = (value: Dayjs, mode: CalendarMode) => {
-        console.log(value.format('YYYY-MM-DD'), mode);
-    };
+    const [open, setOpen] = useState(false);
 
     const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" });
+    const [deactivateStudent] = useDeactivateStudentMutation();
+
+  
+
+
     return (
         <>
             {studentData &&
                 <><Divider> <h3>Student Detail</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
-
                     <Descriptions bordered>
                         <Descriptions.Item label="Student ID"> {studentData?.id}</Descriptions.Item>
                         <Descriptions.Item label="Name">{studentData?.name}</Descriptions.Item>
@@ -37,7 +39,11 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             {dayjs(studentData?.admissionDate).format("DD/MM/YYYY")}
                         </Descriptions.Item>
                         <Descriptions.Item label="Active" span={1}>
-                            <Badge status={studentData?.active ? "success" : "error"} text={studentData?.active ? "ACTIVE" : "INACTIVE"} />
+                            
+                            {user?.authority && [Role.PRINCIPAL].includes(user?.authority) ?
+                                <Switch checkedChildren="ACTIVE" unCheckedChildren="INACTIVE" checked={studentData?.active} onClick={(checked) => setOpen(!checked)} />
+                                : <Badge status={studentData?.active ? "success" : "error"} text={studentData?.active ? "ACTIVE" : "INACTIVE"} />
+                            }
                         </Descriptions.Item>
 
                         <Descriptions.Item label="Address">
@@ -52,11 +58,11 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                         </Descriptions.Item>
                         <Descriptions.Item label="Phone Number">
                             {studentData?.phoneNumber}
-</Descriptions.Item>
+                        </Descriptions.Item>
                         <Descriptions.Item label="Classroom">{studentData?.classDetails[sessionIndex]?.std}</Descriptions.Item>
                         <Descriptions.Item label="Class Teacher">{studentData?.classDetails[sessionIndex]?.headTeacher}</Descriptions.Item>
                         <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
-                        <Descriptions.Item label="Session"> {studentData?.classDetails.length>1 && !(studentData?.classDetails.length == sessionIndex+1) && <Button onClick={() => setSessionIndex(sessionIndex +1)} type="link" icon={<CaretLeftOutlined />}/> }{studentData?.classDetails[sessionIndex]?.session} { studentData?.classDetails.length>1 && !( sessionIndex ==0 ) && <Button  onClick={() => setSessionIndex(sessionIndex -1)} type="link" icon={<CaretRightOutlined />}/> }</Descriptions.Item>
+                        <Descriptions.Item label="Session"> {studentData?.classDetails.length > 1 && !(studentData?.classDetails.length == sessionIndex + 1) && <Button onClick={() => setSessionIndex(sessionIndex + 1)} type="link" icon={<CaretLeftOutlined />} />}{studentData?.classDetails[sessionIndex]?.session} {studentData?.classDetails.length > 1 && !(sessionIndex == 0) && <Button onClick={() => setSessionIndex(sessionIndex - 1)} type="link" icon={<CaretRightOutlined />} />}</Descriptions.Item>
                         <Descriptions.Item label="Payment">
                             <Link to={`/payment/${studentData?.id}/${studentData?.classDetails[sessionIndex]?.id}`}>
                                 <Button type="primary">
@@ -83,8 +89,17 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                 </Space></>
             }
             {
-                !studentData && !isFetching  && <Error500/>
+                !studentData && !isFetching && <Error500 />
             }
+            <Modal
+                centered
+                open={open}
+                okText={"Confirm"}
+                onOk={() =>  deactivateStudent(studentId).then(data => setOpen(false))}
+                onCancel={() => setOpen(false)}
+            >
+                <b>{studentData?.name}</b> will be removed from School. Are you sure ?
+            </Modal>
         </>
     )
 }

@@ -5,5 +5,5 @@ export interface UserAuth {
     userId: string | null,
     idToken: string | null,
     expiry: number,
-    authority: Role[],
+    authority: Role,
 }

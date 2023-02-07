@@ -57,7 +57,7 @@ export const AppRouter = createBrowserRouter([
                         element: <Classroom />
                     }, {
                         path: 'accounts',
-                        element: <AuthRotes roles={[Role.Admin]}><Accounts /></AuthRotes>,
+                        element: <AuthRotes roles={[Role.ADMIN]}><Accounts /></AuthRotes>,
                     }, {
                         path: 'purchaseSummary/:id',
                         element: <PurchaseSummary />

@@ -21,7 +21,7 @@ interface ISliderProps{
 export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
 
     const { Text } = Typography;
-    const userAuth = useAppSelector((state) => state.userAuth);
+    const {user} = useAppSelector((state) => state.userAuth);
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
         }
     ]
 
-    if(userAuth.user?.authority.includes(Role.Admin)){
+    if(user?.authority && [Role.ADMIN].includes(user?.authority)){
         navigatons.push({
             label: 'Accounts',
             icon: <FundFilled />,
@@ -69,7 +69,7 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
         },
     );
 
-    options.push(userAuth.user != null ?
+    options.push(user != null ?
         {
             danger: true,
             key: 'logout',
@@ -94,12 +94,12 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
                 bottom: 0,
                 paddingTop:'8vh'
             }}>
-            <div hidden={collapsed && userAuth.user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
+            <div hidden={collapsed && user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
                 <div style={{ marginTop: '2vh' }}>
-                    <Text strong>{userAuth.user?.userName}</Text>
+                    <Text strong>{user?.userName}</Text>
                     <br/>
-                    <Text type="secondary">{userAuth.user?.authority[0].split("_")[1]}</Text>
+                    <Text type="secondary">{user?.authority}</Text>
                 </div>
             </div>
 

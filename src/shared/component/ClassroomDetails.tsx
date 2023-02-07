@@ -12,7 +12,7 @@ interface IClassDetailsProsp {
 }
 
 export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
-   const[promoteStudent, {isSuccess}] = usePromoteStudentMutation();
+    const [promoteStudent, { isSuccess }] = usePromoteStudentMutation();
     const { data: classDetails } = useFetchClassroomDetailsQuery(stdList.id);
     const { sessionList, classList } = useAppSelector(app => app.commonData);
     const [selectedId, setSelectedId] = useState<number[]>([]);
@@ -61,7 +61,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
         console.log('checked = ', selectedId, values);
         promoteStudent({
             ...values,
-            studentId : selectedId
+            studentId: selectedId
         })
     }
 
@@ -75,26 +75,26 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
                 </Descriptions>
-                
+
                 <div hidden={selectedId.length < 1}>
-                <Divider />
-                <div hidden={!isSuccess} style={{margin: ' 2vh 0'}}>
-                                <Space  direction="vertical" style={{ width: '100%' }}>
-                                    <Alert showIcon message= "All selected students are Promoted." type="success" closable/>
-                                </Space>
-                            </div>
+                    <Divider />
+                    <div hidden={!isSuccess} style={{ margin: ' 2vh 0' }}>
+                        <Space direction="vertical" style={{ width: '100%' }}>
+                            <Alert showIcon message="All selected students are Promoted." type="success" closable />
+                        </Space>
+                    </div>
                     <Form name={"promote"} onFinish={onPromote} autoComplete="off">
                         <Row>
                             <Col span={5} offset={1}>
                                 <Form.Item label="Class"
-                                    name="std" rules={[{ required: true}]}>
-                                <Select options={classList} style={{ width: '100%' }} />
+                                    name="std" rules={[{ required: true }]}>
+                                    <Select options={classList} style={{ width: '100%' }} />
                                 </Form.Item>
                             </Col>
                             <Col span={5} offset={5}>
-                            <Form.Item label="Session"
-                                    name="sessionId" rules={[{ required: true}]}>
-                                <Select options={sessionList} style={{ width: '100%' }} />
+                                <Form.Item label="Session"
+                                    name="sessionId" rules={[{ required: true }]}>
+                                    <Select options={sessionList} style={{ width: '100%' }} />
                                 </Form.Item>
                             </Col>
                             <Col span={2} offset={5}>
