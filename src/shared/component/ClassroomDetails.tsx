@@ -107,7 +107,6 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
 
                 <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
                     <Card style={{ width: '100%' }}>
-{`${import.meta.env.VITE_BASE_PROMOTE_WINDOW}`}
                         <List
                             size="small"
                             itemLayout="horizontal"
@@ -118,7 +117,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                     <List.Item.Meta
                                         title={<Row>
                                             <Col span={1}>
-                                                <div hidden={`${import.meta.env.VITE_BASE_PROMOTE_WINDOW}`  == "true"} ><Checkbox value={item.id} /></div>
+                                                <div hidden={false} ><Checkbox value={item.id} /></div>
                                                 {index + 1}
                                             </Col>
                                             <Col>

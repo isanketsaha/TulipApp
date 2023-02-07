@@ -28,9 +28,10 @@ export const Onboarding = () => {
 
 
     const onNext = () => {
-        form.validateFields().then(values => {
-            setCurrentStep(currentStep + 1);
-        });
+        setCurrentStep(currentStep + 1);
+        // form.validateFields().then(values => {
+        //     setCurrentStep(currentStep + 1);
+        // });
     };
 
     const onSubmit = () => {
@@ -78,7 +79,7 @@ export const Onboarding = () => {
     if (state.type == 'employee') {
         stepOptions.push({
             title: 'Additional Details',
-            content: <AddAdditional />
+            content: <AddAdditional form={form}/>
         });
     }
 

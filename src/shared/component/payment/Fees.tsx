@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, FormInstance, InputNumber, Row, Select, Space, Typography } from "antd"
+import { Button, Col, DatePicker, Form, FormInstance, Input, InputNumber, Row, Select, Space, Typography } from "antd"
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { useAppSelector } from "../../../store";
 import { Dayjs } from "dayjs";
@@ -52,6 +52,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         if (monthNumber > 0) {
             feeItem[rowKey] = {
                 ...feeItem[rowKey],
+                feesTitle:selectedFees?.name,
                 unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
                     style: 'currency',
@@ -78,6 +79,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         const selectedFees = feesCatalog?.find(item => item.id === elementId)
         feeItem[rowKey] = {
             ...feeItem[rowKey],
+            feesTitle:selectedFees?.name,
             unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -154,7 +156,13 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-
+                                    <Col hidden={true}>
+                                        <Form.Item
+                                            name={[name, "feesTitle"]}
+                                        >
+                                            <Input></Input>
+                                               </Form.Item>
+                                    </Col>
                                     <Col span={3} offset={1}>
                                         <Form.Item
                                             name={[name, "from"]}

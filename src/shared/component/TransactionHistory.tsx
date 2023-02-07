@@ -28,6 +28,7 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
 
         <List 
          pagination={{
+          simple:true,
           onChange: (page: number, pageSize: number) => {setPage(page-1)},
           pageSize: 10,
           total: data?.totalElements

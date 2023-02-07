@@ -31,7 +31,11 @@ export const AddDependent = () => {
 
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name={[name, "name"]} label="Name" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "name"]} label="Name" rules={[{ required: true },
+                                     {
+                                        pattern: new RegExp("[A-Za-z ]+$"),
+                                        message: "Name does not accept numbers or special character"
+                                       }]}>
                                         <Input />
                                     </Form.Item>
                                 </Col>

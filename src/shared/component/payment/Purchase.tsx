@@ -1,4 +1,4 @@
-import { Button, Col, Form, FormInstance, InputNumber, Row, Select, Space, Typography } from "antd"
+import { Button, Col, Form, FormInstance, Input, InputNumber, Row, Select, Space, Typography } from "antd"
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { IProductCatlog } from "../../interface/IProductCatalog";
 import { useFetchAllProductCatalogQuery } from "../../redux/api/feature/catalog/api";
@@ -36,6 +36,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
+            productName: selectedProduct?.itemName,
             unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -57,9 +58,10 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
 
     const reCalculateAmount = (qty: string, rowKey: number) => {
         const products = fetchProductRows();
-        const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productTitle)
+        const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productId)
         products[rowKey] = {
             ...products[rowKey],
+            productName: selectedProduct?.itemName,
             amount: (((selectedProduct?.price ?? 0) * Number(qty)).toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -104,7 +106,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                     </Col>
                                     <Col span={4}>
                                         <Form.Item
-                                            name={[name, "productTitle"]}
+                                            name={[name, "productId"]}
                                             rules={[{ required: true, message: "Select a product" }]}
                                         >
                                             <Select showSearch clearIcon placeholder="Select Product"
@@ -128,6 +130,13 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                                 }))}>
                                             </Select>
                                         </Form.Item>
+                                    </Col>
+                                    <Col hidden={true}>
+                                        <Form.Item
+                                            name={[name, "productName"]}
+                                        >
+                                            <Input/>
+                                               </Form.Item>
                                     </Col>
 
                                     <Col span={2} offset={1}>
