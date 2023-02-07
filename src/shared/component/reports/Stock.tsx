@@ -44,7 +44,7 @@ export const Stock = () => {
             dataIndex: 'product',
             key: 'product',
             width: 120,
-            render: (item: IProductCatlog) => item.size ? item.size : item.std
+            render: (item: IProductCatlog) => item.size ? item.size : item.std ? item.std : 'N/A'
         }
         ,
         {

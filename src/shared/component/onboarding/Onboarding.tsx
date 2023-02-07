@@ -28,10 +28,9 @@ export const Onboarding = () => {
 
 
     const onNext = () => {
-        setCurrentStep(currentStep + 1);
-        // form.validateFields().then(values => {
-        //     setCurrentStep(currentStep + 1);
-        // });
+        form.validateFields().then(values => {
+            setCurrentStep(currentStep + 1);
+        });
     };
 
     const onSubmit = () => {

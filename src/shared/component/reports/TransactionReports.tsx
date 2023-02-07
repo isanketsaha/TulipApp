@@ -36,6 +36,8 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
             })} </Typography.Text></Col></Row> : null}
             bordered
             pagination={{
+                simple:true,
+                showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                 onChange: (page: number, pageSize: number) => {setPagination(page-1)},
                 pageSize: 5,
                 total: transactionReport.totalElements

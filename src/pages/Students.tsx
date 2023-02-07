@@ -4,9 +4,12 @@ import { StudentBasicDetails } from "../shared/component/StudentBasicDetails"
 import { useSearchStudentByNameQuery } from "../shared/redux/api/feature/student/api"
 import { useState } from "react"
 import { useDebounce } from "../shared/hook/useDebounce"
+import { useAppSelector } from "../store"
+import { Role } from "../Role"
 
 export const StudentPage = () => {
     let navigate = useNavigate();
+    const {user} = useAppSelector(state => state.userAuth);
     const [searchValue, setSearchValue] = useState<string>("");
     const debouncedSearchTerm = useDebounce(searchValue, 500);
     const { data, isFetching } = useSearchStudentByNameQuery(debouncedSearchTerm,{ skip: debouncedSearchTerm == "" });
@@ -14,13 +17,13 @@ export const StudentPage = () => {
     return (<>
         <Row >
             <Col span={1} >
-                <Link to="/onboarding" state={{
+              { user?.authority && [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(user?.authority) && <Link to="/onboarding" state={{
                     type: 'student'
                 }}>
                     <Button type="primary" htmlType="submit">
                         New Admission
                     </Button>
-                </Link>
+                </Link>}
             </Col>
             <Col span={6} offset={16}>
                 <Select

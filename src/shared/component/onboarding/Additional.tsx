@@ -11,9 +11,10 @@ interface IAdditionalProps {
 export const AddAdditional = ({ form }: IAdditionalProps) => {
 
     const selectList = useAppSelector(state => state.commonData);
+    const {user} = useAppSelector(state => state.userAuth);
     const [displayCredential, setDisplayCredential] = useState<boolean>(false);
 
-    const showCredentials = ["STAFF"];
+    const showCredentials = ["STAFF","PRINCIPAL"];
     const disableDate = (currentDate: Dayjs) => {
         return currentDate.isAfter(new Date());
     };
@@ -26,7 +27,7 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
         return currentDate.isBefore(interviewDate);
     };
 
-    
+
     return (
         <><Form.List name="interview" initialValue={[{}]}>
             {(fields) => (
@@ -64,7 +65,7 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
                                             return Promise.reject(new Error('Select Role!'));
                                         },
                                     })]}>
-                                        <Select options={selectList.userRoleList} />
+                                        <Select options={selectList.userRoleList.filter(item=> item.label == user?.authority)} />
                                     </Form.Item>
                                 </Col>
                             </Row></div>))}

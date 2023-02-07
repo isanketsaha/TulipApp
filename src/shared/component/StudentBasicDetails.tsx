@@ -7,21 +7,21 @@ import { useState } from "react";
 
 export const StudentBasicDetails = () => {
 
-   const[page, setPage]= useState<number>(0);
+    const [page, setPage] = useState<number>(0);
     const { data } = useFetchAllStudentQuery(page);
 
     return (
-        <Space  direction="vertical" style={{ width: '100%' }}>
+        <Space direction="vertical" style={{ width: '100%' }}>
             {data?.content?.map((item, index) => {
                 return (<Card title={item.name} key={item.id} extra={<Link to={`../studentDetails/${item.id}`}> Detail</Link>} style={{ width: '100%', margin: '2vh 0' }}>
                     <BasicDetails data={item} key={item.id} />
                 </Card>)
             })}
             <Row>
-                <Col offset={20} span={4}>
-                <Pagination simple defaultCurrent={page+1} pageSize={15} total={data?.totalElements} onChange={(index) => setPage(index-1)}/>
+                <Col offset={17} span={7}>
+                    <Pagination simple showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`} defaultCurrent={page + 1} pageSize={15} total={data?.totalElements} onChange={(index) => setPage(index - 1)} />
                 </Col>
-                </Row>
+            </Row>
         </Space>
     )
 }

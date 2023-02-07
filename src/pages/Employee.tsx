@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDebounce } from "../shared/hook/useDebounce";
 import { useSeachEmployeeByNameQuery } from "../shared/redux/api/feature/employee/api";
+import { useAppSelector } from "../store";
+import { Role } from "../Role";
 
 
 export const EmployeePage = () => {
-
+const {user} = useAppSelector(state => state.userAuth);
     const [searchValue, setSearchValue] = useState<string>("");
     const debouncedSearchTerm = useDebounce(searchValue, 500);
     const { data, isFetching } = useSeachEmployeeByNameQuery(debouncedSearchTerm, { skip: debouncedSearchTerm == "" });
@@ -16,13 +18,13 @@ export const EmployeePage = () => {
         <>
             <Row>
                 <Col span={3} >
-                    <Link to="/onboarding" state={{
+                   {user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && <Link to="/onboarding" state={{
                         type: 'employee'
                     }}>
                         <Button type="primary" htmlType="submit">
                             Onboard Employee
                         </Button>
-                    </Link>
+                    </Link>}
                 </Col>
                 <Col span={5} offset={16}>
                     <Select

@@ -38,13 +38,13 @@ export const AppRouter = createBrowserRouter([
                         element: <EmployeePage />
                     }, {
                         path: 'onboarding',
-                        element: <Onboarding />
+                        element: <AuthRotes roles={[Role.ADMIN, Role.PRINCIPAL]}><Onboarding /></AuthRotes>
                     }, {
                         path: "students",
                         element: <StudentPage />
                     }, {
                         path: 'admisssion',
-                        element: <Onboarding />
+                        element: <AuthRotes roles={[Role.ADMIN, Role.PRINCIPAL, Role.STAFF]}><Onboarding /></AuthRotes>
                     }, {
                         path: 'employeeDetails/:id',
                         element: <ViewDetails />
