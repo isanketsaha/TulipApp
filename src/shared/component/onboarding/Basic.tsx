@@ -27,7 +27,7 @@ export const AddBasic = () => {
                 <Col span={12}>
                     <Form.Item name="name" label="Name" rules={[{ required: true }, {
                         pattern: new RegExp("[A-Za-z ]+$"),
-                        message: "Name does not accept numbers"
+                        message: "Name does not accept numbers or special character"
                        }]}>
                         <Input />
                     </Form.Item>
