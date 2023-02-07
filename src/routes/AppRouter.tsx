@@ -31,7 +31,7 @@ export const AppRouter = createBrowserRouter([
                         index: true,
                         element: <Dashboard />,
                     }, {
-                        path: "payment/:id",
+                        path: "payment/:id/:classId",
                         element: <Payment />,
                     }, {
                         path: 'staffs',

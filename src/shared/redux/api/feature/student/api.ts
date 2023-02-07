@@ -23,9 +23,12 @@ export const studentApi = createApi({
             query: (name) => `/searchByName/${name}`
         }),
         basicSearchById: builder.query<IBasicDetails, string>({
-            query: (id) => `/basicSearch/${id}`
+            query: (id) => `/basicSearch?id=${id}`
+        }),
+        basicSearchByIdAndClass: builder.query<IBasicDetails, {id: string | undefined, classId: string | undefined}>({
+            query: (id) => `/basicSearch?id=${id.id}&classId=${id.classId}`
         })
     })
 });
 
-export const { useFetchAllStudentQuery, useSearchStudentByNameQuery, useSearchStudentQuery , useBasicSearchByIdQuery} = studentApi;
+export const { useFetchAllStudentQuery, useSearchStudentByNameQuery, useSearchStudentQuery , useBasicSearchByIdQuery, useBasicSearchByIdAndClassQuery} = studentApi;

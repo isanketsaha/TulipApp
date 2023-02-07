@@ -35,7 +35,7 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
             else {
                 openNotification({
                     status: action.payload?.status,
-                    details: action.error.message
+                    details: action.payload.error
                 });
             }
 

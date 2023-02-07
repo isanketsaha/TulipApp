@@ -1,21 +1,19 @@
-import { Button, Card, Col, Descriptions, Divider, Form, Input, InputNumber, Radio, Row, Select, Space } from "antd"
+import { Button, Card, Col, Divider, Form, Input, InputNumber, Radio, Row, Select, Space } from "antd"
 import { BasicDetails } from "../shared/component/BasicDetails";
-import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
+import { useBasicSearchByIdAndClassQuery } from "../shared/redux/api/feature/student/api";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Fees } from "../shared/component/payment/Fees";
 import { Purchase } from "../shared/component/payment/Purchase";
 import { useAppSelector } from "../store";
 import { IPay } from "../shared/interface/IPay";
 import { usePaymentMutation } from "../shared/redux/api/feature/payment/api";
 
-
 export const Payment = () => {
 
-    const { id } = useParams();
+    const { id , classId} = useParams();
     const { paymentOptions } = useAppSelector(state => state.commonData);
-    const [studentId, setStudentId] = useState<string>("");
-    const { data: studentDetails } = useBasicSearchByIdQuery(studentId, { skip: studentId == '' });
+    
+    const { data: studentDetails } =  useBasicSearchByIdAndClassQuery( {id, classId}, { skip: !(id && classId) });
     const [form] = Form.useForm();
     let navigate = useNavigate();
 
@@ -56,12 +54,6 @@ export const Payment = () => {
             }
         });
     }
-
-    useEffect(() => {
-        if (id) {
-            setStudentId(id);
-        }
-    }, [])
 
     return (
         <Space direction="vertical" style={{ width: '100%' }} size="large">

@@ -1,7 +1,8 @@
-import { Row, Col, Form, Input, DatePicker, InputNumber, Select } from "antd";
+import { Row, Col, Form, Input, DatePicker, InputNumber, Select, Checkbox } from "antd";
 import { useAppSelector } from "../../../store";
 import { useLocation } from "react-router-dom";
 import type { Dayjs } from 'dayjs';
+import {WhatsAppOutlined} from '@ant-design/icons';
 
 
 export const AddBasic = () => {
@@ -12,7 +13,10 @@ export const AddBasic = () => {
        return currentDate.isAfter(new Date());
       };
 
-
+      const prefixSelector = (
+        <Form.Item name="whatsappAvailable" valuePropName="checked" noStyle>
+          <Checkbox><WhatsAppOutlined/></Checkbox>
+        </Form.Item>);
 
     return (
         <>
@@ -35,7 +39,10 @@ export const AddBasic = () => {
             <Row gutter={[40, 40]}>
                 <Col span={12}>
                     <Form.Item name="contact" label="Phone Number" rules={[{ required: true,  type: 'number'}]} >
-                        <InputNumber maxLength={12} controls={false}  style={{ width: '100%' }} />
+                   
+                    <InputNumber addonBefore={prefixSelector}  maxLength={12} controls={false}   />
+                      
+                        
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -80,7 +87,7 @@ export const AddBasic = () => {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item name="experince"  label="Experince" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
+                        <Form.Item name="experince"  label="Experience" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
                             <InputNumber controls={false}  style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>

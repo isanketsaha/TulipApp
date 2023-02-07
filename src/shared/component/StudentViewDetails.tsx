@@ -52,14 +52,13 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                         </Descriptions.Item>
                         <Descriptions.Item label="Phone Number">
                             {studentData?.phoneNumber}
-                        </Descriptions.Item>
-
+</Descriptions.Item>
                         <Descriptions.Item label="Classroom">{studentData?.classDetails[sessionIndex]?.std}</Descriptions.Item>
                         <Descriptions.Item label="Class Teacher">{studentData?.classDetails[sessionIndex]?.headTeacher}</Descriptions.Item>
                         <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
                         <Descriptions.Item label="Session"> {studentData?.classDetails.length>1 && !(studentData?.classDetails.length == sessionIndex+1) && <Button onClick={() => setSessionIndex(sessionIndex +1)} type="link" icon={<CaretLeftOutlined />}/> }{studentData?.classDetails[sessionIndex]?.session} { studentData?.classDetails.length>1 && !( sessionIndex ==0 ) && <Button  onClick={() => setSessionIndex(sessionIndex -1)} type="link" icon={<CaretRightOutlined />}/> }</Descriptions.Item>
                         <Descriptions.Item label="Payment">
-                            <Link to={`/payment/${studentData?.id}`}>
+                            <Link to={`/payment/${studentData?.id}/${studentData?.classDetails[sessionIndex]?.id}`}>
                                 <Button type="primary">
                                     Pay
                                 </Button>
