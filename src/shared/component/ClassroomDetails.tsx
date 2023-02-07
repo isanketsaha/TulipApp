@@ -3,8 +3,9 @@ import { useFetchClassroomDetailsQuery, usePromoteStudentMutation } from "../red
 import { Link } from "react-router-dom";
 import { IClassList } from "../interface/IClassList";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "/src/store";
+
 
 interface IClassDetailsProsp {
     stdList: IClassList,
@@ -64,7 +65,6 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
         })
     }
 
-
     const items: TabsProps['items'] = [
         {
             key: '1',
@@ -117,7 +117,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                     <List.Item.Meta
                                         title={<Row>
                                             <Col span={1}>
-                                                <div hidden={false} ><Checkbox value={item.id} /></div>
+                                                <div hidden={!(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled')} ><Checkbox value={item.id} /></div>
                                                 {index + 1}
                                             </Col>
                                             <Col>
