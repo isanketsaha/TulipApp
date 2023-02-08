@@ -6,13 +6,16 @@ import { AddDependent } from "./Dependent";
 import { AddAdditional } from "./Additional";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useOnboardUserMutation } from "../../redux/api/feature/onboarding/api";
+import { useFetchClassroomIdQuery } from "../../redux/api/feature/classroom/api";
 
 export const Onboarding = () => {
     let navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [form] = Form.useForm();
+    const [studentPaymentDetails, setStudentPaymentDetails] = useState<{ std: string, sessionId: number }>();
 
     const [onboardUser, { isSuccess, data: id }] = useOnboardUserMutation();
+    const { data } = useFetchClassroomIdQuery(studentPaymentDetails, { skip: !studentPaymentDetails });
 
     const { state } = useLocation();
 
@@ -22,7 +25,8 @@ export const Onboarding = () => {
             navigate(`/employeeDetails/${id}`, { replace: true });
         }
         else if (state?.type == 'student') {
-            navigate(`/payment/${id}`, { replace: true });
+
+            navigate(`/payment/${id}/${data}`, { replace: true });
         }
     }
 
@@ -53,6 +57,8 @@ export const Onboarding = () => {
                 bank,
                 credential
             };
+            const { std, session } = form.getFieldsValue(true);
+            setStudentPaymentDetails({ std, sessionId: session });
             onboardUser(data);
         });
     }
@@ -78,7 +84,7 @@ export const Onboarding = () => {
     if (state.type == 'employee') {
         stepOptions.push({
             title: 'Additional Details',
-            content: <AddAdditional form={form}/>
+            content: <AddAdditional form={form} />
         });
     }
 
@@ -115,9 +121,9 @@ export const Onboarding = () => {
                 <Row>
 
 
-                     <Col span={2} offset={20}>
-                        
-                     {currentStep != 0 &&   <Button hidden={currentStep > 0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
+                    <Col span={2} offset={20}>
+
+                        {currentStep != 0 && <Button hidden={currentStep > 0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
                             Prev
                         </Button>}
                     </Col>
@@ -129,7 +135,7 @@ export const Onboarding = () => {
                         </div>
                     </Col>
 
-                    {currentStep != (stepOptions.length - 1 )&& <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
+                    {currentStep != (stepOptions.length - 1) && <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
 
                         <Button type="primary" onClick={() => { onNext() }}>
                             Next

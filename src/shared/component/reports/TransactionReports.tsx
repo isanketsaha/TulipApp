@@ -28,7 +28,7 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
         setTotalCollection(total);
     }, [transactionReport])
     return (<>
-        {transactionReport && <List
+        {transactionReport?.content && <List
             header={totalCollection > 0 ? <Row><Col offset={17}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -40,6 +40,7 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
                 showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                 onChange: (page: number, pageSize: number) => {setPagination(page-1)},
                 pageSize: 5,
+                hideOnSinglePage: true,
                 total: transactionReport.totalElements
               }}
            >

@@ -164,7 +164,7 @@ export const Payment = () => {
         >
             {payData?.payType == 'FEES' && <Table columns={feesColumns}
                 dataSource={payData?.feeItem}
-                pagination={{ pageSize: 10, showTotal(total, range) {
+                pagination={{ pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
                     return `${range[0]}-${range[1]} of ${total} items`
                 } }} scroll={{ y: 240 }}
                 summary={() => (
@@ -193,7 +193,7 @@ export const Payment = () => {
 
             {(payData?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
                 dataSource={payData?.purchaseItems}
-                pagination={{ pageSize: 10 , showTotal(total, range) {
+                pagination={{ pageSize: 10 , hideOnSinglePage: true, showTotal(total, range) {
                     return `${range[0]}-${range[1]} of ${total} items`
                 }}} scroll={{ y: 240 }}
                 summary={() => (

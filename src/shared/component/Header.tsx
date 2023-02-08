@@ -18,10 +18,6 @@ export const AppHeader = () => {
         dispatch(updateSelectedSession(data));
     }
 
-    // const handleChange = (value: { value: string; label: React.ReactNode }) => {
-    //     console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-    // };
-
     return (
         <Header className="header" style={{ background: '#800000', color: 'white', top: 0, right: 0, left: 0, zIndex: 10, position: 'fixed' , overflow:"hidden"}} >
             <Row style={{ marginTop: '-2vh' }}>

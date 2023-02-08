@@ -21,6 +21,7 @@ export const Audit = () => {
                     pagination={{
                         onChange: (page: number, pageSize: number) => { setPagination(page - 1) },
                         pageSize: 5,
+                        hideOnSinglePage: true,
                         showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                         simple: true,
                         total: data?.totalElements,

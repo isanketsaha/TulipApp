@@ -15,6 +15,10 @@ export const classroomApi = createApi({
             query: () => "/all",
             
         }),
+        fetchClassroomId: builder.query<number, {std: string, sessionId : number} | undefined>({
+            query: (item) => item ? `/id?std=${item.std}&sessionId=${item.sessionId}` : '',
+            
+        }),
         fetchClassroomDetails: builder.query<IClassDetails, number>({
             query: (id) => `/details/${id}`,
             providesTags: () => [{ type: 'Student' }]
@@ -32,4 +36,4 @@ export const classroomApi = createApi({
     })
 });
 
-export const {useFetchAllClassroomQuery, useFetchClassroomDetailsQuery, usePromoteStudentMutation} = classroomApi;
+export const {useFetchAllClassroomQuery, useFetchClassroomDetailsQuery, usePromoteStudentMutation, useFetchClassroomIdQuery} = classroomApi;

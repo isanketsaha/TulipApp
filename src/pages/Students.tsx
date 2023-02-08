@@ -21,7 +21,7 @@ export const StudentPage = () => {
                     type: 'student'
                 }}>
                     <Button type="primary" htmlType="submit">
-                        New Admission
+                        Student Enrollment
                     </Button>
                 </Link>}
             </Col>

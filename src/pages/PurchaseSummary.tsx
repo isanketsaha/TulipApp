@@ -172,7 +172,7 @@ export const PurchaseSummary = () => {
 
             {paySummary?.payType == 'FEES' && <Table columns={feesColumns}
                 dataSource={paySummary?.feesItem}
-                pagination={{ pageSize: 10, showTotal(total, range) {
+                pagination={{ pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
                     return `${range[0]}-${range[1]} of ${total} items`
                 } }} scroll={{ y: 240 }}
                 summary={() => (
@@ -201,7 +201,7 @@ export const PurchaseSummary = () => {
 
             {(paySummary?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
                 dataSource={paySummary?.purchaseItems}
-                pagination={{ pageSize: 10 , showTotal(total, range) {
+                pagination={{ pageSize: 10 ,  hideOnSinglePage: true, showTotal(total, range) {
                     return `${range[0]}-${range[1]} of ${total} items`
                 }}} scroll={{ y: 240 }}
                 summary={() => (
@@ -231,7 +231,7 @@ export const PurchaseSummary = () => {
             {
                 paySummary?.payType == 'EXPENSE' && <Table columns={expenseColumns}
                 dataSource={paySummary?.expenseItems}
-                pagination={{ pageSize: 10, showTotal(total, range) {
+                pagination={{ pageSize: 10,  hideOnSinglePage: true, showTotal(total, range) {
                     return `${range[0]}-${range[1]} of ${total} items`
                 } }} scroll={{ y: 240 }}
                 summary={() => (
