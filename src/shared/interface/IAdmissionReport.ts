@@ -1,5 +1,7 @@
 export interface IAdmissionReport {
      schoolStrength: number
-     studentAdmissionCountThisWeek: number
-     studentAdmissionCountThisMonth: number
+     admissionThisWeek: number
+      admissionThisMonth: number
+      withdrawnThisWeek: number
+      withdrawnThisMonth: number
 }
