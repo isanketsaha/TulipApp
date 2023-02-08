@@ -65,7 +65,7 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
                                             return Promise.reject(new Error('Select Role!'));
                                         },
                                     })]}>
-                                        <Select options={selectList.userRoleList.filter(item=> item.label == user?.authority)} />
+                                        <Select options={selectList.userRoleList.filter(item=> item.label != user?.authority)} />
                                     </Form.Item>
                                 </Col>
                             </Row></div>))}
