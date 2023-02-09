@@ -1,12 +1,12 @@
 import { Button, Card, Col, DatePicker, Form, Modal, Row } from "antd"
 import { useState } from "react";
 import { Space } from 'antd';
-import { TransactionReport } from "./reports/TransactionReports";
-import { StudentReport } from "./reports/Student";
-import { StaffReport } from "./reports/StaffReport";
-import { Stock } from "./reports/Stock";
-import { AddExpense } from "./AddExpense"
-import { useAddExpenseMutation } from "../redux/api/feature/payment/api";
+import { TransactionReport } from "../shared/component/reports/TransactionReports";
+import { StudentReport } from "../shared/component/reports/Student";
+import { StaffReport } from "../shared/component/reports/StaffReport";
+import { Stock } from "../shared/component/reports/Stock";
+import { AddExpense } from "../shared/component/AddExpense"
+import { useAddExpenseMutation } from "../shared/redux/api/feature/payment/api";
 import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
 

@@ -16,7 +16,7 @@ export const StudentReport = () => {
                 <Text type="success" style={{ fontSize: 'xxx-large' }}>{data?.schoolStrength} </Text>
             </Col>
         </Row>
-        <Divider>Admission</Divider>
+        <Divider>Enrollment</Divider>
         <Row gutter={16}>
             <Col span={10} offset={2}>
                 <Statistic prefix={<ArrowUpOutlined />} valueStyle={{ color: 'orange' }} suffix ={ <div style={{marginLeft:'3vmin', color: 'red'}}><>{data?.withdrawnThisWeek}</><ArrowDownOutlined /></div>}  title="Current Week" value={data?.admissionThisWeek} />

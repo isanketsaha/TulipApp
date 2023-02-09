@@ -1,7 +1,6 @@
-import { Children } from "react";
-import { createBrowserRouter, Route, Router } from "react-router-dom"
-import App from "../App";
-import { Dashboard } from "../shared/component/Dashboard";
+
+import { createBrowserRouter } from "react-router-dom"
+import { Dashboard } from "../pages/Dashboard";
 import { Error404 } from "../error/Error404";
 import { Home } from "../module/Home"
 import { Login } from "../module/Login";
