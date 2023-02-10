@@ -11,9 +11,9 @@ export const StudentBasicDetails = () => {
     const { data } = useFetchAllStudentQuery(page);
 
     return (
-        <Space direction="vertical" style={{ width: '100%' }}>
+        <Space direction="vertical" style={{ width: '100%' }} size={"small"}>
             {data?.content?.map((item, index) => {
-                return (<Card title={item.name} key={item.id} extra={<Link to={`../studentDetails/${item.id}`}> Detail</Link>} style={{ width: '100%', margin: '2vh 0' }}>
+                return (<Card title={item.name} key={item.id} extra={<Link to={`../studentDetails/${item.id}`}> Detail</Link>} style={{ width: '100%', margin: '1vh 0' }}>
                     <BasicDetails data={item} key={item.id} />
                 </Card>)
             })}

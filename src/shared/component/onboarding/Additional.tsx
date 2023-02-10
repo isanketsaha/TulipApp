@@ -130,7 +130,10 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
                             </Row><Row gutter={[40, 40]}>
 
                                     <Col span={12}>
-                                        <Form.Item name={[name, "ifsc"]} label="IFSC Code" rules={[{ required: true }]}>
+                                        <Form.Item name={[name, "ifsc"]} label="IFSC Code" rules={[{ required: true},  {
+                                            pattern: new RegExp("^\\S*$"),
+                                            message: "No Space Allowed"
+                                        } ]}>
                                             <Input />
                                         </Form.Item>
                                     </Col>

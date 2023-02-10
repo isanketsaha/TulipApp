@@ -80,8 +80,11 @@ export const AddBasic = () => {
                 </Row>
                 : <Row gutter={[40, 40]}>
                     <Col span={8}>
-                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true ,   type: 'number'}]}>
-                            <InputNumber maxLength={12} controls={false} style={{ width: '100%' }} />
+                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true}, {
+                                            pattern: new RegExp("^[0-9]*$"),
+                                            message: "No Alphabets Allowed"
+                                        } ]}>
+                            <Input maxLength={12}  style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
