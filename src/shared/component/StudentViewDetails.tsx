@@ -1,4 +1,4 @@
-import { Descriptions, Badge,  Space, Button, Divider, Switch, Modal } from "antd"
+import { Descriptions, Badge, Space, Button, Divider, Switch, Modal } from "antd"
 import dayjs from "dayjs";
 import { useDeactivateStudentMutation, useSearchStudentQuery } from "../redux/api/feature/student/api";
 import { FeesCalender } from "./FeesCalender";
@@ -9,6 +9,7 @@ import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import { Role } from "/src/Role";
+import { WhatsAppOutlined } from '@ant-design/icons';
 
 interface IStudentViewProps {
     studentId: string
@@ -23,7 +24,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
     const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" });
     const [deactivateStudent] = useDeactivateStudentMutation();
 
-  
+
 
 
     return (
@@ -39,7 +40,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             {dayjs(studentData?.admissionDate).format("DD/MM/YYYY")}
                         </Descriptions.Item>
                         <Descriptions.Item label="Active" span={1}>
-                            
+
                             {user?.authority && [Role.PRINCIPAL].includes(user?.authority) ?
                                 <Switch checkedChildren="ACTIVE" unCheckedChildren="INACTIVE" checked={studentData?.active} onClick={(checked) => setOpen(!checked)} />
                                 : <Badge status={studentData?.active ? "success" : "error"} text={studentData?.active ? "ACTIVE" : "INACTIVE"} />
@@ -57,7 +58,14 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             {studentData?.religion}
                         </Descriptions.Item>
                         <Descriptions.Item label="Phone Number">
-                            {studentData?.phoneNumber}
+                            <Space> <Switch
+                                checkedChildren={<WhatsAppOutlined />}
+                                unCheckedChildren={<WhatsAppOutlined />}
+                                defaultChecked={studentData?.whatsappAvailable}
+                                disabled
+                            />
+                                {studentData?.phoneNumber}
+                            </Space>
                         </Descriptions.Item>
                         <Descriptions.Item label="Classroom">{studentData?.classDetails[sessionIndex]?.std}</Descriptions.Item>
                         <Descriptions.Item label="Class Teacher">{studentData?.classDetails[sessionIndex]?.headTeacher}</Descriptions.Item>
@@ -79,7 +87,12 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                 <Descriptions key={item.id} bordered>
                                     <Descriptions.Item label="Name">{item.name}</Descriptions.Item>
                                     <Descriptions.Item label="Relation"> {item.relationship}</Descriptions.Item>
-                                    <Descriptions.Item label="Contact">{item.contact}</Descriptions.Item>
+                                    <Descriptions.Item label="Contact">  <Space> <Switch
+                                        checkedChildren={<WhatsAppOutlined />}
+                                        unCheckedChildren={<WhatsAppOutlined />}
+                                        defaultChecked={item?.whatsappAvailable}
+                                        disabled
+                                    /> {item.contact} </Space></Descriptions.Item>
                                 </Descriptions>
                             );
                         })}
@@ -95,7 +108,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                 centered
                 open={open}
                 okText={"Confirm"}
-                onOk={() =>  deactivateStudent(studentId).then(data => setOpen(false))}
+                onOk={() => deactivateStudent(studentId).then(data => setOpen(false))}
                 onCancel={() => setOpen(false)}
             >
                 <b>{studentData?.name}</b> will be removed from School. Are you sure ?

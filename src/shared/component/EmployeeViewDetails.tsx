@@ -1,6 +1,7 @@
-import { Descriptions, Badge, Divider, Space } from "antd";
+import { Descriptions, Badge, Divider, Space, Switch } from "antd";
 import dayjs from "dayjs";
 import { useSearchEmployeeByIdQuery } from "../redux/api/feature/employee/api";
+import { WhatsAppOutlined } from '@ant-design/icons';
 
 interface IEmployeeProps {
     employeeId: string
@@ -35,7 +36,14 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                 {employeeData?.religion}
             </Descriptions.Item>
             <Descriptions.Item label="Phone Number">
+            <Space> <Switch
+                    checkedChildren={<WhatsAppOutlined />}
+                    unCheckedChildren={<WhatsAppOutlined />}
+                    defaultChecked={employeeData?.whatsappAvailable}
+                    disabled
+                /> 
                 {employeeData?.phoneNumber}
+                </Space>
             </Descriptions.Item>
         </Descriptions>
 

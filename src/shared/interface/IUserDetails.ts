@@ -20,6 +20,7 @@ export interface IUserDetails {
     religion: string,
     authority: string,
     previousSchool: string,
+    whatsappAvailable: boolean,
     classDetails: IClassDetails[],
     dependent: IDependent[],
     bank: IBank,

@@ -70,7 +70,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             key: '1',
             label: `Summary`,
             children: <Space direction="vertical" style={{ width: '100%' }}><Card style={{ width: '100%' }}>
-                <Descriptions>
+                <Descriptions bordered>
                     <Descriptions.Item label="Head Teacher">{classDetails?.headTeacher}</Descriptions.Item>
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
