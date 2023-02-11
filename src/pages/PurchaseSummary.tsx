@@ -22,12 +22,7 @@ export const PurchaseSummary = () => {
     const { data: item } = useBasicSearchByIdQuery(String(paySummary?.studentId) ?? '', { skip: !paySummary?.studentId });
 
     const feesColumns = [
-        {
-            title: '#',
-            key: 'index',
-            width: "20px",
-           
-          },
+        
         {
             title: 'Fees Name',
             dataIndex: 'feesTitle',
@@ -181,7 +176,7 @@ export const PurchaseSummary = () => {
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
-                            <Table.Summary.Cell colSpan={5} index={1}>
+                            <Table.Summary.Cell colSpan={4} index={1}>
                                 Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {paySummary?.paymentMode}
                                 </Tag>
