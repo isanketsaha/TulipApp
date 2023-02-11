@@ -35,9 +35,9 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                         <Descriptions.Item label="Student ID"> {studentData?.id}</Descriptions.Item>
                         <Descriptions.Item label="Name">{studentData?.name}</Descriptions.Item>
                         <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
-                        <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
+                        <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
                         <Descriptions.Item label="Admission On" span={1}>
-                            {dayjs(studentData?.admissionDate).format("DD/MM/YYYY")}
+                            {dayjs(studentData?.admissionDate).format("DD-MM-YYYY")}
                         </Descriptions.Item>
                         <Descriptions.Item label="Active" span={1}>
 

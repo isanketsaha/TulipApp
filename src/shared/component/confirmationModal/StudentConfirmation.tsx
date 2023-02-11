@@ -15,7 +15,7 @@ export const StudentConfirm = ({ studentData }: IStudentConfirmProps) => {
         <><Descriptions bordered>
             <Descriptions.Item label="Name">{studentData?.name}</Descriptions.Item>
             <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
-            <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
+            <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Address">
                 {studentData?.address}
             </Descriptions.Item>

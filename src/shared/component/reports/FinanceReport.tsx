@@ -23,7 +23,7 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
             dataIndex: 'transactionDate',
             key: 'transactionDate',
             sorter: (a, b) => (new Date(a.transactionDate).getTime()) - (new Date(b.transactionDate).getTime()),
-            render: (item) => dayjs(item).format("DD/MMM/YYYY")
+            render: (item) => dayjs(item).format("DD-MM-YYYY")
         },
         {
             title: 'Fees',

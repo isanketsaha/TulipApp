@@ -19,7 +19,7 @@ export const BasicDetails: FC<ItemProps> = ({data}: ItemProps) => {
             <Descriptions.Item label={path.includes('staffs') ? "Class Teacher" : "Class"}>
                 {data.std}
             </Descriptions.Item>
-            <Descriptions.Item label={path.includes('staffs') ? "Date Of Birth" : "Age"}>{ path.includes('staffs') ? dayjs(data.dob).format("DD/MM/YYYY") : data.age}</Descriptions.Item>
+            <Descriptions.Item label={path.includes('staffs') ? "Date Of Birth" : "Age"}>{ path.includes('staffs') ? dayjs(data.dob).format("DD-MM-YYYY") : data.age}</Descriptions.Item>
             <Descriptions.Item label="Gender">{data.gender}</Descriptions.Item>
             
             <Descriptions.Item label="Telephone">{data.phoneNumber}</Descriptions.Item>

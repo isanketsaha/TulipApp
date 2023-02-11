@@ -43,7 +43,7 @@ export const Audit = () => {
                                                 {(index + 1) }.
                                             </Col>
                                             <Col span={4}>
-                                                {dayjs(item.dateTime).format('DD/MM/YYYY hh:mm a')}
+                                                {dayjs(item.dateTime).format('DD-MM-YYYY hh:mm a')}
                                             </Col>
                                             <Col span={2}>
                                                 <Tag color="red">  {item.type}</Tag>

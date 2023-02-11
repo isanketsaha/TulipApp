@@ -34,7 +34,7 @@ export const AddBasic = () => {
                 </Col>
                 <Col span={12}>
                     <Form.Item name="dob" label="Date Of Birth" rules={[{ required: true }]}>
-                        <DatePicker format={"DD/MM/YYYY"} style={{ width: '100%' }} disabledDate={disableDate}/>
+                        <DatePicker format={"DD-MM-YYYY"} style={{ width: '100%' }} disabledDate={disableDate}/>
                     </Form.Item>
                 </Col>
             </Row>

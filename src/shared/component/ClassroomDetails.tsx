@@ -5,6 +5,7 @@ import { IClassList } from "../interface/IClassList";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "/src/store";
+import dayjs from "dayjs";
 
 
 interface IClassDetailsProsp {
@@ -126,7 +127,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                         </Row>}
                                         description={<Row>
                                             <Col offset={1}>
-                                                {item.gender}
+                                             <Space size={"large"}> <> Gender -  {item.gender} |</> <>  Birthday - {dayjs(item.dob).format("DD-MMM-YYYY")} |</> <> Contact - {item.phoneNumber}  </> </Space> 
                                             </Col>
                                         </Row>} />
                                     <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>

@@ -47,7 +47,7 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
                   description={<Row>
                     <Col span={1}>{(index + 1) * (page + 1)}.</Col>
                     <Col span={4}>
-                      {dayjs(item.paymentDateTime).format("DD/MM/YYYY")}
+                      {dayjs(item.paymentDateTime).format("DD-MM-YYYY")}
                     </Col>
                     <Col span={7}>
 

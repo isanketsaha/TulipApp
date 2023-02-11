@@ -9,8 +9,8 @@ export const Accounts = () => {
 
     const { RangePicker } = DatePicker;
 
-    const [fromDate, setFromDate] = useState<string>(dayjs(new Date()).add(-30, 'd').format('DD/MMM/YYYY'));
-    const [toDate, setToDate] = useState<string>(dayjs(new Date()).format('DD/MMM/YYYY'));
+    const [fromDate, setFromDate] = useState<string>(dayjs(new Date()).add(-30, 'd').format('DD-MM-YYYY'));
+    const [toDate, setToDate] = useState<string>(dayjs(new Date()).format('DD-MM-YYYY'));
 
     const rangePresets: {
         label: string;
@@ -46,7 +46,7 @@ export const Accounts = () => {
         <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
             <Row >
                 <Tabs style={{ width: '100%' }}  size="large" defaultActiveKey="1" 
-                tabBarExtraContent={<RangePicker disabled={[false, true]} format={"DD/MMM/YYYY"} presets={rangePresets} onChange={dateRangeChanged}
+                tabBarExtraContent={<RangePicker disabled={[false, true]} format={"DD-MM-YYYY"} presets={rangePresets} onChange={dateRangeChanged}
                     defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} />} items={tabList} />
             </Row>
 

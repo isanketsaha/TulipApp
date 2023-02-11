@@ -62,7 +62,7 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
             const key = String(index + 1);
             const url: string = item.label=='Office'?  '/': `/${item.label}`.toLowerCase();
             return {
-                key: `sub${key}`,
+                key: `${key}`,
                 label: (<Link to={url}> {item.label} </Link>),
                 icon: item.icon
             };
@@ -106,6 +106,7 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
             <Menu
                 mode="vertical"
                 style={{ borderRight: 0 }}
+                defaultSelectedKeys={['1']}
                 items={options}
             />
         </Sider>

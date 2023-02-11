@@ -18,7 +18,7 @@ export const ExployeeConfirm = ({ employeeData }: IEmployeeConfirmProps) => {
             <Descriptions bordered>
                 <Descriptions.Item label="Name">{employeeData?.name}</Descriptions.Item>
                 <Descriptions.Item label="Gender">{employeeData?.gender}</Descriptions.Item>
-                <Descriptions.Item label="Date Of Birth">{dayjs(employeeData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
+                <Descriptions.Item label="Date Of Birth">{dayjs(employeeData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
 
                 <Descriptions.Item label="Address">
                     {employeeData?.address}
@@ -74,7 +74,7 @@ export const ExployeeConfirm = ({ employeeData }: IEmployeeConfirmProps) => {
             </Space>
 
             <Descriptions bordered>
-            <Descriptions.Item label="Joined On">{dayjs(employeeData?.interview?.doj).format("DD/MM/YYYY")}</Descriptions.Item>
+            <Descriptions.Item label="Joined On">{dayjs(employeeData?.interview?.doj).format("DD-MM-YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Salary">{employeeData?.interview?.salary}</Descriptions.Item>
             <Descriptions.Item label="Role">{employeeData?.interview?.role}</Descriptions.Item>
             </Descriptions>
