@@ -14,7 +14,7 @@ import { Classroom } from "../pages/Classroom";
 import { Accounts } from "../pages/Account";
 import { PurchaseSummary } from "../pages/PurchaseSummary";
 import { AuthRotes } from "./AuthRoters";
-import { Role } from "../Role";
+import { Role } from "../shared/utils/Role";
 
 
 export const AppRouter = createBrowserRouter([

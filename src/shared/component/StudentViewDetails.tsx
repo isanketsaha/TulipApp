@@ -8,7 +8,7 @@ import { Error500 } from "/src/error/Error500";
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { useAppSelector } from "/src/store";
-import { Role } from "/src/Role";
+import { Role } from "../utils/Role";
 import { WhatsAppOutlined } from '@ant-design/icons';
 
 interface IStudentViewProps {

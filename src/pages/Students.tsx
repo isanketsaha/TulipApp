@@ -5,7 +5,7 @@ import { useSearchStudentByNameQuery } from "../shared/redux/api/feature/student
 import { useState } from "react"
 import { useDebounce } from "../shared/hook/useDebounce"
 import { useAppSelector } from "../store"
-import { Role } from "../Role"
+import { Role } from "../shared/utils/Role"
 
 export const StudentPage = () => {
     let navigate = useNavigate();

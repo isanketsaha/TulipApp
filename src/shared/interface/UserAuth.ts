@@ -1,4 +1,4 @@
-import { Role } from "/src/Role";
+import { Role } from "../utils/Role";
 
 export interface UserAuth {
     userName : string | null,

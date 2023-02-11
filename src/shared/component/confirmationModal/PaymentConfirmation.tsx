@@ -16,15 +16,11 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
             key: 'feesTitle',
         },
         {
-            title: 'From Month',
-            dataIndex: 'from',
-            key: 'from',
+            title: 'Month',
+            dataIndex: 'month',
+            key: 'month',
         },
         {
-            title: 'To Month',
-            dataIndex: 'to',
-            key: 'to',
-        }, {
             title: ' Unit Price',
             dataIndex: 'unitPrice',
             key: 'unitPrice',
@@ -107,11 +103,11 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                     pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
                         return `${range[0]}-${range[1]} of ${total} items`
                     }
-                }} scroll={{ y: 240 }}
+                }} scroll={{ y: 500 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
-                            <Table.Summary.Cell colSpan={4} index={1}>
+                            <Table.Summary.Cell colSpan={3} index={1}>
                                 Pay Mode :  <Tag color={payData?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {payData?.paymentMode}
                                 </Tag>
@@ -130,7 +126,7 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                 )}
 
             />}
-            
+
         {(payData?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
             dataSource={payData?.purchaseItems}
             pagination={{

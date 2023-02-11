@@ -27,7 +27,7 @@ export const paymentApi = createApi({
                     body: pay
                 });
             },
-           
+
         }),
         fetchPaymentDetailsById: builder.query<IPayDetailsSummary, string>({
             query: (payId) => `/details/${payId}`,
@@ -40,7 +40,14 @@ export const paymentApi = createApi({
         }),
         fetchFeesGraph: builder.query<IPayGraph, IPayGraphFilter>({
             query: (item) => `/feesgraph/${item.studentId}/${item.classId}`,
-            providesTags:  ['Payment']
+            providesTags: ['Payment'],
+            transformResponse: (response:  IPayGraph ) => {
+                const months = response?.paidMonths.map(month => month.split("/")[0]);
+                return {
+                    ...response,
+                    paidMonths: months,
+                }
+            }
         }),
         addExpense: builder.mutation<number, IExpenseItem[]>({
             query: (expense) => {

@@ -5,7 +5,7 @@ import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../redux/slices/UserAuthSlice";
-import { Role } from "/src/Role";
+import { Role } from "../utils/Role";
 interface nav {
     label: string,
     link?: string,

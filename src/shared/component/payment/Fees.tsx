@@ -53,6 +53,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
             feeItem[rowKey] = {
                 ...feeItem[rowKey],
                 feesTitle:selectedFees?.name,
+                rule: selectedFees?.applicableRule,
                 unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
                     style: 'currency',
@@ -80,6 +81,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         feeItem[rowKey] = {
             ...feeItem[rowKey],
             feesTitle:selectedFees?.name,
+            rule: selectedFees?.applicableRule,
             unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -159,6 +161,13 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                     <Col hidden={true}>
                                         <Form.Item
                                             name={[name, "feesTitle"]}
+                                        >
+                                            <Input></Input>
+                                               </Form.Item>
+                                    </Col>
+                                    <Col hidden={true}>
+                                        <Form.Item
+                                            name={[name, "rule"]}
                                         >
                                             <Input></Input>
                                                </Form.Item>

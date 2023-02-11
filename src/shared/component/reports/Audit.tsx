@@ -48,13 +48,13 @@ export const Audit = () => {
                                             <Col span={2}>
                                                 <Tag color="red">  {item.type}</Tag>
                                             </Col>
-                                            <Col span={1}>
+                                            <Col span={3}>
                                                 <Text type="warning"> {item.status} </Text>
                                             </Col>
-                                            <Col span={5}>
+                                            <Col span={4}>
                                                 {item.endpoint}
                                             </Col>
-                                            <Col span={8}>
+                                            <Col span={7}>
                                                 {item.description}
                                             </Col>
                                             <Col span={2}>

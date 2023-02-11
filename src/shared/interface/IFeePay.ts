@@ -3,6 +3,5 @@ export interface IFeePay {
     feesTitle: string,
      unitPrice: number,
       amount: number, 
-      from: string,
-       to: string,
+      month: string
 }

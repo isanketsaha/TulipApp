@@ -1,4 +1,4 @@
-import { Role } from "../Role";
+import { Role } from "../shared/utils/Role";
 import { useAppSelector } from "../store";
 import { Error403 } from "../error/Error403";
 

@@ -10,7 +10,7 @@ import { useFetchClassroomIdQuery } from "../../redux/api/feature/classroom/api"
 import dayjs from "dayjs";
 import { FeesCalender } from "../FeesCalender";
 import { TransactionHistory } from "../TransactionHistory";
-import { Role } from "/src/Role";
+import { Role } from "../../utils/Role";
 import { useAppSelector } from "/src/store";
 import { StudentConfirm } from "../confirmationModal/StudentConfirmation";
 import { ExployeeConfirm } from "../confirmationModal/EmployeeConfirmation";

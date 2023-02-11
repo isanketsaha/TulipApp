@@ -9,6 +9,8 @@ import { IPay } from "../shared/interface/IPay";
 import { usePaymentMutation } from "../shared/redux/api/feature/payment/api";
 import { useState } from "react";
 import { PaymentConfirmation } from "../shared/component/confirmationModal/PaymentConfirmation";
+import { FeesRuleType } from "../shared/utils/FeesRuleType";
+import dayjs, { Dayjs } from "dayjs";
 
 export const Payment = () => {
     const { id, classId } = useParams();
@@ -24,10 +26,27 @@ export const Payment = () => {
 
     const [payment] = usePaymentMutation();
 
-    
+
 
     const submit = (value: any) => {
         console.log(value);
+        const feesLineItem: { feesId: any; unitPrice: number; amount: number; month?: string; feesTitle: string }[] = [];
+        value.feeItem ? value.feeItem.map((item: any) => {
+            if (item.rule != FeesRuleType.Yearly) {
+                feesLineItem.push(...mapNonAnnualFees(item));
+
+            }
+            else {
+                feesLineItem.push({
+                    feesId: item.feesId,
+                    feesTitle: item.feesTitle,
+                    unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
+                    amount: Number(item.amount.replace(/[^0-9-]+/g, "")) / 100,
+
+                })
+            }
+
+        }) : [];
 
         const pay = {
             ...value,
@@ -41,20 +60,30 @@ export const Payment = () => {
                 }
 
             }) : [],
-            feeItem: value.feeItem ? value.feeItem.map((item: any) => {
-                return {
-                    ...item,
-                    unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
-                    amount: Number(item.amount.replace(/[^0-9-]+/g, "")) / 100,
-                    from: item.from.format("MMM/YYYY"),
-                    to: item.to.format("MMM/YYYY")
-                }
-            }) : []
+            feeItem: feesLineItem
 
         } as IPay;
         setPayData(pay);
         setOpenConfirmPayment(true);
 
+    }
+
+    const mapNonAnnualFees = (item: any) => {
+        let fromMonth = item.from;
+        const allMonth: Dayjs[] = [fromMonth];
+        while (fromMonth.format("MMM/YYYY") != item.to.format("MMM/YYYY")) {
+            fromMonth = fromMonth.add(1, 'Month');
+            allMonth.push(fromMonth);
+        }
+        return allMonth.map(value => {
+            return {
+                feesId: item.feesId,
+                feesTitle: item.feesTitle,
+                unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
+                amount: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
+                month: value.format("MMM/YYYY")
+            }
+        })
     }
 
     const submitPayment = () => {
@@ -117,18 +146,18 @@ export const Payment = () => {
             </Form>
 
         </Space>
-        <Modal
-            title="Confirm Payment"
-            centered
-            open={openConfirmPayment}
-            destroyOnClose
-            okText={"Payment Recieved"}
-            onOk={submitPayment} onCancel={() => setOpenConfirmPayment(false)}
-            width={1000}
-        >
+            <Modal
+                title="Confirm Payment"
+                centered
+                open={openConfirmPayment}
+                destroyOnClose
+                okText={"Payment Recieved"}
+                onOk={submitPayment} onCancel={() => setOpenConfirmPayment(false)}
+                width={1000}
+            >
                 {payData && <PaymentConfirmation payData={payData} />}
             </Modal>
-            </>
+        </>
 
     )
 

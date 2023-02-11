@@ -1,3 +1,4 @@
+import { FeesRuleType } from "../utils/FeesRuleType";
 
 export interface IFeesItemSummary {
 
@@ -5,7 +6,7 @@ export interface IFeesItemSummary {
     feesTitle: string,
     unitPrice: number,
     amount: number,
-    applicableRule: string,
+    applicableRule: FeesRuleType,
     from: Date,
     to: Date
 }
