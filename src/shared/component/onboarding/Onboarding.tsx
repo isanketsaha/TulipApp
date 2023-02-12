@@ -1,18 +1,29 @@
-import { Button, Col, Divider, Form, Row, Steps } from "antd"
+import { Badge, Button, Col, Descriptions, Divider, Form, Modal, Row, Space, Steps, Switch } from "antd"
 import Title from "antd/es/typography/Title"
 import { useState } from "react";
 import { AddBasic } from "./Basic";
 import { AddDependent } from "./Dependent";
 import { AddAdditional } from "./Additional";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useOnboardUserMutation } from "../../redux/api/feature/onboarding/api";
+import { useFetchClassroomIdQuery } from "../../redux/api/feature/classroom/api";
+import dayjs from "dayjs";
+import { FeesCalender } from "../FeesCalender";
+import { TransactionHistory } from "../TransactionHistory";
+import { Role } from "../../utils/Role";
+import { useAppSelector } from "/src/store";
+import { StudentConfirm } from "../confirmationModal/StudentConfirmation";
+import { ExployeeConfirm } from "../confirmationModal/EmployeeConfirmation";
 
 export const Onboarding = () => {
     let navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(0);
     const [form] = Form.useForm();
-
+    const [confirmEnrollment, setConfirmEnrollment] = useState(false);
+    const [confirmData, setConfirmData] = useState<any>();
+    const [studentPaymentDetails, setStudentPaymentDetails] = useState<{ std: string, sessionId: number }>();
     const [onboardUser, { isSuccess, data: id }] = useOnboardUserMutation();
+    const { data } = useFetchClassroomIdQuery(studentPaymentDetails, { skip: !studentPaymentDetails });
 
     const { state } = useLocation();
 
@@ -22,7 +33,8 @@ export const Onboarding = () => {
             navigate(`/employeeDetails/${id}`, { replace: true });
         }
         else if (state?.type == 'student') {
-            navigate(`/payment/${id}`, { replace: true });
+
+            navigate(`/payment/${id}/${data}`, { replace: true });
         }
     }
 
@@ -32,6 +44,14 @@ export const Onboarding = () => {
             setCurrentStep(currentStep + 1);
         });
     };
+
+    const createUser = () => {
+        if (state?.type == 'student') {
+            const { std, session } = form.getFieldsValue(true);
+            setStudentPaymentDetails({ std, sessionId: session });
+        }
+        onboardUser(confirmData);
+    }
 
     const onSubmit = () => {
         form.validateFields().then(values => {
@@ -53,7 +73,9 @@ export const Onboarding = () => {
                 bank,
                 credential
             };
-            onboardUser(data);
+            setConfirmData(data);
+            setConfirmEnrollment(true);
+
         });
     }
 
@@ -78,13 +100,12 @@ export const Onboarding = () => {
     if (state.type == 'employee') {
         stepOptions.push({
             title: 'Additional Details',
-            content: <AddAdditional />
+            content: <AddAdditional form={form} />
         });
     }
 
 
     return (<>
-
         {
             state?.type == 'student' ? <Title level={3}>Student Admission</Title> : <Title level={3}>Onboarding Employee</Title>
         }
@@ -116,9 +137,9 @@ export const Onboarding = () => {
                 <Row>
 
 
-                     <Col span={2} offset={20}>
-                        
-                     {currentStep != 0 &&   <Button hidden={currentStep > 0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
+                    <Col span={2} offset={20}>
+
+                        {currentStep != 0 && <Button hidden={currentStep > 0} style={{ marginRight: '1vh' }} type="primary" onClick={() => { onPrev() }}>
                             Prev
                         </Button>}
                     </Col>
@@ -130,7 +151,7 @@ export const Onboarding = () => {
                         </div>
                     </Col>
 
-                    {currentStep != (stepOptions.length - 1 )&& <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
+                    {currentStep != (stepOptions.length - 1) && <Col span={currentStep == stepOptions.length - 1 ? 0 : 2}  >
 
                         <Button type="primary" onClick={() => { onNext() }}>
                             Next
@@ -141,6 +162,22 @@ export const Onboarding = () => {
                 </Row>
             </Form>
         </div>
+        <Modal
+            title="Confirm Details"
+            centered
+            open={confirmEnrollment}
+            width={1000}
+            destroyOnClose
+            okText={state?.type == 'employee' ? 'ONBOARD' : "ENROLL"}
+            onOk={createUser}
+            onCancel={() => setConfirmEnrollment(false)}
+        >
+            {state?.type == 'employee' &&
+                <ExployeeConfirm employeeData={confirmData} />}
 
+            {state?.type == 'student' &&
+                <StudentConfirm studentData={confirmData} />
+            }
+        </Modal>
     </>)
 }

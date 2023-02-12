@@ -2,16 +2,24 @@ import { Col, List, Row, Tag, Typography } from "antd";
 import { useFetchTransactionHistoryQuery } from "../../redux/api/feature/report/api";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import VirtualList from 'rc-virtual-list';
 import { IPayDetailsSummary } from "../../interface/IPayDetailsSummary";
 
+interface ITransactionProps{
 
-export const TransactionReport = () => {
+    transactionDate:Dayjs
 
-    const { data: transactionReport } = useFetchTransactionHistoryQuery();
+}
+
+export const TransactionReport = ({transactionDate}:ITransactionProps) => {
+    
     const [totalCollection, setTotalCollection] = useState(0);
-    const[pagination, setPagination] = useState<number>();
+    const[pagination, setPagination] = useState<number>(0);
+    const { data: transactionReport } = useFetchTransactionHistoryQuery({
+        page : pagination,
+        data : transactionDate.toDate().toString()
+    });
     useEffect(() => {
         let total = 0;
         if (transactionReport?.content) {
@@ -20,7 +28,7 @@ export const TransactionReport = () => {
         setTotalCollection(total);
     }, [transactionReport])
     return (<>
-        {transactionReport && <List
+        {transactionReport?.content && <List
             header={totalCollection > 0 ? <Row><Col offset={17}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -28,8 +36,11 @@ export const TransactionReport = () => {
             })} </Typography.Text></Col></Row> : null}
             bordered
             pagination={{
+                simple:true,
+                showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                 onChange: (page: number, pageSize: number) => {setPagination(page-1)},
                 pageSize: 5,
+                hideOnSinglePage: true,
                 total: transactionReport.totalElements
               }}
            >
@@ -43,7 +54,7 @@ export const TransactionReport = () => {
                 <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
                     <List.Item.Meta key={index}
                         description={
-                            <Row >
+                            <Row key={index}>
                                 <Col span={1}>
                                     {index + 1}
                                 </Col>

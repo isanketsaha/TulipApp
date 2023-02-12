@@ -13,19 +13,27 @@ export const studentApi = createApi({
     endpoints: (builder) => ({
         fetchAllStudent: builder.query<IPageResponse<IBasicDetails>, number>({
             query: (page) => `/all?page=${page}`,
-            providesTags: () => [{ type: 'Student' }]
+            providesTags: ['Student']
         }),
         searchStudent: builder.query<IUserDetails, String>({
             query: (id) => `/search/${id}`,
-            providesTags: () => [{ type: 'Student' }]
+            providesTags:  ['Student']
         }),
         searchStudentByName: builder.query<IBasicDetails[], string>({
             query: (name) => `/searchByName/${name}`
         }),
         basicSearchById: builder.query<IBasicDetails, string>({
-            query: (id) => `/basicSearch/${id}`
+            query: (id) => `/basicSearch?id=${id}`
+        }),
+        basicSearchByIdAndClass: builder.query<IBasicDetails, {id: string | undefined, classId: string | undefined}>({
+            query: (id) => `/basicSearch?id=${id.id}&classId=${id.classId}`
+        }),
+        deactivateStudent : builder.mutation<void, string>({
+            query: (id) => `/deactivate?studentId=${id}`,
+            invalidatesTags:  ['Student']
         })
     })
 });
 
-export const { useFetchAllStudentQuery, useSearchStudentByNameQuery, useSearchStudentQuery , useBasicSearchByIdQuery} = studentApi;
+export const { useFetchAllStudentQuery, useSearchStudentByNameQuery, useSearchStudentQuery ,
+     useBasicSearchByIdQuery, useBasicSearchByIdAndClassQuery, useDeactivateStudentMutation} = studentApi;

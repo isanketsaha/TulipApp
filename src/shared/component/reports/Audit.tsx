@@ -1,6 +1,6 @@
-import { List, Row, Col, Typography, Tag, Button } from "antd"
+import { List, Row, Col, Typography, Tag, Button, Card } from "antd"
 import dayjs from "dayjs"
-import { useFetchAuditQuery } from "../../redux/api/feature/audit/api"
+import { useFetchAuditQuery, useUpdateResolvedMutation } from "../../redux/api/feature/audit/api"
 
 import VirtualList from 'rc-virtual-list';
 import { IAudit } from "../../interface/IAudit"
@@ -9,6 +9,7 @@ import { useState } from "react"
 
 export const Audit = () => {
     const [pagination, setPagination] = useState<number>(0);
+    const [updateResolved] = useUpdateResolvedMutation();
     const { data } = useFetchAuditQuery(pagination);
     const { Text } = Typography;
     return (
@@ -20,9 +21,10 @@ export const Audit = () => {
                     pagination={{
                         onChange: (page: number, pageSize: number) => { setPagination(page - 1) },
                         pageSize: 5,
+                        hideOnSinglePage: true,
+                        showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                         simple: true,
                         total: data?.totalElements,
-                        showTotal: (total) => `Total ${total} items`
                     }}
                 >
                     <VirtualList
@@ -35,29 +37,31 @@ export const Audit = () => {
                             <List.Item key={index}>
                                 <List.Item.Meta
                                     description={
+                                        <Card>
                                         <Row >
                                             <Col span={1} >
                                                 {(index + 1) }.
                                             </Col>
                                             <Col span={4}>
-                                                {dayjs(item.dateTime).format('DD/MM/YYYY hh:mm a')}
+                                                {dayjs(item.dateTime).format('DD-MM-YYYY hh:mm a')}
                                             </Col>
                                             <Col span={2}>
                                                 <Tag color="red">  {item.type}</Tag>
                                             </Col>
-                                            <Col span={2}>
+                                            <Col span={3}>
                                                 <Text type="warning"> {item.status} </Text>
                                             </Col>
                                             <Col span={4}>
                                                 {item.endpoint}
                                             </Col>
-                                            <Col span={8}>
+                                            <Col span={7}>
                                                 {item.description}
                                             </Col>
                                             <Col span={2}>
-                                               <Button> Resolved </Button>
+                                               <Button onClick={() => updateResolved(item.id)}> Resolved </Button>
                                             </Col>
                                         </Row>
+                                        </Card>
                                     }
                                 >
 

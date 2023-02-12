@@ -1,7 +1,8 @@
-import { Row, Col, Form, Input, DatePicker, InputNumber, Select } from "antd";
+import { Row, Col, Form, Input, DatePicker, InputNumber, Select, Checkbox } from "antd";
 import { useAppSelector } from "../../../store";
 import { useLocation } from "react-router-dom";
 import type { Dayjs } from 'dayjs';
+import {WhatsAppOutlined} from '@ant-design/icons';
 
 
 export const AddBasic = () => {
@@ -12,7 +13,10 @@ export const AddBasic = () => {
        return currentDate.isAfter(new Date());
       };
 
-
+      const prefixSelector = (
+        <Form.Item name="whatsappAvailable" valuePropName="checked" noStyle>
+          <Checkbox><WhatsAppOutlined/></Checkbox>
+        </Form.Item>);
 
     return (
         <>
@@ -21,13 +25,16 @@ export const AddBasic = () => {
             </Form.Item>
             <Row gutter={[40, 40]}>
                 <Col span={12}>
-                    <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+                    <Form.Item name="name" label="Name" rules={[{ required: true }, {
+                        pattern: new RegExp("[A-Za-z ]+$"),
+                        message: "Name does not accept numbers or special character"
+                       }]}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
                     <Form.Item name="dob" label="Date Of Birth" rules={[{ required: true }]}>
-                        <DatePicker style={{ width: '100%' }} disabledDate={disableDate}/>
+                        <DatePicker format={"DD-MM-YYYY"} style={{ width: '100%' }} disabledDate={disableDate}/>
                     </Form.Item>
                 </Col>
             </Row>
@@ -35,7 +42,10 @@ export const AddBasic = () => {
             <Row gutter={[40, 40]}>
                 <Col span={12}>
                     <Form.Item name="contact" label="Phone Number" rules={[{ required: true,  type: 'number'}]} >
-                        <InputNumber maxLength={12} controls={false}  style={{ width: '100%' }} />
+                   
+                    <InputNumber addonBefore={prefixSelector}  maxLength={12} controls={false}   />
+                      
+                        
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -70,8 +80,11 @@ export const AddBasic = () => {
                 </Row>
                 : <Row gutter={[40, 40]}>
                     <Col span={8}>
-                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true ,   type: 'number'}]}>
-                            <InputNumber maxLength={12} controls={false} style={{ width: '100%' }} />
+                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true}, {
+                                            pattern: new RegExp("^[0-9]*$"),
+                                            message: "No Alphabets Allowed"
+                                        } ]}>
+                            <Input maxLength={12}  style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -80,7 +93,7 @@ export const AddBasic = () => {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item name="experince"  label="Experince" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
+                        <Form.Item name="experince"  label="Experience" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
                             <InputNumber controls={false}  style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>

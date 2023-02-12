@@ -1,7 +1,7 @@
 import { Middleware, MiddlewareAPI, isFulfilled, isPending, isRejectedWithValue } from "@reduxjs/toolkit";
 import { notification } from "antd";
 import { NotificationPlacement } from "antd/es/notification/interface";
-import { hideSpinner, showSpinner } from "./shared/redux/slices/GlobalAppSlice";
+import { increaseApiRequestCount, decreaseApiRequestCount } from "./shared/redux/slices/GlobalAppSlice";
 import { logout } from "./shared/redux/slices/UserAuthSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -23,21 +23,19 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
 
 
     if (isRejectedWithValue(action)) {
-        api.dispatch(hideSpinner())
+        api.dispatch(decreaseApiRequestCount())
 
         if (action.payload) {
-            if ('status' in action.error) {
-                // you can access all properties of `FetchBaseQueryError` here
-                const errMsg = 'error' in action.error ? action.error.error : JSON.stringify(action.error.data)
+            if (action.payload?.data) {
                 openNotification({
-                    status: action.payload?.status,
-                    details: errMsg
+                    status: action.payload.data.title,
+                    details: action.payload.data.detail
                 });
             }
             else {
                 openNotification({
                     status: action.payload?.status,
-                    details: action.error.message
+                    details: action.payload.error
                 });
             }
 
@@ -51,10 +49,10 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
 
     }
     if (isPending(action)) {
-        api.dispatch(showSpinner())
+        api.dispatch(increaseApiRequestCount())
     }
     if (isFulfilled(action)) {
-        api.dispatch(hideSpinner())
+        api.dispatch(decreaseApiRequestCount())
     }
     return next(action);
 }

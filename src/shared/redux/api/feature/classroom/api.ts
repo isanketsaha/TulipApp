@@ -3,6 +3,7 @@ import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { IClassDetails } from "../../../../interface/IClassDetails";
 import { IBasicDetails } from "../../../../interface/IBasicDetails";
 import { IClassList } from "/src/shared/interface/IClassList";
+import { IPromote } from "/src/shared/interface/IPromote";
 
 
 export const classroomApi = createApi({
@@ -14,11 +15,25 @@ export const classroomApi = createApi({
             query: () => "/all",
             
         }),
+        fetchClassroomId: builder.query<number, {std: string, sessionId : number} | undefined>({
+            query: (item) => item ? `/id?std=${item.std}&sessionId=${item.sessionId}` : '',
+            
+        }),
         fetchClassroomDetails: builder.query<IClassDetails, number>({
             query: (id) => `/details/${id}`,
             providesTags: () => [{ type: 'Student' }]
         }),
+        promoteStudent: builder.mutation<number, IPromote>({
+            query: (payload) => {
+                return ({
+                    url: '/student-promote',
+                    method: 'POST',
+                    body: payload
+                });
+            },
+            invalidatesTags: ['Classroom','Student']
+        }),
     })
 });
 
-export const {useFetchAllClassroomQuery, useFetchClassroomDetailsQuery} = classroomApi;
+export const {useFetchAllClassroomQuery, useFetchClassroomDetailsQuery, usePromoteStudentMutation, useFetchClassroomIdQuery} = classroomApi;

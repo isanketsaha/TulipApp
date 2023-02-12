@@ -1,7 +1,6 @@
 import { Button, Col, Form, FormInstance, Input, InputNumber, Row, Select, Space } from "antd"
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { useAppSelector } from "/src/store";
-import { useAddExpenseMutation } from "../redux/api/feature/payment/api";
 
 interface IExpenseProps {
     onExpenseSubmit : (item: any) => void

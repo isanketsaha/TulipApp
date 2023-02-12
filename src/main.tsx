@@ -18,9 +18,14 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ConfigProvider form={{validateMessages}}
       theme={{
+        components:{
+          Switch: {
+            colorPrimary: 'green'
+          }
+        },
         token: {
           colorPrimary: '#800000',
-          fontSize: 15
+          fontSize: 15,
 
         },
       }}

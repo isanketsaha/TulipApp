@@ -1,5 +1,6 @@
 
 export interface IAudit {
+     id: number, 
      status:string,
      type:string,
      endpoint: string,

@@ -1,6 +1,7 @@
-import { Descriptions, Badge, Divider, Space } from "antd";
+import { Descriptions, Badge, Divider, Space, Switch } from "antd";
 import dayjs from "dayjs";
 import { useSearchEmployeeByIdQuery } from "../redux/api/feature/employee/api";
+import { WhatsAppOutlined } from '@ant-design/icons';
 
 interface IEmployeeProps {
     employeeId: string
@@ -8,35 +9,41 @@ interface IEmployeeProps {
 export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
 
 
-    const { data: employeeDataData } = useSearchEmployeeByIdQuery(employeeId, { skip: employeeId == "" });
+    const { data: employeeData } = useSearchEmployeeByIdQuery(employeeId, { skip: employeeId == "" });
     return (<>
 
-        <Divider orientation="left" plain><h3> Basic Details </h3></Divider>
+        <Divider orientation="center" plain><h3> {employeeData?.name} </h3></Divider>
 
-        <Descriptions >
-            <Descriptions.Item label="Employee ID"> {employeeDataData?.id}</Descriptions.Item>
-            <Descriptions.Item label="Name">{employeeDataData?.name}</Descriptions.Item>
-            <Descriptions.Item label="Gender">{employeeDataData?.gender}</Descriptions.Item>
-            <Descriptions.Item label="Date Of Birth">{dayjs(employeeDataData?.dob).format("DD/MM/YYYY")}</Descriptions.Item>
+        <Descriptions bordered>
+            <Descriptions.Item label="Employee ID"> {employeeData?.id}</Descriptions.Item>
+            <Descriptions.Item label="Gender">{employeeData?.gender}</Descriptions.Item>
+            <Descriptions.Item label="Date Of Birth">{dayjs(employeeData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Joined On" span={1}>
-                {employeeDataData?.interview.doj ? dayjs(employeeDataData?.interview.doj).format("DD/MM/YYYY") : 'N/A'}
+                {employeeData?.interview.doj ? dayjs(employeeData?.interview.doj).format("DD-MM-YYYY") : 'N/A'}
             </Descriptions.Item>
             <Descriptions.Item label="Active" span={1}>
-                <Badge status={employeeDataData?.active ? "success" : "error"} text={employeeDataData?.active ? "ACTIVE" : "INACTIVE"} />
+                <Badge status={employeeData?.active ? "success" : "error"} text={employeeData?.active ? "ACTIVE" : "INACTIVE"} />
             </Descriptions.Item>
 
             <Descriptions.Item label="Address">
-                {employeeDataData?.address}
+                {employeeData?.address}
             </Descriptions.Item>
             <Descriptions.Item label="Blood Group">
-                {employeeDataData?.bloodGroup}
+                {employeeData?.bloodGroup}
             </Descriptions.Item>
 
             <Descriptions.Item label="Religion">
-                {employeeDataData?.religion}
+                {employeeData?.religion}
             </Descriptions.Item>
             <Descriptions.Item label="Phone Number">
-                {employeeDataData?.phoneNumber}
+            <Space> <Switch
+                    checkedChildren={<WhatsAppOutlined />}
+                    unCheckedChildren={<WhatsAppOutlined />}
+                    defaultChecked={employeeData?.whatsappAvailable}
+                    disabled
+                /> 
+                {employeeData?.phoneNumber}
+                </Space>
             </Descriptions.Item>
         </Descriptions>
 
@@ -44,7 +51,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
         <Divider orientation="left" plain> <h3> Dependent Details </h3> </Divider>
         <Space direction="vertical" style={{ width: '100%' }} size={"small"}>
             {
-                employeeDataData?.dependent.map(item => {
+                employeeData?.dependent.map(item => {
                     return (<>
                         <Descriptions bordered>
                             <Descriptions.Item label=" Name"> {item.name}</Descriptions.Item>
@@ -63,17 +70,17 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
         <Divider orientation="left" plain> <h3>Bank Details </h3> </Divider>
 
         <Descriptions bordered>
-            <Descriptions.Item label="Account Number"> {employeeDataData?.bank?.accountNumber}</Descriptions.Item>
-            <Descriptions.Item label="IFSC">{employeeDataData?.bank?.ifsc}</Descriptions.Item>
-            <Descriptions.Item label="Bank Name">{employeeDataData?.bank?.bankName}</Descriptions.Item>
+            <Descriptions.Item label="Account Number"> {employeeData?.bank?.accountNumber}</Descriptions.Item>
+            <Descriptions.Item label="IFSC">{employeeData?.bank?.ifsc}</Descriptions.Item>
+            <Descriptions.Item label="Bank Name">{employeeData?.bank?.bankName}</Descriptions.Item>
         </Descriptions>
 
         <Divider orientation="left" plain> <h3> Interview Details </h3> </Divider>
-        {employeeDataData?.interview && <Descriptions bordered>
-            <Descriptions.Item label=" Interviewed On"> {dayjs(employeeDataData?.interview?.interviewDate).format("DD/MM/YYYY")}</Descriptions.Item>
-            <Descriptions.Item label="Joined On">{dayjs(employeeDataData?.interview?.doj).format("DD/MM/YYYY")}</Descriptions.Item>
-            <Descriptions.Item label="Salary">{employeeDataData?.interview?.salary}</Descriptions.Item>
-            <Descriptions.Item label="Comments">{employeeDataData?.interview?.comments}</Descriptions.Item>
+        {employeeData?.interview && <Descriptions bordered>
+            <Descriptions.Item label=" Interviewed On"> {dayjs(employeeData?.interview?.interviewDate).format("DD-MM-YYYY")}</Descriptions.Item>
+            <Descriptions.Item label="Joined On">{dayjs(employeeData?.interview?.doj).format("DD-MM-YYYY")}</Descriptions.Item>
+            <Descriptions.Item label="Salary">{employeeData?.interview?.salary}</Descriptions.Item>
+            <Descriptions.Item label="Comments">{employeeData?.interview?.comments}</Descriptions.Item>
         </Descriptions>
         }
 

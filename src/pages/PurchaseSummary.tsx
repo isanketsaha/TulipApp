@@ -7,6 +7,7 @@ import { IBasicDetails } from "../shared/interface/IBasicDetails";
 import { useState } from "react";
 import { useFetchPaymentDetailsByIdQuery } from "../shared/redux/api/feature/payment/api";
 import dayjs from "dayjs";
+import { IFeesItemSummary } from "../shared/interface/IFeesItemSummary";
 
 export const PurchaseSummary = () => {
 
@@ -21,20 +22,17 @@ export const PurchaseSummary = () => {
     const { data: item } = useBasicSearchByIdQuery(String(paySummary?.studentId) ?? '', { skip: !paySummary?.studentId });
 
     const feesColumns = [
+        
         {
             title: 'Fees Name',
             dataIndex: 'feesTitle',
             key: 'feesTitle',
+          
         },
         {
-            title: 'From Month',
-            dataIndex: 'from',
-            key: 'from',
-        },
-        {
-            title: 'To Month',
-            dataIndex: 'to',
-            key: 'to',
+            title: 'Month',
+            dataIndex: 'month',
+            key: 'month',
         }, {
             title: 'Fees Type',
             dataIndex: 'applicableRule',
@@ -172,11 +170,13 @@ export const PurchaseSummary = () => {
 
             {paySummary?.payType == 'FEES' && <Table columns={feesColumns}
                 dataSource={paySummary?.feesItem}
-                pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
+                pagination={{ pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
+                    return `${range[0]}-${range[1]} of ${total} items`
+                } }} scroll={{ y: 340 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
-                            <Table.Summary.Cell colSpan={5} index={1}>
+                            <Table.Summary.Cell colSpan={4} index={1}>
                                 Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {paySummary?.paymentMode}
                                 </Tag>
@@ -199,7 +199,9 @@ export const PurchaseSummary = () => {
 
             {(paySummary?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
                 dataSource={paySummary?.purchaseItems}
-                pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
+                pagination={{ pageSize: 10 ,  hideOnSinglePage: true, showTotal(total, range) {
+                    return `${range[0]}-${range[1]} of ${total} items`
+                }}} scroll={{ y: 340 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
@@ -227,7 +229,9 @@ export const PurchaseSummary = () => {
             {
                 paySummary?.payType == 'EXPENSE' && <Table columns={expenseColumns}
                 dataSource={paySummary?.expenseItems}
-                pagination={{ pageSize: 10 }} scroll={{ y: 240 }}
+                pagination={{ pageSize: 10,  hideOnSinglePage: true, showTotal(total, range) {
+                    return `${range[0]}-${range[1]} of ${total} items`
+                } }} scroll={{ y: 340 }}
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >

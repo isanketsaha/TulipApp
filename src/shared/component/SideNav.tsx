@@ -5,6 +5,7 @@ import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../redux/slices/UserAuthSlice";
+import { Role } from "../utils/Role";
 interface nav {
     label: string,
     link?: string,
@@ -20,7 +21,7 @@ interface ISliderProps{
 export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
 
     const { Text } = Typography;
-    const userAuth = useAppSelector((state) => state.userAuth);
+    const {user} = useAppSelector((state) => state.userAuth);
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
 
@@ -46,25 +47,29 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
         }, {
             label: 'Classroom',
             icon: <FolderOpenFilled />,
-        }, {
-            label: 'Accounts',
-            icon: <FundFilled />,
         }
     ]
+
+    if(user?.authority && [Role.ADMIN].includes(user?.authority)){
+        navigatons.push({
+            label: 'Accounts',
+            icon: <FundFilled />,
+        })
+    }
 
     const options: MenuProps['items'] = navigatons.map(
         (item, index) => {
             const key = String(index + 1);
             const url: string = item.label=='Office'?  '/': `/${item.label}`.toLowerCase();
             return {
-                key: `sub${key}`,
+                key: `${key}`,
                 label: (<Link to={url}> {item.label} </Link>),
                 icon: item.icon
             };
         },
     );
 
-    options.push(userAuth.user != null ?
+    options.push(user != null ?
         {
             danger: true,
             key: 'logout',
@@ -89,18 +94,19 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
                 bottom: 0,
                 paddingTop:'8vh'
             }}>
-            <div hidden={collapsed && userAuth.user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
+            <div hidden={collapsed && user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
                 <div style={{ marginTop: '2vh' }}>
-                    <Text strong>{userAuth.user?.userName}</Text>
+                    <Text strong>{user?.userName}</Text>
                     <br/>
-                    <Text type="secondary">{userAuth.user?.authority[0].split("_")[1]}</Text>
+                    <Text type="secondary">{user?.authority}</Text>
                 </div>
             </div>
 
             <Menu
                 mode="vertical"
                 style={{ borderRight: 0 }}
+                defaultSelectedKeys={['1']}
                 items={options}
             />
         </Sider>

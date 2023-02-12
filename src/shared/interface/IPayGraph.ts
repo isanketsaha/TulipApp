@@ -1,4 +1,5 @@
 export interface IPayGraph {
     admissionDate: Date,
-    paidMonths: string[]
+    paidMonths: string[],
+    annualFeesPaid: number[]
 }

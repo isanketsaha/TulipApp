@@ -1,6 +1,7 @@
 export interface IPurchasePay {
 
-    productTitle: number,
+    productId: number,
+    productName: string,
      size: string, 
      qty: number, 
      unitPrice: number,

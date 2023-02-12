@@ -1,23 +1,33 @@
-import { Row, Col, Form, Input, DatePicker, InputNumber, Divider, Select } from "antd"
+import { Row, Col, Form, Input, DatePicker, InputNumber, Divider, Select, FormInstance } from "antd"
 import { useAppSelector } from "../../../store";
 import { Dayjs } from "dayjs";
 import Password from "antd/es/input/Password";
 import { useState } from "react";
 
-export const AddAdditional = () => {
+
+interface IAdditionalProps {
+    form: FormInstance,
+}
+export const AddAdditional = ({ form }: IAdditionalProps) => {
 
     const selectList = useAppSelector(state => state.commonData);
+    const {user} = useAppSelector(state => state.userAuth);
     const [displayCredential, setDisplayCredential] = useState<boolean>(false);
 
-    const showCredentials = ["STAFF"];
+    const showCredentials = ["STAFF","PRINCIPAL"];
     const disableDate = (currentDate: Dayjs) => {
         return currentDate.isAfter(new Date());
     };
 
 
     const disableDateDoj = (currentDate: Dayjs) => {
-        return currentDate.isBefore(new Date());
+        const fields = form.getFieldsValue(true);
+        const { interview } = fields;
+        const interviewDate: Dayjs = interview[0].interviewDate;
+        return currentDate.isBefore(interviewDate);
     };
+
+
     return (
         <><Form.List name="interview" initialValue={[{}]}>
             {(fields) => (
@@ -55,7 +65,7 @@ export const AddAdditional = () => {
                                             return Promise.reject(new Error('Select Role!'));
                                         },
                                     })]}>
-                                        <Select options={selectList.userRoleList} />
+                                        <Select options={selectList.userRoleList.filter(item=> item.label != user?.authority)} />
                                     </Form.Item>
                                 </Col>
                             </Row></div>))}
@@ -92,13 +102,19 @@ export const AddAdditional = () => {
                         {fields.map(({ key, name, ...restField }) => (
                             <div key={key}><Divider plain> <h3>Bank Details</h3></Divider><Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name={[name, "accountNumber"]} label="Account Number" hasFeedback rules={[{ required: true }]}>
-                                        <Input maxLength={12}  style={{ width: '100%' }} />
+                                    <Form.Item name={[name, "accountNumber"]} label="Account Number" hasFeedback rules={[{ required: true }, {
+                                        pattern: new RegExp("^[0-9]*$"),
+                                        message: "Only accept numbers"
+                                    }]}>
+                                        <Input maxLength={12} style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item name={[name, "confirmAccountNumber"]} label="Confirm Account Number" dependencies={['accountNumber']}
-                                        hasFeedback rules={[{ required: true },
+                                        hasFeedback rules={[{ required: true }, {
+                                            pattern: new RegExp("^[0-9]*$"),
+                                            message: "Only accept numbers"
+                                        },
                                         ({ getFieldValue }) => ({
                                             validator(_, value) {
                                                 if (value && getFieldValue("bank")[0].accountNumber === value) {
@@ -114,7 +130,10 @@ export const AddAdditional = () => {
                             </Row><Row gutter={[40, 40]}>
 
                                     <Col span={12}>
-                                        <Form.Item name={[name, "ifsc"]} label="IFSC Code" rules={[{ required: true }]}>
+                                        <Form.Item name={[name, "ifsc"]} label="IFSC Code" rules={[{ required: true},  {
+                                            pattern: new RegExp("^\\S*$"),
+                                            message: "No Space Allowed"
+                                        } ]}>
                                             <Input />
                                         </Form.Item>
                                     </Col>

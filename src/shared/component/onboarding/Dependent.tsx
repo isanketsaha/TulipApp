@@ -1,15 +1,17 @@
-import { Button, Col, Divider, Form, Input, InputNumber, Row, Select, Space, Upload } from "antd";
+import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, Row, Select, Space, Upload } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useAppSelector } from "../../../store";
-
+import {WhatsAppOutlined} from '@ant-design/icons';
 export const AddDependent = () => {
 
     const selectList = useAppSelector(state => state.commonData);
-
+    const prefixSelector =(name: number) => (
+        <Form.Item name={[name,"whatsappAvailable"]} valuePropName="checked" noStyle>
+          <Checkbox><WhatsAppOutlined/></Checkbox>
+        </Form.Item>);
+        
     return (<>
-        <Form.List name="dependent" initialValue={[{
-           
-        }]}>
+        <Form.List name="dependent" initialValue={[{ }]}>
             {(fields, { add, remove }) => (
                 <>
                     {fields.map(({ key, name, ...restField }, index) => (
@@ -29,7 +31,11 @@ export const AddDependent = () => {
 
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name={[name, "name"]} label="Name" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "name"]} label="Name" rules={[{ required: true },
+                                     {
+                                        pattern: new RegExp("[A-Za-z ]+$"),
+                                        message: "Name does not accept numbers or special character"
+                                       }]}>
                                         <Input />
                                     </Form.Item>
                                 </Col>
@@ -46,7 +52,7 @@ export const AddDependent = () => {
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
                                     <Form.Item name={[name, "contact"]} label="Phone Number" rules={[{ type: 'number', required: true }]}>
-                                        <InputNumber controls={false} style={{ width: '100%' }} />
+                                        <InputNumber addonBefore={prefixSelector(name)} controls={false} style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
 
@@ -58,8 +64,11 @@ export const AddDependent = () => {
                             </Row>
                             <Row gutter={[40, 40]}>
                                 <Col span={12}>
-                                    <Form.Item name={[name, "aadhaar"]} label="Aadhar Number" rules={[{ required: true }]}>
-                                        <InputNumber maxLength={12} controls={false} style={{ width: '100%' }} />
+                                    <Form.Item name={[name, "aadhaar"]} label="Aadhar Number" rules={[{ required: true }, {
+                                            pattern: new RegExp("^[0-9]*$"),
+                                            message: "Only Numbers Allowed"
+                                        }]}>
+                                        <Input maxLength={12}  style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

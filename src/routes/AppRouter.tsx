@@ -1,7 +1,6 @@
-import { Children } from "react";
-import { createBrowserRouter, Route, Router } from "react-router-dom"
-import App from "../App";
-import { Dashboard } from "../shared/component/Dashboard";
+
+import { createBrowserRouter } from "react-router-dom"
+import { Dashboard } from "../pages/Dashboard";
 import { Error404 } from "../error/Error404";
 import { Home } from "../module/Home"
 import { Login } from "../module/Login";
@@ -15,36 +14,36 @@ import { Classroom } from "../pages/Classroom";
 import { Accounts } from "../pages/Account";
 import { PurchaseSummary } from "../pages/PurchaseSummary";
 import { AuthRotes } from "./AuthRoters";
-import { Role } from "../Role";
+import { Role } from "../shared/utils/Role";
 
 
 export const AppRouter = createBrowserRouter([
     {
         path: "/",
         element: <ProtectedRoutes />,
-        errorElement: <Error404 />,
         children: [
             {
+                errorElement: <Error404 />,
                 element: <Home />,
                 children: [
                     {
                         index: true,
                         element: <Dashboard />,
                     }, {
-                        path: "payment/:id",
+                        path: "payment/:id/:classId",
                         element: <Payment />,
                     }, {
                         path: 'staffs',
                         element: <EmployeePage />
                     }, {
                         path: 'onboarding',
-                        element: <Onboarding />
+                        element: <AuthRotes roles={[Role.ADMIN, Role.PRINCIPAL]}><Onboarding /></AuthRotes>
                     }, {
                         path: "students",
                         element: <StudentPage />
                     }, {
                         path: 'admisssion',
-                        element: <Onboarding />
+                        element: <AuthRotes roles={[Role.ADMIN, Role.PRINCIPAL, Role.STAFF]}><Onboarding /></AuthRotes>
                     }, {
                         path: 'employeeDetails/:id',
                         element: <ViewDetails />
@@ -57,7 +56,7 @@ export const AppRouter = createBrowserRouter([
                         element: <Classroom />
                     }, {
                         path: 'accounts',
-                        element: <AuthRotes roles={[Role.Admin]}><Accounts /></AuthRotes>,
+                        element: <AuthRotes roles={[Role.ADMIN]}><Accounts /></AuthRotes>,
                     }, {
                         path: 'purchaseSummary/:id',
                         element: <PurchaseSummary />

@@ -2,26 +2,34 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IAppGlobal {
     showSpinner : boolean
+    apiRequestCount: number
 }
 
 const initialState: IAppGlobal = {
-    showSpinner: false
+    showSpinner: false,
+    apiRequestCount: 0
 }
 
 const GlobalAppSlice = createSlice({
     name: 'globalAppState',
     initialState,
     reducers: {
-        showSpinner : (state) => {
-            state.showSpinner = true
+        increaseApiRequestCount : (state) =>{
+            state.apiRequestCount +=1;
+            if( state.apiRequestCount >0 && !state.showSpinner){
+                state.showSpinner = true
+            }
         },
-        hideSpinner : (state) => {
-            state.showSpinner = false
+        decreaseApiRequestCount : (state) =>{
+            state.apiRequestCount -=1;
+            if(state.apiRequestCount == 0){
+                state.showSpinner = false
+            }
         }
     },
 });
 
-export const { hideSpinner , showSpinner} = GlobalAppSlice.actions;
+export const { increaseApiRequestCount, decreaseApiRequestCount} = GlobalAppSlice.actions;
 
 export default GlobalAppSlice.reducer;
 
