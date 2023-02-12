@@ -66,7 +66,7 @@ export const AddDependent = () => {
                                 <Col span={12}>
                                     <Form.Item name={[name, "aadhaar"]} label="Aadhar Number" rules={[{ required: true }, {
                                             pattern: new RegExp("^[0-9]*$"),
-                                            message: "Only Numbers Allowed"
+                                            message: "No Alphabets Allowed"
                                         }]}>
                                         <Input maxLength={12}  style={{ width: '100%' }} />
                                     </Form.Item>
