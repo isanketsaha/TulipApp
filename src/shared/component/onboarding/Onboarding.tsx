@@ -40,7 +40,6 @@ export const Onboarding = () => {
 
 
     const onNext = () => {
-
         form.validateFields().then(values => {
             setCurrentStep(currentStep + 1);
         });
