@@ -17,7 +17,7 @@ export const StudentPage = () => {
     return (<>
         <Row >
             <Col span={1} >
-              { user?.authority && [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(user?.authority) && <Link to="/onboarding" state={{
+              { user?.authority && [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(user?.authority) && <Link to="/admisssion" state={{
                     type: 'student'
                 }}>
                     <Button type="primary" htmlType="submit">
