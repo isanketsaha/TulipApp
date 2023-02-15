@@ -2,13 +2,16 @@ import { Descriptions, Badge, Divider, Space, Switch } from "antd";
 import dayjs from "dayjs";
 import { useSearchEmployeeByIdQuery } from "../redux/api/feature/employee/api";
 import { WhatsAppOutlined } from '@ant-design/icons';
+import { useAppSelector } from "/src/store";
+import { Role } from "../utils/Role";
 
 interface IEmployeeProps {
     employeeId: string
 }
 export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
 
-
+const {user} = useAppSelector(state => state.userAuth);
+const allowerRoles: Role[] = [Role.ADMIN, Role.PRINCIPAL];
     const { data: employeeData } = useSearchEmployeeByIdQuery(employeeId, { skip: employeeId == "" });
     return (<>
 
@@ -67,22 +70,22 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
         </Space>
 
 
-        <Divider orientation="left" plain> <h3>Bank Details </h3> </Divider>
-
-        <Descriptions bordered>
+        {
+        user?.authority && allowerRoles.includes(user?.authority) && 
+        <><Divider orientation="left" plain> <h3>Bank Details </h3> </Divider><Descriptions bordered>
             <Descriptions.Item label="Account Number"> {employeeData?.bank?.accountNumber}</Descriptions.Item>
             <Descriptions.Item label="IFSC">{employeeData?.bank?.ifsc}</Descriptions.Item>
             <Descriptions.Item label="Bank Name">{employeeData?.bank?.bankName}</Descriptions.Item>
-        </Descriptions>
+        </Descriptions></>
+        }
 
-        <Divider orientation="left" plain> <h3> Interview Details </h3> </Divider>
-        {employeeData?.interview && <Descriptions bordered>
+        {user?.authority && allowerRoles.includes(user?.authority) && employeeData?.interview &&  
+            <><Divider orientation="left" plain> <h3> Interview Details </h3> </Divider><Descriptions bordered>
             <Descriptions.Item label=" Interviewed On"> {dayjs(employeeData?.interview?.interviewDate).format("DD-MM-YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Joined On">{dayjs(employeeData?.interview?.doj).format("DD-MM-YYYY")}</Descriptions.Item>
             <Descriptions.Item label="Salary">{employeeData?.interview?.salary}</Descriptions.Item>
             <Descriptions.Item label="Comments">{employeeData?.interview?.comments}</Descriptions.Item>
-        </Descriptions>
+        </Descriptions></>
         }
-
     </>)
 }
