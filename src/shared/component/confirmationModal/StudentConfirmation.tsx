@@ -14,11 +14,6 @@ export const StudentConfirm = ({ studentData }: IStudentConfirmProps) => {
     return (
         <><Descriptions bordered>
             <Descriptions.Item label="Name">{studentData?.name}</Descriptions.Item>
-            <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
-            <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
-            <Descriptions.Item label="Address">
-                {studentData?.address}
-            </Descriptions.Item>
             <Descriptions.Item label="Phone Number">
                 <Space> <Switch
                     checkedChildren={<WhatsAppOutlined />}
@@ -27,6 +22,12 @@ export const StudentConfirm = ({ studentData }: IStudentConfirmProps) => {
                     disabled
                 />  {studentData.contact} </Space>
             </Descriptions.Item>
+            
+            <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
+            <Descriptions.Item label="Address">
+                {studentData?.address}
+            </Descriptions.Item>
+            <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
             <Descriptions.Item label="Classroom">{studentData?.std}</Descriptions.Item>
             <Descriptions.Item label="Session">{sessionList.find(item => (item.value == studentData?.session))?.label} </Descriptions.Item>
 
