@@ -19,7 +19,7 @@ export const StudentBasicDetails = () => {
             })}
             <Row>
                 <Col offset={17} span={7}>
-                    <Pagination simple showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`} defaultCurrent={page + 1} pageSize={15} total={data?.totalElements} onChange={(index) => setPage(index - 1)} />
+                    <Pagination simple showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`} defaultCurrent={page + 1} pageSize={data?.size} total={data?.totalElements} onChange={(index) => setPage(index - 1)} />
                 </Col>
             </Row>
         </Space>

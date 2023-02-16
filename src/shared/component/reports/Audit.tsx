@@ -20,7 +20,7 @@ export const Audit = () => {
                     extra={"Hello"}
                     pagination={{
                         onChange: (page: number, pageSize: number) => { setPagination(page - 1) },
-                        pageSize: 5,
+                        pageSize: data.size,
                         hideOnSinglePage: true,
                         showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                         simple: true,
@@ -28,7 +28,7 @@ export const Audit = () => {
                     }}
                 >
                     <VirtualList
-                        height={300}
+                        height={500}
                         fullHeight={false}
                         data={data?.content}
                         itemKey="email"
