@@ -17,13 +17,6 @@ export const ExployeeConfirm = ({ employeeData }: IEmployeeConfirmProps) => {
 
             <Descriptions bordered>
                 <Descriptions.Item label="Name">{employeeData?.name}</Descriptions.Item>
-                <Descriptions.Item label="Gender">{employeeData?.gender}</Descriptions.Item>
-                <Descriptions.Item label="Date Of Birth">{dayjs(employeeData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
-
-                <Descriptions.Item label="Address">
-                    {employeeData?.address}
-                </Descriptions.Item>
-
                 <Descriptions.Item label="Phone Number">
                     <Space> <Switch
                         checkedChildren={<WhatsAppOutlined />}
@@ -32,6 +25,11 @@ export const ExployeeConfirm = ({ employeeData }: IEmployeeConfirmProps) => {
                         disabled
                     />  {employeeData?.contact} </Space>
                 </Descriptions.Item>
+                <Descriptions.Item label="Date Of Birth">{dayjs(employeeData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
+                <Descriptions.Item label="Address">
+                    {employeeData?.address}
+                </Descriptions.Item>
+                <Descriptions.Item label="Gender">{employeeData?.gender}</Descriptions.Item>
                 <Descriptions.Item label="Blood Group">
                     {bloodGroupList.find(item => (item.value == employeeData?.bloodGroup))?.label}
                 </Descriptions.Item>

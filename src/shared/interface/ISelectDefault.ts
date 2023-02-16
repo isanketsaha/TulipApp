@@ -1,6 +1,6 @@
 
 export interface ISelectDefault {
 
-    value: string,
+    value: number,
     label: string
 }

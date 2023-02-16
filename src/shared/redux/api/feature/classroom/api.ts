@@ -11,8 +11,8 @@ export const classroomApi = createApi({
     tagTypes: ['Classroom', 'Student'],
     baseQuery: baseQueryWithRetry("classroom"),
     endpoints: (builder) => ({
-        fetchAllClassroom: builder.query<IClassList[], void>({
-            query: () => "/all",
+        fetchAllClassroom: builder.query<IClassList[], number>({
+            query: (sessionId) => `all?sessionId=${sessionId}`,
             
         }),
         fetchClassroomId: builder.query<number, {std: string, sessionId : number} | undefined>({
