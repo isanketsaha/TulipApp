@@ -17,11 +17,11 @@ export const StudentBasicDetails = () => {
                     <BasicDetails data={item} key={item.id} />
                 </Card>)
             })}
-            <Row>
+            {data && <Row>
                 <Col offset={17} span={7}>
                     <Pagination simple showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`} defaultCurrent={page + 1} pageSize={data?.size} total={data?.totalElements} onChange={(index) => setPage(index - 1)} />
                 </Col>
-            </Row>
+            </Row>}
         </Space>
     )
 }
