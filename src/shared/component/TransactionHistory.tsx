@@ -32,7 +32,7 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
             hideOnSinglePage: true,
             showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
             onChange: (page: number, pageSize: number) => { setPage(page - 1) },
-            pageSize: 10,
+            pageSize: data.size,
             total: data?.totalElements
           }}
         >

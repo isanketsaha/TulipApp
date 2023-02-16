@@ -39,7 +39,7 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
                 simple:true,
                 showTotal: (total, range) =>`${range[0]}-${range[1]} of ${total} items`,
                 onChange: (page: number, pageSize: number) => {setPagination(page-1)},
-                pageSize: 5,
+                pageSize: transactionReport.size,
                 hideOnSinglePage: true,
                 total: transactionReport.totalElements
               }}
