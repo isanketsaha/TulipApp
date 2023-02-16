@@ -1,14 +1,14 @@
-import { Divider, Tabs } from "antd";
+import { Divider, Select, Tabs } from "antd";
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { ClassroomDetails } from "../shared/component/ClassroomDetails";
+import { useAppSelector } from "../store";
 
 
 export const Classroom = () => {
 
 
     const { data : classList } = useFetchAllClassroomQuery();
-    
-
+    const selectList = useAppSelector(state => state.commonData);
     return (
 
         <Tabs
@@ -17,6 +17,13 @@ export const Classroom = () => {
             centered
             type="card"
             tabBarGutter={5}
+            tabBarExtraContent={
+                <Select
+                labelInValue
+                value={selectList?.selectedSession.value}
+                options={selectList?.sessionList}
+            />
+            }
             items={classList?.map((_, i) => {
                 const id = String(_.id);
                 return {
