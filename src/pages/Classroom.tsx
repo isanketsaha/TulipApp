@@ -21,7 +21,7 @@ export const Classroom = () => {
             tabBarExtraContent={
                 <Select
                 onChange={(id) =>setSessionId(id)}
-                value={selectList?.selectedSession.value}
+                value={sessionId}
                 options={selectList?.sessionList}
             />
             }
