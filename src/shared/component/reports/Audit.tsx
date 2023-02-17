@@ -1,4 +1,4 @@
-import { List, Row, Col, Typography, Tag, Button, Card } from "antd"
+import { List, Row, Col, Typography, Tag, Button, Card, Empty } from "antd"
 import dayjs from "dayjs"
 import { useFetchAuditQuery, useUpdateResolvedMutation } from "../../redux/api/feature/audit/api"
 
@@ -14,7 +14,7 @@ export const Audit = () => {
     const { Text } = Typography;
     return (
         <>
-            {data?.content &&
+            {data?.content && data.content.length > 0 ?
                 <List
                     bordered
                     extra={"Hello"}
@@ -70,7 +70,9 @@ export const Audit = () => {
                         )}
                     </VirtualList>
 
-                </List>
+                </List> :
+                
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"No recorded errors."}/>
             }
         </>
     )

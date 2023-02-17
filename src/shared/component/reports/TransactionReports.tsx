@@ -1,4 +1,4 @@
-import { Col, List, Row, Tag, Typography } from "antd";
+import { Col, Empty, List, Row, Tag, Typography } from "antd";
 import { useFetchTransactionHistoryQuery } from "../../redux/api/feature/report/api";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
         setTotalCollection(total);
     }, [transactionReport])
     return (<>
-        {transactionReport?.content && <List
+        {transactionReport?.content && transactionReport?.content.length > 0 ? <List 
             header={totalCollection > 0 ? <Row><Col offset={17}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
@@ -89,6 +89,8 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
             </VirtualList>
 
             </List>
+            :
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"No recorded transactions."}/>
         }
     </>);
 }
