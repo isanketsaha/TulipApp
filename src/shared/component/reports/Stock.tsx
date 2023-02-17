@@ -76,7 +76,7 @@ export const Stock = () => {
         <>
             {data &&
 
-                <Table<IStockReport> rowKey={(record) => record.id} dataSource={data} scroll={{ y: 300 }} columns={columns} size="middle" />
+                <Table<IStockReport> rowKey={(record) => record.id} dataSource={data} scroll={{ y: 300 }} columns={columns} size="small" />
             }
         </>);
 }
