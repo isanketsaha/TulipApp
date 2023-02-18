@@ -11,7 +11,7 @@ interface IPurchaseProps {
 }
 
 
-export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
+export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
 
     const { data: productCatalog } = useFetchAllProductCatalogQuery(classId);
 
@@ -19,14 +19,14 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
 
     const [selectedItems, addSelectedItems] = useState<number[]>([]);
 
-    useEffect(()=> {
-        if(calculate){
-        calculateTotal();
+    useEffect(() => {
+        if (calculate) {
+            calculateTotal();
         }
 
-    },[calculate])
+    }, [calculate])
 
-   
+
     const fetchProductRows = () => {
         const fields = form.getFieldsValue();
         const { purchaseItems } = fields;
@@ -38,7 +38,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
-            productId:selectedProduct?.id,
+            productId: selectedProduct?.id,
             productName: selectedProduct?.itemName,
             unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -64,7 +64,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productId)
         products[rowKey] = {
             ...products[rowKey],
-            productId:selectedProduct?.id,
+            productId: selectedProduct?.id,
             productName: selectedProduct?.itemName,
             amount: (((selectedProduct?.price ?? 0) * Number(qty)).toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -76,7 +76,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         calculateTotal();
     }
 
-    const removeLineItem = (index: number)  => {
+    const removeLineItem = (index: number) => {
         calculateTotal();
     }
 
@@ -97,12 +97,13 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         });
     }
 
-    const filterListConstruct = () =>{
+    const filterListConstruct = (rowKey: number) => {
         const feeItem = fetchProductRows();
-        addSelectedItems([]);
-        feeItem.array.forEach((selectedItems: any) => {
-            selectedItems && addSelectedItems(oldArray => [...oldArray, selectedItems?.id])
+        const id = feeItem[rowKey].feesId;
+        const items = selectedItems?.filter((item) => {
+            return item !== id
         });
+        addSelectedItems([...items]);
     }
 
     const filteredOptions = productCatalog?.filter((catalog) => !selectedItems.includes(catalog.id));
@@ -149,11 +150,11 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                         <Form.Item
                                             name={[name, "productId"]}
                                         >
-                                            <Input/>
-                                               </Form.Item>
+                                            <Input />
+                                        </Form.Item>
                                     </Col>
 
-                                    <Col span={2} offset={1}>
+                                    <Col span={3} offset={1}>
                                         <Form.Item
                                             name={[name, "size"]}
 
@@ -167,17 +168,17 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                             name={[name, "qty"]}
                                             rules={[{ required: true, message: "Enter Quantity" }]}
                                         >
-                                            <InputNumber min={1}  onStep={(value: number) => reCalculateAmount(String(value), name)} onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
+                                            <InputNumber min={1} onStep={(value: number) => reCalculateAmount(String(value), name)} onInput={(value) => reCalculateAmount(value, name)} placeholder="Quantity" style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
 
-                                    <Col span={2} offset={3}>
+                                    <Col span={2} offset={2}>
                                         <Form.Item
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}
                                         >
-                                            <InputNumber min={1} max={10000}  controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber min={1} max={10000} controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -192,9 +193,10 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
 
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
+                                                filterListConstruct(name);
                                                 remove(name);
                                                 removeLineItem(name);
-                                                filterListConstruct()
+
                                             }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>

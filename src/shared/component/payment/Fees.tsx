@@ -51,7 +51,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         if (monthNumber > 0) {
             feeItem[rowKey] = {
                 ...feeItem[rowKey],
-                feesTitle:selectedFees?.name,
+                feesTitle: selectedFees?.name,
                 rule: selectedFees?.applicableRule,
                 unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -77,9 +77,9 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const onSelectFees = (elementId: number, rowKey: number) => {
         const feeItem = fetchFeeRows();
         const selectedFees = feesCatalog?.find(item => item.id === elementId)
-        
+
         feeItem[rowKey] = {
-            feesTitle:selectedFees?.name,
+            feesTitle: selectedFees?.name,
             feesId: elementId,
             rule: selectedFees?.applicableRule,
             unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
@@ -101,7 +101,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const calculateTotal = () => {
         let total = 0;
         fetchFeeRows().map((item: any) => {
-            if (item.amount) {
+            if (item?.amount) {
                 const amount: number = Number(item.amount.replace(/[^0-9-]+/g, "")) / 100;
                 total += amount;
             }
@@ -119,21 +119,22 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const disableDate = (currentDate: Dayjs, rowKey: number) => {
         const feeItem = fetchFeeRows();
         const currentFees = feeItem[rowKey];
-      
+
         if (currentFees.from) {
             return currentDate.isBefore(currentFees.from);
         }
         return true;
     };
 
-    const filterListConstruct = () =>{
+    const filterListConstruct = (rowKey: number) => {
         const feeItem = fetchFeeRows();
-        addSelectedFees([]);
-        feeItem.array.forEach((selectedFees: any) => {
-            selectedFees?.name && addSelectedFees(oldArray => [...oldArray, selectedFees?.id])
+        const id = feeItem[rowKey].feesId;
+        const fees = selectedFees?.filter((item) => {
+            return item !== id
         });
+        addSelectedFees([...fees]);
     }
-   const filteredOptions = feesCatalog?.filter((catalog) => !selectedFees.includes(catalog.id));
+    const filteredOptions = feesCatalog?.filter((catalog) => !selectedFees.includes(catalog.id));
 
     return (<>
         <Form.List name="feeItem">
@@ -152,7 +153,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             name={[name, "feesTitle"]}
                                             rules={[{ required: true }]}
                                         >
-                                            <Select placeholder="Select fee type" notFoundContent={null}
+                                            <Select placeholder="Select Fees" notFoundContent={null}
                                                 onSelect={(e) => onSelectFees(e, name)} options={filteredOptions?.map((d) => ({
                                                     value: d.id,
                                                     label: <>
@@ -171,22 +172,22 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                         <Form.Item
                                             name={[name, "feesId"]}
                                         >
-                                            <Input></Input>
-                                               </Form.Item>
+                                            <Input />
+                                        </Form.Item>
                                     </Col>
                                     <Col hidden={true}>
                                         <Form.Item
                                             name={[name, "rule"]}
                                         >
-                                            <Input></Input>
-                                               </Form.Item>
+                                            <Input />
+                                        </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
                                         <Form.Item
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
                                         >
-                                            <DatePicker format="MMM-YYYY" onSelect={(value) => onMonthSelection(value, name, "from")}  picker="month" />
+                                            <DatePicker format="MMM-YYYY" placeholder="From Date" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -194,8 +195,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             name={[name, "to"]}
                                             rules={[{ required: true }]}
                                         >
-
-                                            <DatePicker format="MMM-YYYY" picker="month" onSelect={(value) => onMonthSelection(value, name, "to")} disabledDate={(value) => disableDate(value, name)} />
+                                            <DatePicker format="MMM-YYYY" picker="month" placeholder="To Date" onSelect={(value) => onMonthSelection(value, name, "to")} disabledDate={(value) => disableDate(value, name)} />
                                         </Form.Item>
                                     </Col>
 
@@ -210,7 +210,6 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                         <Form.Item
                                             name={[name, "amount"]}
                                             rules={[{ required: true }]}
-
                                         >
                                             <InputNumber bordered={false} controls={false} placeholder="Amount" disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
@@ -218,9 +217,10 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                     <Col span={2} offset={1}>
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
+                                                filterListConstruct(name);
                                                 remove(name);
                                                 calculateTotal();
-                                                filterListConstruct();
+
                                             }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>
