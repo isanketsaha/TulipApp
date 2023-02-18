@@ -1,10 +1,7 @@
 import { Button, Col, DatePicker, Form, FormInstance, Input, InputNumber, Row, Select, Space, Typography } from "antd"
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
-import { useAppSelector } from "../../../store";
 import { Dayjs } from "dayjs";
-import { ValidateStatus } from "antd/es/form/FormItem";
 import { useEffect, useState } from "react";
-import { IFeesCatalog } from "../../interface/IFeesCatalog";
 import { useFetchAllfeesCatalogQuery } from "../../redux/api/feature/catalog/api";
 
 
@@ -19,6 +16,8 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const { Text } = Typography;
 
     const { data: feesCatalog } = useFetchAllfeesCatalogQuery(classId);
+
+    const [selectedFees, addSelectedFees] = useState<number[]>([]);
 
     useEffect(() => {
         if (calculate) {
@@ -78,9 +77,10 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const onSelectFees = (elementId: number, rowKey: number) => {
         const feeItem = fetchFeeRows();
         const selectedFees = feesCatalog?.find(item => item.id === elementId)
+        
         feeItem[rowKey] = {
-            ...feeItem[rowKey],
             feesTitle:selectedFees?.name,
+            feesId: elementId,
             rule: selectedFees?.applicableRule,
             unitPrice: selectedFees?.amount.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -95,6 +95,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         }
         form.setFieldsValue({ feeItem: [...feeItem] });
         calculateTotal();
+        selectedFees?.name && addSelectedFees(oldArray => [...oldArray, selectedFees?.id])
     }
 
     const calculateTotal = () => {
@@ -118,13 +119,21 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const disableDate = (currentDate: Dayjs, rowKey: number) => {
         const feeItem = fetchFeeRows();
         const currentFees = feeItem[rowKey];
+      
         if (currentFees.from) {
             return currentDate.isBefore(currentFees.from);
         }
         return true;
     };
 
-
+    const filterListConstruct = () =>{
+        const feeItem = fetchFeeRows();
+        addSelectedFees([]);
+        feeItem.array.forEach((selectedFees: any) => {
+            selectedFees?.name && addSelectedFees(oldArray => [...oldArray, selectedFees?.id])
+        });
+    }
+   const filteredOptions = feesCatalog?.filter((catalog) => !selectedFees.includes(catalog.id));
 
     return (<>
         <Form.List name="feeItem">
@@ -136,15 +145,15 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                             <div key={key}>
                                 <Row >
                                     <Col span={1}>
-                                        {key + 1}.
+                                        {name + 1}.
                                     </Col>
-                                    <Col span={4}>
+                                    <Col span={5}>
                                         <Form.Item
-                                            name={[name, "feesId"]}
+                                            name={[name, "feesTitle"]}
                                             rules={[{ required: true }]}
                                         >
                                             <Select placeholder="Select fee type" notFoundContent={null}
-                                                onSelect={(e) => onSelectFees(e, name)} options={feesCatalog?.map((d) => ({
+                                                onSelect={(e) => onSelectFees(e, name)} options={filteredOptions?.map((d) => ({
                                                     value: d.id,
                                                     label: <>
                                                         <Row>
@@ -160,7 +169,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                     </Col>
                                     <Col hidden={true}>
                                         <Form.Item
-                                            name={[name, "feesTitle"]}
+                                            name={[name, "feesId"]}
                                         >
                                             <Input></Input>
                                                </Form.Item>
@@ -177,7 +186,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
                                         >
-                                            <DatePicker format="MMM-YYYY" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
+                                            <DatePicker format="MMM-YYYY" onSelect={(value) => onMonthSelection(value, name, "from")}  picker="month" />
                                         </Form.Item>
                                     </Col>
                                     <Col span={3} offset={1}>
@@ -190,12 +199,10 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={3} offset={1}>
+                                    <Col span={2} offset={1}>
                                         <Form.Item
                                             name={[name, "unitPrice"]}
-                                            rules={[{ required: true }]}
-
-                                        >
+                                            rules={[{ required: true }]}>
                                             <InputNumber min={1} max={10000} controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
@@ -213,6 +220,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 remove(name);
                                                 calculateTotal();
+                                                filterListConstruct();
                                             }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>

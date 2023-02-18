@@ -1,4 +1,4 @@
-import { Menu, MenuProps, Typography, theme } from "antd";
+import { Badge, Menu, MenuProps, Typography, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import React, { useState } from "react";
 import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled, IdcardFilled, FolderOpenFilled, LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
@@ -14,14 +14,14 @@ interface nav {
 
 }
 
-interface ISliderProps{
+interface ISliderProps {
     collapsed: boolean
-     setCollapsed : (value: boolean) => void
+    setCollapsed: (value: boolean) => void
 }
-export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
+export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
 
     const { Text } = Typography;
-    const {user} = useAppSelector((state) => state.userAuth);
+    const { user } = useAppSelector((state) => state.userAuth);
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
         }
     ]
 
-    if(user?.authority && [Role.ADMIN].includes(user?.authority)){
+    if (user?.authority && [Role.ADMIN].includes(user?.authority)) {
         navigatons.push({
             label: 'Accounts',
             icon: <FundFilled />,
@@ -60,7 +60,7 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
     const options: MenuProps['items'] = navigatons.map(
         (item, index) => {
             const key = String(index + 1);
-            const url: string = item.label=='Office'?  '/': `/${item.label}`.toLowerCase();
+            const url: string = item.label == 'Office' ? '/' : `/${item.label}`.toLowerCase();
             return {
                 key: `${key}`,
                 label: (<Link to={url}> {item.label} </Link>),
@@ -92,14 +92,20 @@ export const SideNav = ({collapsed, setCollapsed}: ISliderProps) => {
                 left: 0,
                 top: 0,
                 bottom: 0,
-                paddingTop:'8vh'
+                paddingTop: '8vh'
             }}>
-            <div hidden={collapsed && user != null} style={{  textAlign: 'center' ,margin: '5vh' }} >
+            <div hidden={collapsed && user != null} style={{ textAlign: 'center', margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
                 <div style={{ marginTop: '2vh' }}>
                     <Text strong>{user?.userName}</Text>
-                    <br/>
-                    <Text type="secondary">{user?.authority}</Text>
+                    <br />
+                    {
+                        import.meta.env.VITE_ENVIRONMENT == 'DEV' ? 
+                        <Badge.Ribbon color={"blue"} text={`${import.meta.env.VITE_ENVIRONMENT}`}>
+                            <Text type="secondary">{user?.authority}</Text>
+                        </Badge.Ribbon> : 
+                        <Text type="secondary">{user?.authority}</Text>
+                    }
                 </div>
             </div>
 

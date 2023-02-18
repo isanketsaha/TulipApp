@@ -2,7 +2,7 @@ import { Button, Col, Form, FormInstance, Input, InputNumber, Row, Select, Space
 import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { IProductCatlog } from "../../interface/IProductCatalog";
 import { useFetchAllProductCatalogQuery } from "../../redux/api/feature/catalog/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface IPurchaseProps {
     form: FormInstance,
@@ -16,6 +16,8 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
     const { data: productCatalog } = useFetchAllProductCatalogQuery(classId);
 
     const { Text } = Typography;
+
+    const [selectedItems, addSelectedItems] = useState<number[]>([]);
 
     useEffect(()=> {
         if(calculate){
@@ -36,6 +38,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
         products[rowKey] = {
             ...products[rowKey],
+            productId:selectedProduct?.id,
             productName: selectedProduct?.itemName,
             unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -51,7 +54,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
             })
         }
         form.setFieldsValue({ purchaseItems: [...products] });
-        
+        selectedProduct?.id && addSelectedItems(oldArray => [...oldArray, selectedProduct?.id])
         calculateTotal();
 
     }
@@ -61,6 +64,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         const selectedProduct = productCatalog?.find(item => item.id === products[rowKey].productId)
         products[rowKey] = {
             ...products[rowKey],
+            productId:selectedProduct?.id,
             productName: selectedProduct?.itemName,
             amount: (((selectedProduct?.price ?? 0) * Number(qty)).toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -93,6 +97,16 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
         });
     }
 
+    const filterListConstruct = () =>{
+        const feeItem = fetchProductRows();
+        addSelectedItems([]);
+        feeItem.array.forEach((selectedItems: any) => {
+            selectedItems && addSelectedItems(oldArray => [...oldArray, selectedItems?.id])
+        });
+    }
+
+    const filteredOptions = productCatalog?.filter((catalog) => !selectedItems.includes(catalog.id));
+
     return (<>
         <Form.List name="purchaseItems">
             {(fields, { add, remove }) => (
@@ -102,11 +116,11 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                             <div key={key}>
                                 <Row >
                                     <Col span={1}>
-                                        {key + 1}.
+                                        {name + 1}.
                                     </Col>
-                                    <Col span={4}>
+                                    <Col span={5}>
                                         <Form.Item
-                                            name={[name, "productId"]}
+                                            name={[name, "productName"]}
                                             rules={[{ required: true, message: "Select a product" }]}
                                         >
                                             <Select showSearch clearIcon placeholder="Select Product"
@@ -115,7 +129,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                                 filterSort={(optionA, optionB) =>
                                                     (optionA?.title ?? '').toLowerCase().localeCompare((optionB?.title ?? '').toLowerCase())
                                                 }
-                                                options={productCatalog?.map((d) => ({
+                                                options={filteredOptions?.map((d) => ({
                                                     value: d.id,
                                                     title: d.itemName,
                                                     label: <>
@@ -133,7 +147,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                     </Col>
                                     <Col hidden={true}>
                                         <Form.Item
-                                            name={[name, "productName"]}
+                                            name={[name, "productId"]}
                                         >
                                             <Input/>
                                                </Form.Item>
@@ -158,7 +172,7 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                     </Col>
 
 
-                                    <Col span={3} offset={3}>
+                                    <Col span={2} offset={3}>
                                         <Form.Item
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}
@@ -179,7 +193,8 @@ export const Purchase = ({ form, classId , calculate}: IPurchaseProps) => {
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 remove(name);
-                                                removeLineItem(name)
+                                                removeLineItem(name);
+                                                filterListConstruct()
                                             }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
                                             <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
                                         </Space>
