@@ -56,8 +56,8 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
         },
         {
             title: 'Size',
-            dataIndex: 'productSize',
-            key: 'productSize',
+            dataIndex: 'size',
+            key: 'size',
             render: (size: string) => {
                 return size ? size : 'N/A';
             }
