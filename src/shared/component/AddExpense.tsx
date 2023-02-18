@@ -43,7 +43,7 @@ export const AddExpense = ({onExpenseSubmit}:IExpenseProps) => {
                                 <div key={key}>
                                     <Row >
                                         <Col span={1}>
-                                            {key + 1}.
+                                            {name + 1}.
                                         </Col>
 
                                         <Col span={5}>

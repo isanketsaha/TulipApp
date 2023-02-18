@@ -3,20 +3,20 @@ import { useFetchInventoryReportQuery } from "../../redux/api/feature/report/api
 import { IStockReport } from "../../interface/IStockReport";
 import { IProductCatlog } from "../../interface/IProductCatalog";
 import { ColumnsType } from "antd/es/table";
-
+import {WarningOutlined} from  '@ant-design/icons';
 
 export const Stock = () => {
 
-    const { data } = useFetchInventoryReportQuery();
+    const { data: stockDate } = useFetchInventoryReportQuery();
 
-    const filterProduct = data?.map((item: IStockReport) => {
+    const filterProduct = stockDate?.map((item: IStockReport) => {
         return {
             text: item.product.itemName,
             value: item.product.itemName
         }
     });
 
-    const categoryFilter = data?.map((item: IStockReport) => {
+    const categoryFilter = stockDate?.map((item: IStockReport) => {
         return {
             text: item.product.type,
             value: item.product.type
@@ -35,15 +35,17 @@ export const Stock = () => {
             dataIndex: 'product',
             key: 'product',
             filterSearch: true,
-            render: (item: IProductCatlog) => item.itemName,
+            render: (value) => value.itemName,
             filters: [...new Map(filterProduct?.map((m) => [m.text, m])).values()],
-            onFilter: (value , record) => record.product.itemName.indexOf(String(value)) === 0
+            onFilter: (value , record) => record.product.itemName.indexOf(String(value)) === 0,
+            onCell: (_, index) => ({
+                rowSpan: stockDate && index && (_.product.itemName == stockDate[index].product.itemName) ? 1 : 1,
+              }),
         },
         {
             title: 'Size / Class',
             dataIndex: 'product',
             key: 'product',
-            width: 120,
             render: (item: IProductCatlog) => item.size ? item.size : item.std ? item.std : 'N/A'
         }
         ,
@@ -51,7 +53,6 @@ export const Stock = () => {
             title: 'Category',
             dataIndex: 'product',
             key: 'product',
-            width: 200,
             render: (item: IProductCatlog) => <Tag color="green"> {item.type} </Tag>,
             filters: [...new Map(categoryFilter?.map((m) => [m.text, m])).values()],
             onFilter: (value, record) => record.product.type.indexOf(String(value)) === 0
@@ -60,23 +61,25 @@ export const Stock = () => {
             title: 'Quantity',
             dataIndex: 'availableQty',
             key: 'availableQty',
-            width: 100,
-            render: (item: number) => <Tag color="blue">  {item}</Tag>
+            render: (value, row, index) =>  <Tag icon={row.lowStock ? <WarningOutlined /> : null} color={row.lowStock ? "red":"blue"}>  {value}</Tag>
         },
         {
             title: 'Price',
             dataIndex: 'product',
             key: 'product',
-            width: 150,
-            render: (item: IProductCatlog) => item.price ? item.price : 'N/A'
+            render: (item: IProductCatlog) => item.price ? item.price.toLocaleString('en-IN', {
+                maximumFractionDigits: 1,
+                style: 'currency',
+                currency: 'INR'
+            }) : 'N/A'
         }
     ];
 
     return (
         <>
-            {data &&
+            {stockDate &&
 
-                <Table<IStockReport> rowKey={(record) => record.id} dataSource={data} scroll={{ y: 300 }} columns={columns} size="small" />
+                <Table<IStockReport> rowKey={(record) => record.id} dataSource={stockDate} scroll={{ y: 300 }} columns={columns} size="small" />
             }
         </>);
 }
