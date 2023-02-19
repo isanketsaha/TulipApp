@@ -9,8 +9,8 @@ import logo from '../assets/logo.png'
 
 export const Login = () => {
     let navigate = useNavigate();
-   const userAuth = useAppSelector((state) => state.userAuth);
-   const dispatch =  useAppDispatch();
+    const userAuth = useAppSelector((state) => state.userAuth);
+    const dispatch = useAppDispatch();
     const [loginUser, {
         data,
         isSuccess,
@@ -36,31 +36,31 @@ export const Login = () => {
         }
     }
 
-    useEffect(()=>{
-        if(userAuth.user != null){
+    useEffect(() => {
+        if (userAuth.user != null) {
             navigate("/", { replace: true });
         }
-    },[userAuth.user])
-   
+    }, [userAuth.user])
+
 
 
     return (
         <>
             <Row justify="space-around" align={"middle"}>
-                <Col lg={{span:2,  order: 1 ,  offset: 3}} md={{span:24,  order: 2 ,  offset: 20}} xs={{span: 24, order: 2 , offset: 16 }} >
+                <Col lg={{ span: 2, order: 1, offset: 3 }} md={{ span: 12, order: 2, offset: 6 }} xs={{ span: 12, order: 2, offset: 6 }} >
                     <img width={100} src={logo} />
                 </Col>
-                <Col lg={{span:10,  order: 2, offset: 2}} md={{span:24,  order: 1, offset: 12}} xs={{span: 24, order: 1, offset: 1 }}> <h1  style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>
-                <div> <h4 style={{ fontFamily: 'EB Garamond, serif', marginLeft:'4vmin' }}>Shaping the lives of those, who will shape the nation.</h4></div>
+                <Col lg={{ span: 10, order: 2, offset: 2 }} md={{ span: 20, order: 1, offset:4  }} xs={{ span: 24, order: 1, offset: 1 }}> <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>
+                    <div> <h4 style={{ fontFamily: 'EB Garamond, serif', marginLeft: '4vmin' }}>Shaping the lives of those, who will shape the nation.</h4></div>
                 </Col>
-                <Col lg={{span:3,  order: 3, offset: 1 }} md={{span:24,  order: 3, offset: 18 }} xs={{span: 24, order: 3 , offset: 12 }} ><DateTime /></Col></Row>
+                <Col lg={{ span: 4, order: 3, offset: 1 }} md={{ span: 12, order: 3, offset: 4 }} xs={{ span: 12, order: 3, offset: 2 }} ><DateTime /></Col></Row>
             <div style={{ marginTop: '10vw' }}>
                 <Row justify="space-around" align="middle">
-                    <Col lg={8} md ={10} sm={10} >
+                    <Col lg={7} md={12} sm={4} >
                         <Card style={{ width: '100%' }}>
                             <div hidden={!isError}>
-                                <Space  direction="vertical" style={{ width: '100%' }}>
-                                    <Alert message= {(error as any)?.data?.detail} type="error" closable/>
+                                <Space direction="vertical" style={{ width: '100%' }}>
+                                    <Alert message={(error as any)?.data?.detail} type="error" closable />
                                 </Space>
                             </div>
                             <Form
@@ -87,21 +87,21 @@ export const Login = () => {
                                 >
                                     <Input.Password />
                                 </Form.Item>
-                                <Form.Item wrapperCol={{offset:6 ,span: 24 }}>
-                                    <Row justify={"space-around"} align={"middle"}>
-                                        <Col>
-                                    <Button type="default" htmlType="reset">
-                                        Reset
-                                    </Button>
+
+                                <Row align={"middle"}>
+                                    <Col md={{ span: 4,  offset: 8 }} xs={{ span: 2,  offset: 4 }} >
+                                        <Button type="default" htmlType="reset">
+                                            Reset
+                                        </Button>
                                     </Col>
-                                    <Col>
-                                    <Button type="primary" htmlType="submit">
-                                        Submit
-                                    </Button>
+                                    <Col  md={{ span: 8,  offset: 2 }} xs={{ span: 2,  offset: 6 }} >
+                                        <Button type="primary" htmlType="submit">
+                                            Submit
+                                        </Button>
                                     </Col>
-                                    
-                                    </Row>
-                                </Form.Item>
+
+                                </Row>
+
                             </Form>
                         </Card>
                     </Col>

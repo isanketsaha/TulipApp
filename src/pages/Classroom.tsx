@@ -2,7 +2,7 @@ import { Divider, Select, Tabs } from "antd";
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { ClassroomDetails } from "../shared/component/ClassroomDetails";
 import { useAppSelector } from "../store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export const Classroom = () => {
@@ -11,13 +11,17 @@ export const Classroom = () => {
     const [sessionId, setSessionId] = useState<number>(selectList?.selectedSession.value)
     const { data : classList } = useFetchAllClassroomQuery(sessionId);
     
+    useEffect(()=>{
+        setSessionId(selectList?.selectedSession.value)
+    }, [selectList?.selectedSession])
+    
     return (
         <Tabs
             size={"large"}
             defaultActiveKey="1"
             centered
             type="card"
-            tabBarGutter={5}
+            tabBarGutter={2}
             tabBarExtraContent={
                 <Select
                 onChange={(id) =>setSessionId(id)}

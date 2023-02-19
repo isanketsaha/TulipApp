@@ -12,7 +12,7 @@ export const classroomApi = createApi({
     baseQuery: baseQueryWithRetry("classroom"),
     endpoints: (builder) => ({
         fetchAllClassroom: builder.query<IClassList[], number>({
-            query: (sessionId) => `all?sessionId=${sessionId}`,
+            query: (sessionId) => `all?sessionId=${sessionId ? sessionId:0}`,
             
         }),
         fetchClassroomId: builder.query<number, {std: string, sessionId : number} | undefined>({
