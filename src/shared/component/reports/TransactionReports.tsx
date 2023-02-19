@@ -29,7 +29,8 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
     }, [transactionReport])
     return (<>
         {transactionReport?.content && transactionReport?.content.length > 0 ? <List 
-            header={totalCollection > 0 ? <Row><Col offset={17}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
+           
+            header={totalCollection > 0 ? <Row><Col md={{ span: 8 , offset: 17 }}  xs={{ span: 16 , offset: 5 }}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
                 style: 'currency',
                 currency: 'INR'
@@ -51,27 +52,27 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
             itemKey="email"
           >
             {(item: IPayDetailsSummary, index) => (
-                <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
-                    <List.Item.Meta key={index}
+                <List.Item  actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
+                    <List.Item.Meta 
                         description={
-                            <Row key={index}>
-                                <Col span={1}>
+                            <Row justify={"space-between"} align={"middle"}>
+                                <Col  md={{ span: 1 }} xs={{ span: 0 }} >
                                     {index + 1}
                                 </Col>
-                                <Col span={6}>
+                                <Col  md={{ span: 6 }} >
                                     {dayjs(item.paymentDateTime).format('MMM D, YYYY h:mm A')}
                                 </Col>
-                                <Col span={5}>
+                                <Col md={{ span: 5 }}>
 
                                    { item.payType !='EXPENSE' ? <Link to={`studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
                                 </Col>
-                                <Col span={3} offset={1}>
+                                <Col md={{ span: 3 }}>
                                     <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>
                                 </Col>
-                                <Col span={2}>
+                                <Col md={{ span: 2 , offset:1}}>
                                     <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
                                 </Col>
-                                <Col span={5} >
+                                <Col md={{ span: 5, offset:1 }}>
                                     {
                                     item.total.toLocaleString('en-IN', {
                                         maximumFractionDigits: 2,

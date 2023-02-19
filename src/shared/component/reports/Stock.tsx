@@ -29,6 +29,7 @@ export const Stock = () => {
             dataIndex: '',
             key: '',
             width: 30,
+            responsive: ['lg'],
         },
         {
             title: 'Product Title',

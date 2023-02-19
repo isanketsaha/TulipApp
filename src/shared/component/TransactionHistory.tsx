@@ -42,7 +42,7 @@ export const TransactionHistory = ({ studentId }: TransactionHistoryProps) => {
             itemKey="email"
           >
             {(item: IPayDetailsSummary, index) => (
-              <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
+              <List.Item actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
                 <List.Item.Meta
                   description={<Row>
                     <Col span={1}>{(index + 1) * (page + 1)}.</Col>

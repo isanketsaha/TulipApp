@@ -29,19 +29,22 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
             title: 'Fees',
             dataIndex: 'fees',
             key: 'fees',
-            render: (item) => <Tag color={"green"} >{item}</Tag>
+            render: (item) => <Tag color={"green"} >{item}</Tag>,
+            responsive:['md']
         },
         {
             title: 'Purchase',
             dataIndex: 'purchase',
             key: 'purchase',
-            render: (item) => <Tag color={"blue"} >{item}</Tag>
+            render: (item) => <Tag color={"blue"} >{item}</Tag>,
+            responsive:['md']
         },
         {
             title: 'Expense',
             dataIndex: 'expense',
             key: 'expense',
-            render: (item) => <Tag color={"volcano"} >{item}</Tag>
+            render: (item) => <Tag color={"volcano"} >{item}</Tag>,
+            responsive:['md']
         },
         {
             title: 'Total',
