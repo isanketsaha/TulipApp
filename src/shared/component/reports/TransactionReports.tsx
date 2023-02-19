@@ -62,7 +62,7 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
                                 <Col  md={{ span: 6 }} >
                                     {dayjs(item.paymentDateTime).format('MMM D, YYYY h:mm A')}
                                 </Col>
-                                <Col md={{ span: 5 }}>
+                                <Col md={{ span: 5 }} >
 
                                    { item.payType !='EXPENSE' ? <Link to={`studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
                                 </Col>
