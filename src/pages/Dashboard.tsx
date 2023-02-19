@@ -53,13 +53,13 @@ export const Dashboard = () => {
                            
                         </Col>
                     </Row>
-                    <Row gutter={16}>
-                        <Col span={12}>
+                    <Row justify={"space-evenly"}  gutter={[16,16]}>
+                        <Col xs={{span:24}}lg={{ span: 12 }}>
                             <Card >
                                 <StudentReport />
                             </Card>
                         </Col>
-                        <Col span={12}>
+                        <Col xs={{span:24}} lg={{ span: 12 }}>
                             <Card >
                                 <StaffReport />
 
