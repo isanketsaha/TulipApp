@@ -6,6 +6,7 @@ import { CheckboxValueType } from "antd/es/checkbox/Group";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "/src/store";
 import dayjs from "dayjs";
+import { useMediaQuery } from "react-responsive";
 
 
 interface IClassDetailsProsp {
@@ -13,6 +14,9 @@ interface IClassDetailsProsp {
 }
 
 export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
+
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
+    
     const [promoteStudent, { isSuccess }] = usePromoteStudentMutation();
     const { data: classDetails } = useFetchClassroomDetailsQuery(stdList.id);
     const { sessionList, classList } = useAppSelector(app => app.commonData);
@@ -117,17 +121,17 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                 <List.Item>
                                     <List.Item.Meta
                                         title={<Row>
-                                            <Col span={1}>
+                                            <Col md={{span:1}} xs={{span:0}}>
                                                 <div hidden={!(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled')} ><Checkbox value={item.id} /></div>
-                                                {index + 1}
+                                                {index + 1}.
                                             </Col>
-                                            <Col>
+                                            <Col >
                                                 {item.name}
                                             </Col>
                                         </Row>}
                                         description={<Row>
-                                            <Col offset={1}>
-                                             <Space size={"large"}> <> Gender -  {item.gender} |</> <>  Birthday - {dayjs(item.dob).format("DD-MMM-YYYY")} |</> <> Contact - {item.phoneNumber}  </> </Space> 
+                                            <Col md={{span:23}} xs={{span:0}}>
+                                             <Space size={"small"}> <> Gender -  {item.gender} |</> <>  Birthday - {dayjs(item.dob).format("DD-MMM-YYYY")} |</> <> Contact - {item.phoneNumber}  </> </Space> 
                                             </Col>
                                         </Row>} />
                                     <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>
@@ -143,7 +147,8 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
         {
             key: '2',
             label: `Fees`,
-            children: <Space direction="vertical" style={{ width: '100%' }} ><Table dataSource={classDetails?.feesCatalogs} size="small" columns={feesColumns} />
+            children: <Space direction="vertical" style={{ width: '100%' }} >
+                <Table dataSource={classDetails?.feesCatalogs} size="small" columns={feesColumns} />
                 <Table dataSource={classDetails?.productCatalogs} size="small" columns={productColumns} />
             </Space >,
         }
@@ -152,9 +157,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     return (
         <>
             <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                <Tabs centered tabPosition={"right"} defaultActiveKey="1" items={items} />
-                {/* <Card title="Student List" style={{ width: '100%' }}>
-                </Card> */}
+                <Tabs destroyInactiveTabPane  centered tabPosition={isTabletOrMobile ? "top" : "right"} defaultActiveKey="1"  items={items} />
             </Space>
         </>
     )

@@ -3,10 +3,11 @@ import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom
 import { ClassroomDetails } from "../shared/component/ClassroomDetails";
 import { useAppSelector } from "../store";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 
 export const Classroom = () => {
-
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const selectList = useAppSelector(state => state.commonData);
     const [sessionId, setSessionId] = useState<number>(selectList?.selectedSession.value)
     const { data : classList } = useFetchAllClassroomQuery(sessionId);
@@ -17,12 +18,12 @@ export const Classroom = () => {
     
     return (
         <Tabs
+        tabPosition={"top"}
             size={"large"}
             defaultActiveKey="1"
             centered
             type="card"
-            tabBarGutter={2}
-            tabBarExtraContent={
+            tabBarExtraContent={ isTabletOrMobile ? null :
                 <Select
                 onChange={(id) =>setSessionId(id)}
                 value={sessionId}
