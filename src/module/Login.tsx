@@ -45,24 +45,19 @@ export const Login = () => {
 
 
     return (
-       
         <>
-         
             <Row style={{ marginTop: '3vh' }}>
-                <Col span={2} offset={5}>
+                <Col lg={{span:2,  order: 1 }} xs={{span: 24, order: 2 }} offset={5} >
                     <img width={100} src={logo} />
                 </Col>
-                <Col span={8} offset={2}> <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>
+                <Col lg={{span:8,  order: 2 }} xs={{span: 24, order: 1 }} offset={2}> <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>
                 <div> <h4 style={{ fontFamily: 'EB Garamond, serif', marginLeft:'4vmin' }}>Shaping the lives of those who will shape the nation.</h4></div>
                 </Col>
-                <Col span={3} offset={3}><DateTime /></Col></Row>
-            <div style={{ marginTop: '10vh' }}>
-                <Row>
-
-                    <Col span={8} offset={9}>
-
-                        <Card style={{ width: 400 }}>
-
+                <Col lg={{span:3,  order: 3 }} xs={{span: 24, order: 3 }} offset={3}><DateTime /></Col></Row>
+            <div style={{ marginTop: '10vmin' }}>
+                <Row justify="space-around" align="middle">
+                    <Col lg={8} >
+                        <Card style={{ width: '60vmin' }}>
                             <div hidden={!isError} style={{margin: ' 2vh 0'}}>
                                 <Space  direction="vertical" style={{ width: '100%' }}>
                                     <Alert message= {(error as any)?.data?.detail} type="error" closable/>
@@ -96,13 +91,20 @@ export const Login = () => {
                                     <Checkbox>Remember me</Checkbox>
                                 </Form.Item> */}
 
-                                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                                    <Button type="default" htmlType="reset" style={{ marginRight: '4vh' }}>
+                                <Form.Item wrapperCol={{offset:6 ,span: 24 }}>
+                                    <Row justify={"space-around"} align={"middle"}>
+                                        <Col>
+                                    <Button type="default" htmlType="reset">
                                         Reset
                                     </Button>
+                                    </Col>
+                                    <Col>
                                     <Button type="primary" htmlType="submit">
                                         Submit
                                     </Button>
+                                    </Col>
+                                    
+                                    </Row>
                                 </Form.Item>
                             </Form>
                         </Card>

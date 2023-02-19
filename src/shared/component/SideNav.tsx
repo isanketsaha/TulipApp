@@ -83,6 +83,7 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
 
     return (
         <Sider width={250} collapsible collapsed={collapsed}
+            breakpoint="lg"
             onCollapse={(value) => setCollapsed(value)}
             style={{
                 background: colorBgContainer,
@@ -92,7 +93,7 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
                 left: 0,
                 top: 0,
                 bottom: 0,
-                paddingTop: '8vh'
+                paddingTop: '15vh'
             }}>
             <div hidden={collapsed && user != null} style={{ textAlign: 'center', margin: '5vh' }} >
                 <UserOutlined style={{ fontSize: '15vh' }} />
@@ -100,11 +101,11 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
                     <Text strong>{user?.userName}</Text>
                     <br />
                     {
-                        import.meta.env.VITE_ENVIRONMENT == 'DEV' ? 
-                        <Badge.Ribbon color={"blue"} text={`${import.meta.env.VITE_ENVIRONMENT}`}>
+                        import.meta.env.VITE_ENVIRONMENT ?
+                            <Badge.Ribbon color={"blue"} text={`${import.meta.env.VITE_ENVIRONMENT}`}>
+                                <Text type="secondary">{user?.authority}</Text>
+                            </Badge.Ribbon> :
                             <Text type="secondary">{user?.authority}</Text>
-                        </Badge.Ribbon> : 
-                        <Text type="secondary">{user?.authority}</Text>
                     }
                 </div>
             </div>
