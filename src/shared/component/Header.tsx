@@ -24,7 +24,7 @@ export const AppHeader = () => {
                 <Col >
                     <Link to="/">
 
-                        <h1 style={{ fontFamily: 'EB Garamond, serif', fontSize: 'xx-large', color: 'white' }}>Tulip English School </h1>
+                        <h1 style={{ fontFamily: 'EB Garamond, serif',marginTop: '2vh', fontSize: 'xx-large', color: 'white' }}>Tulip English School </h1>
 
                     </Link>
                 </Col>

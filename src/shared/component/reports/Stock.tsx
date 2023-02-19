@@ -41,12 +41,14 @@ export const Stock = () => {
             onCell: (_, index) => ({
                 rowSpan: stockDate && index && (_.product.itemName == stockDate[index].product.itemName) ? 1 : 1,
               }),
+        
         },
         {
             title: 'Size / Class',
             dataIndex: 'product',
             key: 'product',
-            render: (item: IProductCatlog) => item.size ? item.size : item.std ? item.std : 'N/A'
+            render: (item: IProductCatlog) => item.size ? item.size : item.std ? item.std : 'N/A',
+      
         }
         ,
         {
@@ -55,13 +57,15 @@ export const Stock = () => {
             key: 'product',
             render: (item: IProductCatlog) => <Tag color="green"> {item.type} </Tag>,
             filters: [...new Map(categoryFilter?.map((m) => [m.text, m])).values()],
-            onFilter: (value, record) => record.product.type.indexOf(String(value)) === 0
+            onFilter: (value, record) => record.product.type.indexOf(String(value)) === 0,
+            responsive: ['md'],
         },
         {
             title: 'Quantity',
             dataIndex: 'availableQty',
             key: 'availableQty',
-            render: (value, row, index) =>  <Tag icon={row.lowStock ? <WarningOutlined /> : null} color={row.lowStock ? "red":"blue"}>  {value}</Tag>
+            render: (value, row, index) =>  <Tag icon={row.lowStock ? <WarningOutlined /> : null} color={row.lowStock ? "red":"blue"}>  {value}</Tag>,
+     
         },
         {
             title: 'Price',
@@ -71,7 +75,7 @@ export const Stock = () => {
                 maximumFractionDigits: 1,
                 style: 'currency',
                 currency: 'INR'
-            }) : 'N/A'
+            }) : 'N/A',
         }
     ];
 
