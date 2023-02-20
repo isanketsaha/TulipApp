@@ -10,13 +10,14 @@ import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import { Role } from "../utils/Role";
 import { WhatsAppOutlined } from '@ant-design/icons';
+import { useMediaQuery } from "react-responsive";
 
 interface IStudentViewProps {
     studentId: string
 }
 
 export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
-
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const { user } = useAppSelector(state => state.userAuth);
     const [sessionIndex, setSessionIndex] = useState<number>(0);
     const [open, setOpen] = useState(false);
@@ -71,13 +72,13 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                         <Descriptions.Item label="Class Teacher">{studentData?.classDetails[sessionIndex]?.headTeacher}</Descriptions.Item>
                         <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
                         <Descriptions.Item label="Session"> {studentData?.classDetails.length > 1 && !(studentData?.classDetails.length == sessionIndex + 1) && <Button onClick={() => setSessionIndex(sessionIndex + 1)} type="link" icon={<CaretLeftOutlined />} />}{studentData?.classDetails[sessionIndex]?.session} {studentData?.classDetails.length > 1 && !(sessionIndex == 0) && <Button onClick={() => setSessionIndex(sessionIndex - 1)} type="link" icon={<CaretRightOutlined />} />}</Descriptions.Item>
-                        <Descriptions.Item label="Payment">
+                        {isMobile ? null : <Descriptions.Item label="Payment">
                             <Link to={`/payment/${studentData?.id}/${studentData?.classDetails[sessionIndex]?.id}`}>
                                 <Button type="primary">
                                     Pay
                                 </Button>
                             </Link>
-                        </Descriptions.Item>
+                        </Descriptions.Item>}
                     </Descriptions>
 
                     <Divider> <h3>Guardian Details</h3></Divider>

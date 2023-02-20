@@ -9,11 +9,12 @@ import { AddExpense } from "../shared/component/AddExpense"
 import { useAddExpenseMutation } from "../shared/redux/api/feature/payment/api";
 import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from "dayjs";
+import { useMediaQuery } from "react-responsive";
 
 
 
 export const Dashboard = () => {
-
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
    const [transactionDate, setTransactionDate] = useState<Dayjs>(dayjs(new Date()).startOf('date'));
     const [addExpense] = useAddExpenseMutation();
     const [isExpenseModelOpen, setIsExpenseModelOpen] = useState(false);
@@ -41,7 +42,7 @@ export const Dashboard = () => {
                             <Card title="Collection Report" 
                             extra={ <Space size={"large"}>
                                 <DatePicker allowClear={false} format={dateFormat} onChange={(date, dateString) => date && setTransactionDate(date.startOf('date'))} disabledDate={disableDate} defaultValue={dayjs(new Date())} />
-                                <Button onClick={() => setIsExpenseModelOpen(true)}>Add Expense</Button></Space>} >
+                               {isMobile ? null : <Button onClick={() => setIsExpenseModelOpen(true)}>Add Expense</Button> }</Space>} > 
                                 <TransactionReport transactionDate={transactionDate}/>
                             </Card>
                         </Col>

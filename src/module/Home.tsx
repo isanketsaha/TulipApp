@@ -5,9 +5,10 @@ import { SideNav } from '../shared/component/SideNav';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { AppFooter } from '../shared/component/Footer';
 import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 export const Home = () => {
-
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -22,7 +23,7 @@ export const Home = () => {
                 <Layout style={{ marginLeft: !collapsed ? '30vh' : '10vh' }}>
                     <Content
                         style={{
-                            margin: '8vh 3vh',
+                            margin: isMobile ? '12vh 3vh' : '10vh 3vh',
                             overflow: 'initial',
                             minHeight: '90vh',
 

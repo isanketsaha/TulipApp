@@ -6,10 +6,12 @@ import { useDebounce } from "../shared/hook/useDebounce";
 import { useSeachEmployeeByNameQuery } from "../shared/redux/api/feature/employee/api";
 import { useAppSelector } from "../store";
 import { Role } from "../shared/utils/Role";
+import { useMediaQuery } from "react-responsive";
 
 
 export const EmployeePage = () => {
 const {user} = useAppSelector(state => state.userAuth);
+const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const [searchValue, setSearchValue] = useState<string>("");
     const debouncedSearchTerm = useDebounce(searchValue, 500);
     const { data, isFetching } = useSeachEmployeeByNameQuery(debouncedSearchTerm, { skip: debouncedSearchTerm == "" });
@@ -17,7 +19,7 @@ const {user} = useAppSelector(state => state.userAuth);
     return (
         <>
             <Row>
-                <Col span={3} >
+               {isMobile ? null : <Col span={3} >
                    {user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && <Link to="/onboarding" state={{
                         type: 'employee'
                     }}>
@@ -25,11 +27,12 @@ const {user} = useAppSelector(state => state.userAuth);
                             Onboard Employee
                         </Button>
                     </Link>}
-                </Col>
-                <Col span={5} offset={16}>
+                </Col>}
+                <Col span={isMobile ? 20 : 5} offset={isMobile ? 2 : 16}>
                     <Select
                         allowClear
                         showSearch placeholder="Teacher Name / ID" size="large"
+                        
                         onSearch={(value) => setSearchValue(value)} loading={isFetching} showArrow={false}
                         filterOption={false} style={{ width: '100%' }} notFoundContent={null} options={data?.map((d) => ({
                             value: d.id,
