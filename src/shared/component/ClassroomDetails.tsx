@@ -1,9 +1,9 @@
-import { Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Row, Select, Space, Table, Tabs, TabsProps } from "antd"
+import { Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Row, Select, Space, Table, Tabs, TabsProps, Typography } from "antd"
 import { useFetchClassroomDetailsQuery, usePromoteStudentMutation } from "../redux/api/feature/classroom/api";
 import { Link } from "react-router-dom";
 import { IClassList } from "../interface/IClassList";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import dayjs from "dayjs";
 import { useMediaQuery } from "react-responsive";
@@ -16,8 +16,9 @@ interface IClassDetailsProsp {
 export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
 
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
-    
+    const { Text } = Typography;
     const [promoteStudent, { isSuccess }] = usePromoteStudentMutation();
+    const [checkAll, setCheckAll] = useState(false);
     const { data: classDetails } = useFetchClassroomDetailsQuery(stdList.id);
     const { sessionList, classList } = useAppSelector(app => app.commonData);
     const [selectedId, setSelectedId] = useState<number[]>([]);
@@ -60,7 +61,13 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     const onChange = (checkedValues: CheckboxValueType[]) => {
         console.log('checked = ', checkedValues);
         setSelectedId(checkedValues as number[])
+        setCheckAll(checkedValues.length === classDetails?.students.length);
     };
+
+    const onCheckAllChange = (e: any) => {
+        classDetails?.students &&  setSelectedId(e.target.checked ? classDetails?.students.map(_=> _.id) : []);
+        setCheckAll(e.target.checked);
+      };
 
     const onPromote = (values: any) => {
         console.log('checked = ', selectedId, values);
@@ -76,9 +83,11 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             label: `Summary`,
             children: <Space direction="vertical" style={{ width: '100%' }}><Card style={{ width: '100%' }}>
                 <Descriptions bordered>
-                    <Descriptions.Item label="Head Teacher">{classDetails?.headTeacher}</Descriptions.Item>
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
+                   {(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled') && <Descriptions.Item>{<Checkbox  onChange={onCheckAllChange} checked={checkAll}>
+                        Select All
+                    </Checkbox>} </Descriptions.Item> }
                 </Descriptions>
 
                 <div hidden={selectedId.length < 1}>
@@ -110,8 +119,13 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                 </div>
             </Card>
 
-                <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+                <Row>
+                   
+                </Row>
+
+                <Checkbox.Group style={{ width: '100%' }} value={selectedId} onChange={onChange}>
                     <Card style={{ width: '100%' }}>
+                  <Row justify={"center"}>  {selectedId.length >0 &&  <Text strong mark>{selectedId.length} Student Selected</Text>}</Row>
                         <List
                             size="small"
                             itemLayout="horizontal"
@@ -121,17 +135,17 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                 <List.Item>
                                     <List.Item.Meta
                                         title={<Row>
-                                            <Col md={{span:1}} xs={{span:0}}>
-                                                <div hidden={!(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled')} ><Checkbox value={item.id} /></div>
-                                                {index + 1}.
+                                            <Col md={{ span: 2 }} xs={{ span: 0 }}>
+                                                <Row> <div style={{ marginRight: '2vh' }} hidden={!(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled')} ><Checkbox value={item.id} /></div>
+                                                    {index + 1}. </Row>
                                             </Col>
-                                            <Col >
+                                            <Col md={{ span: 20 }}>
                                                 {item.name}
                                             </Col>
                                         </Row>}
-                                        description={<Row>
-                                            <Col md={{span:23}} xs={{span:0}}>
-                                             <Space size={"small"}> <> Gender -  {item.gender} |</> <>  Birthday - {dayjs(item.dob).format("DD-MMM-YYYY")} |</> <> Contact - {item.phoneNumber}  </> </Space> 
+                                        description={<Row justify={"center"}>
+                                            <Col md={{ span: 23 }} xs={{ span: 0 }}>
+                                                <Space size={"small"}> <> Gender -  {item.gender} |</> <>  Birthday - {dayjs(item.dob).format("DD-MMM-YYYY")} |</> <> Contact - {item.phoneNumber}  </> </Space>
                                             </Col>
                                         </Row>} />
                                     <div><Link to={`../studentDetails/${item.id}`}>Details</Link></div>
@@ -157,7 +171,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     return (
         <>
             <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                <Tabs destroyInactiveTabPane  centered tabPosition={isTabletOrMobile ? "top" : "right"} defaultActiveKey="1"  items={items} />
+                <Tabs destroyInactiveTabPane centered tabPosition={isTabletOrMobile ? "top" : "right"} defaultActiveKey="1" items={items} />
             </Space>
         </>
     )

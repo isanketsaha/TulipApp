@@ -1,8 +1,8 @@
 import { Badge, Menu, MenuProps, Typography, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled, IdcardFilled, FolderOpenFilled, LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../redux/slices/UserAuthSlice";
 import { Role } from "../utils/Role";
@@ -21,9 +21,11 @@ interface ISliderProps {
 export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
 
     const { Text } = Typography;
+    let { pathname } = useLocation();
     const { user } = useAppSelector((state) => state.userAuth);
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
+    const [path, setPath] = useState<number>(0);
 
     const {
         token: { colorBgContainer },
@@ -33,6 +35,17 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
         dispatch(logout());
         navigate("/login");
     }
+
+    useEffect(() => {
+        if (pathname != '/') {
+            const value = navigatons.find(item => pathname.toUpperCase().split('/').includes(item.label.toUpperCase()));
+            value && setPath(navigatons.indexOf(value) + 1)
+        }
+        else {
+            setPath(1)
+        }
+    }, [pathname])
+
     const navigatons: nav[] = [
         {
             label: 'Office',
@@ -113,7 +126,7 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
             <Menu
                 mode="vertical"
                 style={{ borderRight: 0 }}
-                defaultSelectedKeys={['1']}
+                selectedKeys={[String(path)]}
                 items={options}
             />
         </Sider>
