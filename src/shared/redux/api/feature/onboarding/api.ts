@@ -15,6 +15,7 @@ export const onboardingApi = createApi({
                     body: onboardingVm 
                 });
             },
+            invalidatesTags : ['Employee', 'Student']
         }),
     })
 });
