@@ -13,7 +13,7 @@ interface NotificationProps {
 
 const openNotification = (errorData: NotificationProps) => {
     notification.error({
-        message: `Error ${errorData.status}`,
+        message: `${errorData.status}`,
         description: errorData.details
     });
 };

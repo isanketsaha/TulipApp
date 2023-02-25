@@ -1,6 +1,24 @@
-
 .ant-list-item:hover {
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%), 0 5px 12px 4px rgb(0 0 0 / 9%);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%), 0 5px 12px 4px rgb(0 0 0 / 9%);
+}
+
+
+
+.upload-parent-sideBySide {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  .ant-upload.ant-upload-drag {
+    width: 80%;
+    margin: 20px;
   }
+
+  .ant-upload-list.ant-upload-list-picture {
+    width: 100%;
+    margin: 20px;
+  }
+}

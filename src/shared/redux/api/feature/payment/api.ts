@@ -57,7 +57,7 @@ export const paymentApi = createApi({
                     body: expense
                 });
             },
-            invalidatesTags: ['Payment']
+            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }]: ['Payment']
         }),
     })
 });

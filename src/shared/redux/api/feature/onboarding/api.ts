@@ -4,7 +4,7 @@ import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 
 export const onboardingApi = createApi({
     reducerPath: 'onboarding',
-    tagTypes: ['Student','Employee'],
+    tagTypes: ['Student','Employee', 'AdmissionReport', 'StaffReport'],
     baseQuery: baseQueryWithRetry("onboarding"),
     endpoints: (builder) => ({
         onboardUser: builder.mutation<any, number>({
@@ -12,9 +12,10 @@ export const onboardingApi = createApi({
                 return ({
                     url: '/',
                     method: 'POST',
-                    body: onboardingVm 
+                    body: onboardingVm
                 });
             },
+            invalidatesTags:['Student','Employee', 'AdmissionReport', 'StaffReport'],
         }),
     })
 });

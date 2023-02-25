@@ -15,6 +15,7 @@ export interface IUserDetails {
     gender: string,
     locked: boolean,
     name: string,
+    sessionId: number,
     phoneNumber: string,
     qualification: string,
     religion: string,

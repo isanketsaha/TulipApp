@@ -1,7 +1,7 @@
 export interface IDependent {
 
     id: number,
-    contact: string,
+    contact: number,
     name: string,
     occupation: string,
     qualification: string,

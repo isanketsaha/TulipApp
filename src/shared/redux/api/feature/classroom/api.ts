@@ -13,7 +13,7 @@ export const classroomApi = createApi({
     endpoints: (builder) => ({
         fetchAllClassroom: builder.query<IClassList[], number>({
             query: (sessionId) => `all?sessionId=${sessionId ? sessionId:0}`,
-            
+            providesTags: ['Classroom']
         }),
         fetchClassroomId: builder.query<number, {std: string, sessionId : number} | undefined>({
             query: (item) => item ? `/id?std=${item.std}&sessionId=${item.sessionId}` : '',
@@ -21,7 +21,7 @@ export const classroomApi = createApi({
         }),
         fetchClassroomDetails: builder.query<IClassDetails, number>({
             query: (id) => `/details/${id}`,
-            providesTags: () => [{ type: 'Student' }]
+            providesTags: (data) => [{ type: 'Classroom' , id: data?.id }]
         }),
         promoteStudent: builder.mutation<number, IPromote>({
             query: (payload) => {

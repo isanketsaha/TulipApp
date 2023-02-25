@@ -10,5 +10,6 @@ export interface IClassDetails {
     session: string,
     students: IBasicDetails[],
     feesCatalogs: IFeesCatalog[],
-    productCatalogs: IProductCatlog[]
+    productCatalogs: IProductCatlog[],
+    sessionId: number
 }

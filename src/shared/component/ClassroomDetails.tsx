@@ -139,8 +139,12 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                                 <Row> <div style={{ marginRight: '2vh' }} hidden={!(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled')} ><Checkbox value={item.id} /></div>
                                                     {index + 1}. </Row>
                                             </Col>
-                                            <Col md={{ span: 20 }}>
+                                            <Col md={{ span: 14 }}>
                                                 {item.name}
+                                            </Col>
+                                            <Col md={{ span: 6 }} style={{fontWeight: 'normal'}}>
+                                            {item.pendingFees > 0 ? <Text type="danger">{item.pendingFees} Months dues</Text> :
+                                            <Text type="success"> No Pending dues</Text>}
                                             </Col>
                                         </Row>}
                                         description={<Row justify={"center"}>
