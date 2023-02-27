@@ -1,11 +1,20 @@
 import { Button, Checkbox, Col, Divider, Form, Input, InputNumber, Row, Select, Space, Upload, UploadProps, message } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useAppSelector } from "../../../store";
-import { WhatsAppOutlined, InboxOutlined } from '@ant-design/icons';
-import { MultipleUpload } from "../MultiUpload";
+import { WhatsAppOutlined, UploadOutlined } from '@ant-design/icons';
+import { allowedFieldType, uploadProps } from "../../../configs/UploadConfig";
 export const AddDependent = () => {
 
     const selectList = useAppSelector(state => state.commonData);
+
+    const getFile = (e: any) => {
+        console.log('Upload event:', e);
+
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
+    };
 
     const prefixSelector = (name: number) => (
         <Form.Item name={[name, "whatsappAvailable"]} valuePropName="checked" noStyle>
@@ -76,6 +85,17 @@ export const AddDependent = () => {
                                 <Col span={12}>
                                     <Form.Item name={[name, "occupation"]} label="Occupation" rules={[{ required: true }]}>
                                         <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span={23}>
+                                    <Form.Item name={[name, "document"]} valuePropName="fileList" getValueFromEvent={getFile} label="Document" rules={[{ required: true }]}>
+                                        <Upload {...uploadProps} showUploadList={true}
+                                            listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
+                                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                        </Upload>
+
                                     </Form.Item>
                                 </Col>
                             </Row>

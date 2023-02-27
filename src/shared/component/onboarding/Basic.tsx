@@ -1,21 +1,30 @@
-import { Row, Col, Form, Input, DatePicker, InputNumber, Select, Checkbox } from "antd";
+import { Row, Col, Form, Input, DatePicker, InputNumber, Select, Checkbox, Divider, Upload, Button } from "antd";
 import { useAppSelector } from "../../../store";
 import { useLocation } from "react-router-dom";
 import type { Dayjs } from 'dayjs';
-import {WhatsAppOutlined} from '@ant-design/icons';
+import { WhatsAppOutlined, UploadOutlined } from '@ant-design/icons';
+import { allowedFieldType, uploadProps } from "/src/configs/UploadConfig";
 
 
 export const AddBasic = () => {
     const { state } = useLocation();
     const selectList = useAppSelector(state => state.commonData);
 
-    const disableDate = (currentDate: Dayjs)  =>{
-       return currentDate.isAfter(new Date());
-      };
+    const disableDate = (currentDate: Dayjs) => {
+        return currentDate.isAfter(new Date());
+    };
 
-      const prefixSelector = (
+    const normFile = (e: any) => {
+        console.log('Upload event:', e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e?.fileList;
+    };
+
+    const prefixSelector = (
         <Form.Item name="whatsappAvailable" valuePropName="checked" noStyle>
-          <Checkbox><WhatsAppOutlined/></Checkbox>
+            <Checkbox><WhatsAppOutlined /></Checkbox>
         </Form.Item>);
 
     return (
@@ -28,24 +37,24 @@ export const AddBasic = () => {
                     <Form.Item name="name" label="Name" rules={[{ required: true }, {
                         pattern: new RegExp("[A-Za-z ]+$"),
                         message: "Name does not accept numbers or special character"
-                       }]}>
+                    }]}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={12}>
                     <Form.Item name="dob" label="Date Of Birth" rules={[{ required: true }]}>
-                        <DatePicker format={"DD-MM-YYYY"} style={{ width: '100%' }} disabledDate={disableDate}/>
+                        <DatePicker format={"DD-MM-YYYY"} style={{ width: '100%' }} disabledDate={disableDate} />
                     </Form.Item>
                 </Col>
             </Row>
 
             <Row gutter={[40, 40]}>
                 <Col span={12}>
-                    <Form.Item name="contact" label="Phone Number" rules={[{ required: true,  type: 'number'}]} >
-                   
-                    <InputNumber addonBefore={prefixSelector}  maxLength={12} controls={false}   />
-                      
-                        
+                    <Form.Item name="contact" label="Phone Number" rules={[{ required: true, type: 'number' }]} >
+
+                        <InputNumber addonBefore={prefixSelector} maxLength={12} controls={false} />
+
+
                     </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -80,11 +89,11 @@ export const AddBasic = () => {
                 </Row>
                 : <Row gutter={[40, 40]}>
                     <Col span={8}>
-                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true}, {
-                                            pattern: new RegExp("^[0-9]*$"),
-                                            message: "No Alphabets Allowed"
-                                        } ]}>
-                            <Input maxLength={12}  style={{ width: '100%' }} />
+                        <Form.Item name="aadhaar" label="Aadhaar" rules={[{ required: true }, {
+                            pattern: new RegExp("^[0-9]*$"),
+                            message: "No Alphabets Allowed"
+                        }]}>
+                            <Input maxLength={12} style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -93,8 +102,8 @@ export const AddBasic = () => {
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item name="experince"  label="Experience" rules={[{ required: true ,   type: 'number', min:0 , max:50}]}>
-                            <InputNumber controls={false}  style={{ width: '100%' }} />
+                        <Form.Item name="experince" label="Experience" rules={[{ required: true, type: 'number', min: 0, max: 50 }]}>
+                            <InputNumber controls={false} style={{ width: '100%' }} />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -121,6 +130,30 @@ export const AddBasic = () => {
                         <Select
                             options={selectList.religionList}
                         />
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Divider></Divider>
+            <Row>
+                <Col span={12}>
+                    <Form.Item
+                        name="upload"
+                        label="Upload"
+                        valuePropName="fileList"
+                        getValueFromEvent={normFile}
+                    >
+                        <Upload {...uploadProps} showUploadList={true}
+                            listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
+                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item name={"birthCertificate"} valuePropName="fileList" getValueFromEvent={normFile} label="Birth Certificate">
+                        <Upload {...uploadProps} showUploadList={true}
+                            listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
+                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
                     </Form.Item>
                 </Col>
             </Row>
