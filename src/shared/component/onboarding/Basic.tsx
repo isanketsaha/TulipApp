@@ -137,24 +137,32 @@ export const AddBasic = () => {
             <Row>
                 <Col span={12}>
                     <Form.Item
-                        name="upload"
-                        label="Upload"
+                        name="aadhaarCard"
+                        label="Aadhaar Card"
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
                     >
                         <Upload {...uploadProps} showUploadList={true}
-                            listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
+                            listType="picture" name="documents" accept={allowedFieldType} maxCount={2}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                    <Form.Item name={"birthCertificate"} valuePropName="fileList" getValueFromEvent={normFile} label="Birth Certificate">
+                {state.type == 'student' ?
+                    <Form.Item name={"birthCertificate"} valuePropName="fileList"  getValueFromEvent={normFile} label="Birth Certificate">
+                        <Upload {...uploadProps} showUploadList={true}
+                            listType="picture" name="documents" accept={allowedFieldType} maxCount={2}>
+                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
+                    </Form.Item> :
+                    <Form.Item name={"panCard"} valuePropName="fileList"  getValueFromEvent={normFile} label="Pan Card">
                         <Upload {...uploadProps} showUploadList={true}
                             listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
-                    </Form.Item>
+                    </Form.Item> 
+        }
                 </Col>
             </Row>
 

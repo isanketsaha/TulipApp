@@ -5,7 +5,7 @@ import { store } from '/src/store';
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 export const allowedFieldType = ".jpg,.pdf,.png";
 
-const appState : any= store.getState();
+const appState: any = store.getState();
 export const uploadProps: UploadProps = {
     name: 'file',
 
@@ -26,6 +26,9 @@ export const uploadProps: UploadProps = {
     onDownload(file) {
         fetch(baseUrl + '/file/download?uuid=' + file.response, {
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${appState?.userAuth?.user?.idToken}`,
+            }
         })
             .then((response: any) => {
                 const filename = response?.headers?.get('Content-Disposition').split('filename=')[1];
@@ -41,6 +44,9 @@ export const uploadProps: UploadProps = {
     onRemove(file) {
         fetch(baseUrl + '/file?uuid=' + file.response, {
             method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${appState?.userAuth?.user?.idToken}`,
+            }
         }).then((response) => response.text())
 
     },
@@ -48,10 +54,12 @@ export const uploadProps: UploadProps = {
         console.log('Your upload file:', file);
         return fetch(baseUrl + '/file?uuid=' + file.response, {
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${appState?.userAuth?.user?.idToken}`,
+            }
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log(data)
                 window.open(data, "_blank");
             })
     },

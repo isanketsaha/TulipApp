@@ -90,12 +90,13 @@ export const AddDependent = () => {
                             </Row>
                             <Row>
                                 <Col span={23}>
-                                    <Form.Item name={[name, "document"]} valuePropName="fileList" getValueFromEvent={getFile} label="Document" rules={[{ required: true }]}>
+                                    <Form.Item name={[name, "aadhaarCard"]} valuePropName="fileList" getValueFromEvent={getFile} 
+                                    label="Aadhaar Card"
+                                    rules={[{ required: true }]}>
                                         <Upload {...uploadProps} showUploadList={true}
-                                            listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
+                                            listType="picture" name="documents" accept={allowedFieldType} maxCount={2}>
                                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                                         </Upload>
-
                                     </Form.Item>
                                 </Col>
                             </Row>

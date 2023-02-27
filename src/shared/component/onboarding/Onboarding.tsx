@@ -14,6 +14,7 @@ import { IUserDetails } from "../../interface/IUserDetails";
 import dayjs from "dayjs";
 import { IDependent } from "../../interface/IDependent";
 import { useAppSelector } from "/src/store";
+import { IUpload } from "../../interface/IUpload";
 
 export const Onboarding = () => {
     let navigate = useNavigate();
@@ -136,6 +137,9 @@ export const Onboarding = () => {
             const interview = formValues['interview'] ? formValues['interview'][0] : null;
             const bank = formValues['bank'] ? formValues['bank'][0] : null;
             const credential = formValues['credential'] ? formValues['credential'][0] : null;
+            const aadhaarCard = formValues['aadhaarCard'] ? toUploadVM(formValues['aadhaarCard'], 'Aadhaar Card') : null;
+            const birthCertificate = formValues['birthCertificate'] ? toUploadVM(formValues['Birth Certificate'], 'birthCertificate') : null;
+            const panCard = formValues['panCard'] ? toUploadVM(formValues['panCard'], 'Pan Card') : null;
             if (interview != null) {
                 var interviewDetails = {
                     ...interview,
@@ -145,6 +149,9 @@ export const Onboarding = () => {
             }
             const data = {
                 ...formValues,
+                aadhaarCard,
+                birthCertificate,
+                panCard,
                 dob: formValues['dob'].format('YYYY-MM-DD'),
                 interview: interviewDetails,
                 bank,
@@ -162,6 +169,19 @@ export const Onboarding = () => {
         }
     };
 
+    const toUploadVM = (file: any[], documentType: string) => {
+        return file.map(item => {
+           return {
+            uid: item.response,
+            name: item.name,
+            status: item.status,
+            fileType: item.type,
+            fileSize: item.size,
+            documentType: documentType
+            }
+        })
+
+    }
 
     const stepOptions = [
         {
