@@ -131,8 +131,8 @@ export const Onboarding = () => {
     }
 
     const editUser = () => {
-        if(changedFields.dependent){
-        changedFields.dependent = changedFields.dependent.filter((obj: any) => Object.keys(obj).length > 1);
+        if (changedFields.dependent) {
+            changedFields.dependent = changedFields.dependent.filter((obj: any) => Object.keys(obj).length > 1);
         }
         editStudentDetails(changedFields).then(res => console.log("Edited"));
     }
@@ -237,8 +237,8 @@ export const Onboarding = () => {
                     </Col>
                     <Col span={currentStep != stepOptions.length - 1 ? 0 : 2} >
                         <div hidden={currentStep != stepOptions.length - 1}>
-                            <Button type="primary" disabled={(editFlow && !(Object.keys(changedFields).length > 1) )}  onClick={() => { onSubmit() }} htmlType="submit">
-                               { editFlow ? 'Update' : 'Enroll' }
+                            <Button type="primary" disabled={(editFlow && !(Object.keys(changedFields).length > 1))} onClick={() => { onSubmit() }} htmlType="submit">
+                                {editFlow ? 'Update' : 'Enroll'}
                             </Button>
                         </div>
                     </Col>
@@ -257,9 +257,10 @@ export const Onboarding = () => {
             width={1000}
             destroyOnClose
             okText={editFlow ? "UPDATE" : state?.type == 'employee' ? 'ONBOARD' : "ENROLL"}
-            onOk={() =>{
+            onOk={() => {
                 setConfirmEnrollment(false);
-                editFlow ? editUser : createUser}}
+                editFlow ? editUser : createUser
+            }}
             onCancel={() => setConfirmEnrollment(false)}
         >
             {state?.type == 'employee' &&
