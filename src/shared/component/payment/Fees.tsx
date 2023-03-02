@@ -34,11 +34,13 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         const feeItem = fetchFeeRows();
         const currentFees = feeItem[rowKey];
         if (inputType == 'to' && currentFees.from) {
-            const monthNumber = input - currentFees.from.get('month');
+            const monthNumber =  date.diff(currentFees.from, 'month')
+            // const monthNumber = input - currentFees.from.get('month');
             calculateAmount(rowKey, monthNumber + 1);
         }
         else if (inputType == 'from' && currentFees.to) {
-            const monthNumber = currentFees.to.get('month') - input;
+            const monthNumber =  date.diff(currentFees.to, 'month')
+            // const monthNumber = currentFees.to.get('month') - input;
             calculateAmount(rowKey, monthNumber + 1);
         }
     }
