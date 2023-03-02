@@ -26,4 +26,7 @@ export interface IUserDetails {
     dependent: IDependent[],
     bank: IBank,
     interview: IInterview,
+    aadhaarCard: any,
+    panCard: any,
+    birthCertificate: any,
 }

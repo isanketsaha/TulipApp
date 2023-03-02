@@ -1,6 +1,7 @@
 import { UploadProps, message } from 'antd';
 
 import { store } from '/src/store';
+import { Role } from '../shared/utils/Role';
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 export const allowedFieldType = ".jpg,.pdf,.png";
@@ -12,6 +13,11 @@ export const uploadProps: UploadProps = {
     action: baseUrl + '/file/upload',
     headers: {
         authorization: `Bearer ${appState?.userAuth?.user?.idToken}`,
+    },
+    showUploadList: {
+        showDownloadIcon: [Role.ADMIN, Role.PRINCIPAL].includes(appState?.userAuth?.user?.authority),
+        showPreviewIcon: [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(appState?.userAuth?.user?.authority),
+        showRemoveIcon: [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(appState?.userAuth?.user?.authority)
     },
     onChange({ file, fileList, event }) {
         if (file.status !== 'uploading') {
@@ -30,13 +36,14 @@ export const uploadProps: UploadProps = {
                 authorization: `Bearer ${appState?.userAuth?.user?.idToken}`,
             }
         })
-            .then((response: any) => {
-                const filename = response?.headers?.get('Content-Disposition').split('filename=')[1];
+            .then((response) => {
                 response.blob().then((blob: any) => {
+                    const filename = file.name;
+                    blob = blob.slice(0, blob.size, file.type)
                     let url = window.URL.createObjectURL(blob);
                     let a = document.createElement('a');
                     a.href = url;
-                    a.download = filename;
+                    a.download = filename ?? 'UNKNOWN';
                     a.click();
                 });
             });

@@ -6,6 +6,7 @@ export interface IDependent {
     occupation: string,
     qualification: string,
     relationship: string,
-    whatsappAvailable : boolean,
+    whatsappAvailable: boolean,
+    aadhaarCard: any,
     aadhaarNo: string
 }

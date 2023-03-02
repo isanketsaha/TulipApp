@@ -97,12 +97,16 @@ export const Onboarding = () => {
                 gender: user.gender,
                 std: user.classDetails[0].std,
                 session: user.classDetails[0].sessionId,
+                panCard: user.panCard,
+                birthCertificate: user.birthCertificate,
+                aadhaarCard: user.aadhaarCard,
                 dependent: user.dependent.map((item: IDependent) => {
                     return {
                         ...item,
                         id: item.id,
                         contact: +item.contact,
                         aadhaar: item.aadhaarNo,
+                        aadhaarCard: item.aadhaarCard,
                         relation: item.relationship
                     }
                 }),
@@ -127,7 +131,9 @@ export const Onboarding = () => {
     }
 
     const editUser = () => {
+        if(changedFields.dependent){
         changedFields.dependent = changedFields.dependent.filter((obj: any) => Object.keys(obj).length > 1);
+        }
         editStudentDetails(changedFields).then(res => console.log("Edited"));
     }
 
@@ -137,9 +143,6 @@ export const Onboarding = () => {
             const interview = formValues['interview'] ? formValues['interview'][0] : null;
             const bank = formValues['bank'] ? formValues['bank'][0] : null;
             const credential = formValues['credential'] ? formValues['credential'][0] : null;
-            const aadhaarCard = formValues['aadhaarCard'] ? toUploadVM(formValues['aadhaarCard'], 'Aadhaar Card') : null;
-            const birthCertificate = formValues['birthCertificate'] ? toUploadVM(formValues['Birth Certificate'], 'birthCertificate') : null;
-            const panCard = formValues['panCard'] ? toUploadVM(formValues['panCard'], 'Pan Card') : null;
             if (interview != null) {
                 var interviewDetails = {
                     ...interview,
@@ -149,9 +152,6 @@ export const Onboarding = () => {
             }
             const data = {
                 ...formValues,
-                aadhaarCard,
-                birthCertificate,
-                panCard,
                 dob: formValues['dob'].format('YYYY-MM-DD'),
                 interview: interviewDetails,
                 bank,
@@ -170,14 +170,14 @@ export const Onboarding = () => {
     };
 
     const toUploadVM = (file: any[], documentType: string) => {
-        return file.map(item => {
-           return {
-            uid: item.response,
-            name: item.name,
-            status: item.status,
-            fileType: item.type,
-            fileSize: item.size,
-            documentType: documentType
+        return file?.map(item => {
+            return {
+                uid: item.response,
+                name: item.name,
+                status: item.status,
+                fileType: item.type,
+                fileSize: item.size,
+                documentType: documentType
             }
         })
 
@@ -237,8 +237,8 @@ export const Onboarding = () => {
                     </Col>
                     <Col span={currentStep != stepOptions.length - 1 ? 0 : 2} >
                         <div hidden={currentStep != stepOptions.length - 1}>
-                            <Button type="primary" onClick={() => { onSubmit() }} htmlType="submit">
-                                Submit
+                            <Button type="primary" disabled={(editFlow && !(Object.keys(changedFields).length > 1) )}  onClick={() => { onSubmit() }} htmlType="submit">
+                               { editFlow ? 'Update' : 'Enroll' }
                             </Button>
                         </div>
                     </Col>
@@ -257,7 +257,9 @@ export const Onboarding = () => {
             width={1000}
             destroyOnClose
             okText={editFlow ? "UPDATE" : state?.type == 'employee' ? 'ONBOARD' : "ENROLL"}
-            onOk={editFlow ? editUser : createUser}
+            onOk={() =>{
+                setConfirmEnrollment(false);
+                editFlow ? editUser : createUser}}
             onCancel={() => setConfirmEnrollment(false)}
         >
             {state?.type == 'employee' &&

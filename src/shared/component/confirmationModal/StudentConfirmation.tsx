@@ -1,7 +1,8 @@
-import { Descriptions, Divider, Space, Switch, Typography } from "antd";
+import { Descriptions, Divider, Space, Switch, Typography, Upload } from "antd";
 import dayjs from "dayjs";
 import { useAppSelector } from "/src/store";
 import { WhatsAppOutlined } from '@ant-design/icons';
+import { uploadProps } from "/src/configs/UploadConfig";
 
 interface IStudentConfirmProps {
     studentData: any,
@@ -27,11 +28,12 @@ export const StudentConfirm = ({ studentData, editedData }: IStudentConfirmProps
 
             <Descriptions.Item label="Date Of Birth">{editFlow && editedData.hasOwnProperty('dob')
                 ? <Text mark>{dayjs(studentData?.dob).format("DD-MM-YYYY")}</Text> : dayjs(studentData?.dob).format("DD-MM-YYYY")} </Descriptions.Item>
+
+            <Descriptions.Item label="Gender">{editFlow && editedData.hasOwnProperty('gender')
+                ? <Text mark>{studentData?.gender}</Text> : studentData?.gender} </Descriptions.Item>
             <Descriptions.Item label="Address">{editFlow && editedData.hasOwnProperty('address')
                 ? <Text mark>{studentData?.address} </Text> : studentData?.address}
             </Descriptions.Item>
-            <Descriptions.Item label="Gender">{editFlow && editedData.hasOwnProperty('gender')
-                ? <Text mark>{studentData?.gender}</Text> : studentData?.gender} </Descriptions.Item>
             <Descriptions.Item label="Classroom">{editFlow && editedData.hasOwnProperty('std')
                 ? <Text mark>{studentData?.std} </Text> : studentData?.std}</Descriptions.Item>
             <Descriptions.Item label="Session">{editFlow && sessionList.find(item => (item.value == studentData?.session))?.label} </Descriptions.Item>
@@ -49,7 +51,30 @@ export const StudentConfirm = ({ studentData, editedData }: IStudentConfirmProps
             {studentData?.previousSchool && <Descriptions.Item label="Previous School">
                 {editFlow && editedData.hasOwnProperty('previousSchool')
                     ? <Text mark>{studentData?.previousSchool}</Text> : studentData?.previousSchool}</Descriptions.Item>}
-        </Descriptions><Divider> <h3>Guardian Details</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
+
+        </Descriptions>
+
+            {(studentData?.birthCertificate || studentData?.aadhaarCard) && <><Divider> <h3>Documents Uploaded</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
+                <Descriptions bordered>
+                    {studentData?.aadhaarCard && <Descriptions.Item label="Aadhaar Card">
+                        <Upload {...uploadProps} className={editFlow && editedData.hasOwnProperty('aadhaarCard')
+                            ? 'upload-parent-updated' : ''}
+                            fileList={studentData?.aadhaarCard}
+                            listType="text"> </Upload>
+                    </Descriptions.Item>}
+                    {studentData?.birthCertificate && <Descriptions.Item label="Birth Certificate">
+                        <Upload {...uploadProps}
+                            className={editFlow && editedData.hasOwnProperty('birthCertificate')
+                                ? 'upload-parent-updated' : ''}
+                            fileList={studentData?.birthCertificate}
+                            listType="text"></Upload>
+                    </Descriptions.Item>}
+                </Descriptions>
+            </Space></>}
+
+            <Divider> <h3>Guardian Details</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
+
+
                 {studentData?.dependent.map((item: any, index: number) => {
                     return (
                         <Descriptions key={item.id} bordered>
@@ -70,12 +95,18 @@ export const StudentConfirm = ({ studentData, editedData }: IStudentConfirmProps
                             <Descriptions.Item label="Qualification">{editFlow && editedData.hasOwnProperty('dependent')
                                 && editedData.dependent[index]?.hasOwnProperty('qualification')
                                 ? <Text mark>{item.qualification} </Text> : item.qualification}</Descriptions.Item>
-                            <Descriptions.Item label="Aadhar Number">{editFlow && editedData.hasOwnProperty('dependent')
+                            <Descriptions.Item label="Aadhaar Number">{editFlow && editedData.hasOwnProperty('dependent')
                                 && editedData.dependent[index]?.hasOwnProperty('aadhaar')
                                 ? <Text mark> {item.aadhaar}</Text> : item.aadhaar}</Descriptions.Item>
                             <Descriptions.Item label="Occupation">{editFlow && editedData.hasOwnProperty('dependent')
                                 && editedData.dependent[index]?.hasOwnProperty('occupation')
                                 ? <Text mark>{item.occupation}</Text> : item.occupation}</Descriptions.Item>
+                            {item.aadhaarCard && <Descriptions.Item label="Aadhaar Document">
+                                <Upload {...uploadProps} className={editFlow && editedData.hasOwnProperty('birthCertificate')
+                                    ? 'upload-parent-updated' : ''}
+                                    fileList={item.aadhaarCard}
+                                    listType="text" > </Upload>
+                            </Descriptions.Item>}
                         </Descriptions>
                     );
                 })}

@@ -1,4 +1,4 @@
-import { Descriptions, Badge, Space, Button, Divider, Switch, Modal, Row, notification } from "antd"
+import { Descriptions, Badge, Space, Button, Divider, Switch, Modal, Row, notification, Upload } from "antd"
 import dayjs from "dayjs";
 import { useDeactivateStudentMutation, useSearchStudentQuery } from "../redux/api/feature/student/api";
 import { FeesCalender } from "./FeesCalender";
@@ -11,6 +11,7 @@ import { useAppSelector } from "/src/store";
 import { Role } from "../utils/Role";
 import { WhatsAppOutlined, EditOutlined } from '@ant-design/icons';
 import { useMediaQuery } from "react-responsive";
+import { uploadProps } from "/src/configs/UploadConfig";
 
 
 interface IStudentViewProps {
@@ -87,7 +88,15 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                         </Button>
 
                                     </Link>
-                                </Descriptions.Item>}
+                                </Descriptions.Item>
+                                 }
+                                  <Descriptions.Item label="Birth Certificate">{<Upload {...uploadProps}
+                                                fileList={studentData.birthCertificate}
+                                                listType="text" ></Upload>}</Descriptions.Item>
+                                <Descriptions.Item label="Aadhaar Card">{<Upload {...uploadProps}
+                                                fileList={studentData.aadhaarCard}
+                                                listType="text" ></Upload>}</Descriptions.Item>    
+                              
                         </Descriptions>
 
                         <Divider> <h3>Guardian Details</h3></Divider>
@@ -106,6 +115,11 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                         <Descriptions.Item label=" Aadhaar Number"> {item.aadhaarNo}</Descriptions.Item>
                                         <Descriptions.Item label="Occupation">{item.occupation}</Descriptions.Item>
                                         <Descriptions.Item label="Qualification">{item.qualification}</Descriptions.Item>
+                                        <Descriptions.Item label="Aadhaar Document">
+                                            <Upload {...uploadProps}
+                                                fileList={item.aadhaarCard}
+                                                listType="text" ></Upload>
+                                                </Descriptions.Item>
                                     </Descriptions>
                                 );
                             })}

@@ -52,12 +52,12 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
             itemKey="email"
           >
             {(item: IPayDetailsSummary, index) => (
-                <List.Item  actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
-                    <List.Item.Meta 
+                <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
+                    <List.Item.Meta key={index}
                         description={
                             <Row justify={"space-between"} align={"middle"}>
                                 <Col  md={{ span: 1 }} xs={{ span: 0 }} >
-                                    {index + 1}
+                                    {index + 1}.
                                 </Col>
                                 <Col  md={{ span: 6 }} >
                                     {dayjs(item.paymentDateTime).format('MMM D, YYYY h:mm A')}

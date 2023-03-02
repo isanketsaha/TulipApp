@@ -142,8 +142,8 @@ export const AddBasic = () => {
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
                     >
-                        <Upload {...uploadProps} showUploadList={true}
-                            listType="picture" name="documents" accept={allowedFieldType} maxCount={2}>
+                        <Upload {...uploadProps} 
+                            listType="text" name="documents" accept={allowedFieldType} maxCount={2}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                     </Form.Item>
@@ -151,15 +151,15 @@ export const AddBasic = () => {
                 <Col span={12}>
                 {state.type == 'student' ?
                     <Form.Item name={"birthCertificate"} valuePropName="fileList"  getValueFromEvent={normFile} label="Birth Certificate">
-                        <Upload {...uploadProps} showUploadList={true}
-                            listType="picture" name="documents" accept={allowedFieldType} maxCount={2}>
+                        <Upload {...uploadProps} 
+                            listType="text" name="documents" accept={allowedFieldType} maxCount={2} >
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                     </Form.Item> :
                     <Form.Item name={"panCard"} valuePropName="fileList"  getValueFromEvent={normFile} label="Pan Card">
-                        <Upload {...uploadProps} showUploadList={true}
-                            listType="picture" name="documents" accept={allowedFieldType} maxCount={1}>
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        <Upload {...uploadProps} 
+                            listType="text" name="documents" accept={allowedFieldType} maxCount={1}>
+                            <Button icon=   {<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                     </Form.Item> 
         }
