@@ -30,8 +30,9 @@ export const reportApi = createApi({
         fetchInventoryReport: builder.query<IStockReport[], void>({
             query: () => '/inventory',
             providesTags: ['InventoryReport']
-        })
+        }),
+       
     })
 })
 
-export const {  useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery, useFetchInventoryReportQuery } = reportApi;
+export const { useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery, useFetchInventoryReportQuery} = reportApi;

@@ -34,27 +34,55 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
     }
 
     const onSelectProduct = (elementId: number, rowKey: number) => {
-        const products = fetchProductRows();
-        const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
-        products[rowKey] = {
-            ...products[rowKey],
-            productId: selectedProduct?.id,
-            productName: selectedProduct?.itemName,
-            unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
-                maximumFractionDigits: 2,
-                style: 'currency',
-                currency: 'INR'
-            }),
-            size: selectedProduct?.size ? selectedProduct?.size : '',
-            qty: 1,
-            amount: selectedProduct?.price.toLocaleString('en-IN', {
-                maximumFractionDigits: 2,
-                style: 'currency',
-                currency: 'INR'
+        let products = fetchProductRows();
+        const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId);
+        if (selectedProduct?.type === 'PLACEHOLDER') {
+            products = products.filter( (item : any, index: number)=> 
+                 index != rowKey
+            )
+          const productList : IProductCatlog[] | undefined =  productCatalog?.filter((item: IProductCatlog) => item.type==='UNIFORM');
+          productList?.forEach(item =>{
+            products.push({
+                productId: item?.id,
+                productName: item?.itemName,
+                unitPrice: item?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                }),
+                size: item?.size ? selectedProduct?.size : '',
+                qty: 1,
+                amount: item?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
             })
+          })
+
+        }
+        else {
+            products[rowKey] = {
+                ...products[rowKey],
+                productId: selectedProduct?.id,
+                productName: selectedProduct?.itemName,
+                unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                }),
+                size: selectedProduct?.size ? selectedProduct?.size : '',
+                qty: 1,
+                amount: selectedProduct?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
+            }
         }
         form.setFieldsValue({ purchaseItems: [...products] });
-        selectedProduct?.id && addSelectedItems(oldArray => [...oldArray, selectedProduct?.id])
+       const selectedId: number[] = products.map((item: any) => item.productId);
+        selectedProduct?.id && addSelectedItems(oldArray => [...oldArray, ...selectedId])
         calculateTotal();
 
     }
@@ -98,8 +126,8 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
     }
 
     const filterListConstruct = (rowKey: number) => {
-        const feeItem = fetchProductRows();
-        const id = feeItem[rowKey].feesId;
+        const products = fetchProductRows();
+        const id = products[rowKey].productId ;
         const items = selectedItems?.filter((item) => {
             return item !== id
         });

@@ -14,7 +14,6 @@ import { IUserDetails } from "../../interface/IUserDetails";
 import dayjs from "dayjs";
 import { IDependent } from "../../interface/IDependent";
 import { useAppSelector } from "/src/store";
-import { IUpload } from "../../interface/IUpload";
 
 export const Onboarding = () => {
     let navigate = useNavigate();

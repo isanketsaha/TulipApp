@@ -7,7 +7,8 @@ import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import dayjs from "dayjs";
 import { useMediaQuery } from "react-responsive";
-
+import { DownloadOutlined } from '@ant-design/icons';
+import { useExportStudentMutation } from "../redux/api/feature/exports/api";
 
 interface IClassDetailsProsp {
     stdList: IClassList,
@@ -22,6 +23,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     const { data: classDetails } = useFetchClassroomDetailsQuery(stdList.id);
     const { sessionList, classList } = useAppSelector(app => app.commonData);
     const [selectedId, setSelectedId] = useState<number[]>([]);
+    const [exportStudent] = useExportStudentMutation();
     const feesColumns = [
         {
             title: 'Fees',
@@ -65,9 +67,9 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     };
 
     const onCheckAllChange = (e: any) => {
-        classDetails?.students &&  setSelectedId(e.target.checked ? classDetails?.students.map(_=> _.id) : []);
+        classDetails?.students && setSelectedId(e.target.checked ? classDetails?.students.map(_ => _.id) : []);
         setCheckAll(e.target.checked);
-      };
+    };
 
     const onPromote = (values: any) => {
         console.log('checked = ', selectedId, values);
@@ -85,9 +87,9 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                 <Descriptions bordered>
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
-                   {(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled') && <Descriptions.Item>{<Checkbox  onChange={onCheckAllChange} checked={checkAll}>
+                    {(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled') && <Descriptions.Item>{<Checkbox onChange={onCheckAllChange} checked={checkAll}>
                         Select All
-                    </Checkbox>} </Descriptions.Item> }
+                    </Checkbox>} </Descriptions.Item>}
                 </Descriptions>
 
                 <div hidden={selectedId.length < 1}>
@@ -120,14 +122,20 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             </Card>
 
                 <Row>
-                   
+
                 </Row>
 
                 <Checkbox.Group style={{ width: '100%' }} value={selectedId} onChange={onChange}>
                     <Card style={{ width: '100%' }}>
-                  <Row justify={"center"}>  {selectedId.length >0 &&  <Text strong mark>{selectedId.length} Student Selected</Text>}</Row>
                         <List
                             size="small"
+                            header={selectedId.length > 0 && <Row justify="space-between" align={"middle"}>
+                                <Col></Col>
+                                <Col > <Text strong mark>{selectedId.length} Student Selected</Text></Col>
+                                <Col > <Button shape="round" icon={<DownloadOutlined />} onClick={()=> exportStudent(classDetails?.id??'')}>
+                                    Export To Excel
+                                </Button></Col>
+                            </Row>}
                             itemLayout="horizontal"
                             dataSource={classDetails?.students}
                             renderItem={(item, index) => (
@@ -142,9 +150,9 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                             <Col md={{ span: 14 }}>
                                                 {item.name}
                                             </Col>
-                                            <Col md={{ span: 6 }} style={{fontWeight: 'normal'}}>
-                                            {item.pendingFees > 0 ? <Text type="danger">{item.pendingFees} Months dues</Text> :
-                                            <Text type="success"> No Pending dues</Text>}
+                                            <Col md={{ span: 6 }} style={{ fontWeight: 'normal' }}>
+                                                {item.pendingFees > 0 ? <Text type="danger">{item.pendingFees} Months dues</Text> :
+                                                    <Text type="success"> No Pending dues</Text>}
                                             </Col>
                                         </Row>}
                                         description={<Row justify={"center"}>

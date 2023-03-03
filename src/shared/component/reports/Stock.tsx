@@ -1,13 +1,15 @@
-import { List, Row, Col, Tag, Typography, Table } from "antd"
-import { useFetchInventoryReportQuery } from "../../redux/api/feature/report/api";
+import { List, Row, Col, Tag, Typography, Table, Button } from "antd"
+import {  useFetchInventoryReportQuery } from "../../redux/api/feature/report/api";
 import { IStockReport } from "../../interface/IStockReport";
 import { IProductCatlog } from "../../interface/IProductCatalog";
 import { ColumnsType } from "antd/es/table";
-import {WarningOutlined} from  '@ant-design/icons';
+import {WarningOutlined, DownloadOutlined} from  '@ant-design/icons';
+import { useExportStockMutation } from "../../redux/api/feature/exports/api";
 
 export const Stock = () => {
 
     const { data: stockDate } = useFetchInventoryReportQuery();
+    const[exportStock] = useExportStockMutation();
 
     const filterProduct = stockDate?.map((item: IStockReport) => {
         return {
@@ -84,7 +86,11 @@ export const Stock = () => {
         <>
             {stockDate &&
 
-                <Table<IStockReport> rowKey={(record) => record.id} dataSource={stockDate} scroll={{ y: 300 }} columns={columns} size="small" />
+                <Table<IStockReport>  title={() =>  <Row justify="end" align={"middle"}>
+               <Button shape="round" icon={<DownloadOutlined />} onClick={()=>exportStock()}>
+                   Export to Excel
+               </Button>
+           </Row>} rowKey={(record) => record.id} dataSource={stockDate} scroll={{ y: 300 }} pagination={false} columns={columns} size="small" />
             }
         </>);
 }
