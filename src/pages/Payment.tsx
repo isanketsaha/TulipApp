@@ -87,6 +87,7 @@ export const Payment = () => {
     }
 
     const submitPayment = () => {
+
         payData && payment(payData).then((id: any) => {
             if (id?.data) {
                 navigate(`/purchaseSummary/${id.data}`);
@@ -146,13 +147,17 @@ export const Payment = () => {
             </Form>
 
         </Space>
-            <Modal
+            <Modal zIndex={1}
                 title="Confirm Payment"
                 centered
                 open={openConfirmPayment}
                 destroyOnClose
                 okText={"Payment Recieved"}
-                onOk={submitPayment} onCancel={() => setOpenConfirmPayment(false)}
+                onOk={() => {
+                    setOpenConfirmPayment(false);
+                    submitPayment()
+                }}
+                onCancel={() => setOpenConfirmPayment(false)}
                 width={1000}
             >
                 {payData && <PaymentConfirmation payData={payData} />}

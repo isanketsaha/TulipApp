@@ -27,7 +27,17 @@ export const exportApi = createApi({
                 });
             },
         }),
+        printReceipt: builder.mutation<any, string>({
+            query: (id) => {
+                return ({
+                    url: '/receipt?paymentId=' + id,
+                    method: 'POST',
+                    responseHandler: async (response) => response.status == 200 ? window.open(window.URL.createObjectURL(await response.blob()),"_blank") : message.error("Error Occurred , Status " + response.status),
+                    cache: "no-cache",
+                });
+            },
+        }),
     })
 })
 
-export const { useExportStockMutation, useExportStudentMutation } = exportApi;
+export const { useExportStockMutation, useExportStudentMutation, usePrintReceiptMutation } = exportApi;

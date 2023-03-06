@@ -9,7 +9,7 @@ import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import { Role } from "../utils/Role";
-import { WhatsAppOutlined, EditOutlined } from '@ant-design/icons';
+import { WhatsAppOutlined, EditOutlined, PrinterOutlined } from '@ant-design/icons';
 import { useMediaQuery } from "react-responsive";
 import { uploadProps } from "/src/configs/UploadConfig";
 
@@ -33,10 +33,13 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
         <>
             {studentData &&
                 <>
-                    <Row justify={"end"}> <Button type="primary" icon={<EditOutlined />}
+                    <Row justify={"end"}>
+                   <Space size={"large"}> <Button icon={<PrinterOutlined />}>Admission Letter</Button>
+                         <Button icon={<EditOutlined />}
                         onClick={() => navigate(`/edit/${studentData?.id}`, { replace: true, state: { type: 'student' } })}>
                         Edit Details
-                    </Button></Row>
+                    </Button>
+                    </Space></Row>
                     <Divider style={{ marginTop: '-2vh' }}> <h3>Student Detail</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
 
                         <Descriptions bordered>

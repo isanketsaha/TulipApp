@@ -87,12 +87,12 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                 <Descriptions bordered>
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
-                    {(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled') && <Descriptions.Item>{<Checkbox onChange={onCheckAllChange} checked={checkAll}>
+                     <Descriptions.Item>{<Checkbox onChange={onCheckAllChange} checked={checkAll}>
                         Select All
-                    </Checkbox>} </Descriptions.Item>}
+                    </Checkbox>} </Descriptions.Item>
                 </Descriptions>
 
-                <div hidden={selectedId.length < 1}>
+                <div hidden={import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled'}>
                     <Divider />
                     <div hidden={!isSuccess} style={{ margin: ' 2vh 0' }}>
                         <Space direction="vertical" style={{ width: '100%' }}>
@@ -132,7 +132,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                             header={selectedId.length > 0 && <Row justify="space-between" align={"middle"}>
                                 <Col></Col>
                                 <Col > <Text strong mark>{selectedId.length} Student Selected</Text></Col>
-                                <Col > <Button shape="round" icon={<DownloadOutlined />} onClick={()=> exportStudent(classDetails?.id??'')}>
+                                <Col > <Button shape="round" icon={<DownloadOutlined />} onClick={()=> classDetails?.id && exportStudent(classDetails?.id)}>
                                     Export To Excel
                                 </Button></Col>
                             </Row>}

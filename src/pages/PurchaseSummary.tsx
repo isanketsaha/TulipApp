@@ -1,4 +1,4 @@
-import { Card, Descriptions, Divider, Space, Switch, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Descriptions, Divider, Space, Switch, Table, Tag, Typography, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
@@ -7,19 +7,20 @@ import { useEditPaymentMutation, useFetchPaymentDetailsByIdQuery } from "../shar
 import dayjs from "dayjs";
 import { useAppSelector } from "../store";
 import { Role } from "../shared/utils/Role";
+import { PrinterOutlined } from '@ant-design/icons';
+import { usePrintReceiptMutation } from "../shared/redux/api/feature/exports/api";
 
 export const PurchaseSummary = () => {
 
     const { Text } = Typography;
-
     const { id } = useParams();
     const { user } = useAppSelector(state => state.userAuth);
 
     const deleteAllowedRole = [Role.ADMIN];
-
+    const [printReceipt] = usePrintReceiptMutation();
     const { data: paySummary } = useFetchPaymentDetailsByIdQuery(id ?? ''
         , { skip: id == undefined });
-     const [editPayment] =  useEditPaymentMutation();
+    const [editPayment] = useEditPaymentMutation();
     const { data: item } = useBasicSearchByIdQuery(String(paySummary?.studentId) ?? '', { skip: !paySummary?.studentId });
 
     const onDelete = (lineItemId: number, purchaseType: string) => {
@@ -189,9 +190,9 @@ export const PurchaseSummary = () => {
                     <Descriptions.Item span={1} label="Recieved by">{paySummary?.paymentReceivedBy}</Descriptions.Item>
                     <Descriptions.Item span={1} label="Date Time"> {dayjs(paySummary?.paymentDateTime).format('dddd, MMMM D, YYYY h:mm A')}</Descriptions.Item>
 
-                    <Descriptions.Item span={1} label="Purchase Type">  <Tag color={"purple"}>
+                    <Descriptions.Item span={1} label="Purchase Type"> <Space> <Tag color={"purple"}>
                         {paySummary?.payType}
-                    </Tag></Descriptions.Item>
+                    </Tag> <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>Reciept</Button></Space></Descriptions.Item>
                 </Descriptions>
             </Card>
 
