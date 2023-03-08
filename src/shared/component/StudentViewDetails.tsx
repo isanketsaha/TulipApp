@@ -5,7 +5,7 @@ import { FeesCalender } from "./FeesCalender";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TransactionHistory } from "./TransactionHistory";
 import { Error500 } from "/src/error/Error500";
-import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { CaretLeftOutlined, CaretRightOutlined , ExclamationCircleFilled} from '@ant-design/icons';
 import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import { Role } from "../utils/Role";
@@ -19,6 +19,7 @@ interface IStudentViewProps {
 }
 
 export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
+    const { confirm } = Modal;
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const { user } = useAppSelector(state => state.userAuth);
     const [sessionIndex, setSessionIndex] = useState<number>(0);
@@ -27,7 +28,22 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
     const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" });
     const [deactivateStudent] = useDeactivateStudentMutation();
 
-
+    const showEditConfirm = () => {
+        confirm({
+          title: `Are you sure to edit details of ${studentData?.name}  ?`,
+          icon: <ExclamationCircleFilled />,
+          okText: 'Yes',
+          centered: true,
+          okType: 'danger',
+          cancelText: 'No',
+          width: 600,
+          autoFocusButton:"cancel",
+          onOk() {
+            setTimeout(() => navigate(`/edit/${studentData?.id}`, { replace: true, state: { type: 'student' } }), 300);
+            ;
+          }
+        });
+      };
 
     return (
         <>
@@ -36,7 +52,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                     <Row justify={"end"}>
                    <Space size={"large"}> <Button icon={<PrinterOutlined />}>Admission Letter</Button>
                          <Button icon={<EditOutlined />}
-                        onClick={() => navigate(`/edit/${studentData?.id}`, { replace: true, state: { type: 'student' } })}>
+                        onClick={showEditConfirm}>
                         Edit Details
                     </Button>
                     </Space></Row>

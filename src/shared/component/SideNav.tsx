@@ -1,7 +1,8 @@
-import { Badge, Menu, MenuProps, Typography, theme } from "antd";
+import { Badge, Menu, MenuProps, Modal, Typography, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import React, { useEffect, useState } from "react";
-import { HighlightFilled, EditFilled, SnippetsFilled, DashboardFilled, EyeFilled, IdcardFilled, FolderOpenFilled, LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
+import { SnippetsFilled, ExclamationCircleFilled, EyeFilled, IdcardFilled, FolderOpenFilled,
+     LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../redux/slices/UserAuthSlice";
@@ -19,7 +20,7 @@ interface ISliderProps {
     setCollapsed: (value: boolean) => void
 }
 export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
-
+    const { confirm } = Modal;
     const { Text } = Typography;
     let { pathname } = useLocation();
     const { user } = useAppSelector((state) => state.userAuth);
@@ -63,6 +64,21 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
         }
     ]
 
+    const showLogoutConfirm = () => {
+        confirm({
+          title: `Are you sure to Logout ?`,
+          icon: <ExclamationCircleFilled />,
+          okText: 'Yes',
+          okType: 'danger',
+          centered: true,
+          cancelText: 'No',
+          autoFocusButton:"cancel",
+          onOk() {
+            setTimeout(logoutUser, 300)
+          }
+        });
+      };
+
     if (user?.authority && [Role.ADMIN].includes(user?.authority)) {
         navigatons.push({
             label: 'Accounts',
@@ -87,7 +103,7 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
             danger: true,
             key: 'logout',
             label: 'Logout',
-            onClick: logoutUser,
+            onClick: showLogoutConfirm,
             icon: <LogoutOutlined />,
             style: {}
 

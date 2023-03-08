@@ -1,4 +1,4 @@
-import { Button, Card, Descriptions, Divider, Space, Switch, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Descriptions, Divider, Modal, Space, Switch, Table, Tag, Typography, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
@@ -7,11 +7,11 @@ import { useEditPaymentMutation, useFetchPaymentDetailsByIdQuery } from "../shar
 import dayjs from "dayjs";
 import { useAppSelector } from "../store";
 import { Role } from "../shared/utils/Role";
-import { PrinterOutlined } from '@ant-design/icons';
+import { PrinterOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import { usePrintReceiptMutation } from "../shared/redux/api/feature/exports/api";
 
 export const PurchaseSummary = () => {
-
+    const { confirm } = Modal;
     const { Text } = Typography;
     const { id } = useParams();
     const { user } = useAppSelector(state => state.userAuth);
@@ -25,8 +25,24 @@ export const PurchaseSummary = () => {
     const [editPayment] = useEditPaymentMutation();
     const { data: item } = useBasicSearchByIdQuery(String(paySummary?.studentId) ?? '', { skip: !paySummary?.studentId });
 
+    const showDeleteConfirm = (lineItem: string ,lineItemId: number, purchaseType: string) => {
+        confirm({
+          title: `Are you sure to delete ${lineItem} from this transaction ?`,
+          icon: <ExclamationCircleFilled />,
+          content: 'This action is dangerous',
+          okText: 'Yes',
+          centered: true,
+          okType: 'danger',
+          cancelText: 'No',
+          width: 600,
+          autoFocusButton:"cancel",
+          onOk() {
+            onDelete(lineItemId, purchaseType)
+          }
+        });
+      };
+
     const onDelete = (lineItemId: number, purchaseType: string) => {
-        console.log(lineItemId, purchaseType);
         editPayment({
             paymentId: paySummary?.paymentId ?? 0,
             itemId: lineItemId,
@@ -78,7 +94,7 @@ export const PurchaseSummary = () => {
             hidden: user?.authority && !deleteAllowedRole.includes(user?.authority),
             render: (_: any, record: any) => (
                 <Space size="middle">
-                    <a onClick={() => onDelete(record.itemId, 'FEES')}>Delete</a>
+                    <a onClick={() => showDeleteConfirm(record.feesTitle ,record.itemId, 'FEES')}>Delete</a>
                 </Space>
             ),
         }
@@ -135,7 +151,7 @@ export const PurchaseSummary = () => {
             hidden: user?.authority && !deleteAllowedRole.includes(user?.authority),
             render: (_: any, record: any) => (
                 <Space size="middle">
-                    <a onClick={() => onDelete(record.itemId, 'PURCHASE')}>Delete</a>
+                    <a onClick={() => showDeleteConfirm(record.productTitle,record.itemId, 'PURCHASE')}>Delete</a>
                 </Space>
             ),
         }
