@@ -32,7 +32,7 @@ export const exportApi = createApi({
                 return ({
                     url: '/receipt?paymentId=' + id,
                     method: 'POST',
-                    responseHandler: async (response) => response.status == 200 ? window.open(window.URL.createObjectURL(await response.blob()),"_blank") : message.error("Error Occurred , Status " + response.status),
+                    responseHandler: async (response) => response.status == 200 ? window.open(window.URL.createObjectURL(await response.blob()), "_blank") : message.error("Error Occurred , Status " + response.status),
                     cache: "no-cache",
                 });
             },

@@ -16,6 +16,8 @@ export const PurchaseSummary = () => {
     const { id } = useParams();
     const { user } = useAppSelector(state => state.userAuth);
 
+    const printReceiptAvailable = ['FEES', 'PURCHASE']
+
     const deleteAllowedRole = [Role.ADMIN];
     const [printReceipt] = usePrintReceiptMutation();
     const { data: paySummary } = useFetchPaymentDetailsByIdQuery(id ?? ''
@@ -187,12 +189,13 @@ export const PurchaseSummary = () => {
                 {paySummary?.payType != 'EXPENSE' && <BasicDetails data={item ?? {} as IBasicDetails} key={item?.id} />}
                 <Divider></Divider>
                 <Descriptions>
-                    <Descriptions.Item span={1} label="Recieved by">{paySummary?.paymentReceivedBy}</Descriptions.Item>
+                    <Descriptions.Item span={1} label="Transaction Id">{paySummary?.paymentId}</Descriptions.Item>
                     <Descriptions.Item span={1} label="Date Time"> {dayjs(paySummary?.paymentDateTime).format('dddd, MMMM D, YYYY h:mm A')}</Descriptions.Item>
 
                     <Descriptions.Item span={1} label="Purchase Type"> <Space> <Tag color={"purple"}>
                         {paySummary?.payType}
-                    </Tag> <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>Reciept</Button></Space></Descriptions.Item>
+                    </Tag> {paySummary?.payType && printReceiptAvailable.includes(paySummary?.payType) 
+                    && <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>Reciept</Button> }</Space></Descriptions.Item>
                 </Descriptions>
             </Card>
 
@@ -206,7 +209,13 @@ export const PurchaseSummary = () => {
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
-                            <Table.Summary.Cell colSpan={4} index={1}>
+                            
+                            <Table.Summary.Cell colSpan={2} index={1}>
+                            Recieved by :  <Tag color="purple">
+                                    {paySummary?.paymentReceivedBy}
+                                </Tag>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell colSpan={2} index={1}>
                                 Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {paySummary?.paymentMode}
                                 </Tag>
@@ -237,7 +246,12 @@ export const PurchaseSummary = () => {
                 summary={() => (
                     <Table.Summary fixed={'bottom'} >
                         <Table.Summary.Row >
-                            <Table.Summary.Cell colSpan={4} index={1}>
+                        <Table.Summary.Cell colSpan={2} index={1}>
+                            Recieved by :  <Tag color="purple">
+                                    {paySummary?.paymentReceivedBy}
+                                </Tag>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell colSpan={2} index={1}>
                                 Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {paySummary?.paymentMode}
                                 </Tag>
@@ -269,11 +283,16 @@ export const PurchaseSummary = () => {
                     summary={() => (
                         <Table.Summary fixed={'bottom'} >
                             <Table.Summary.Row >
-                                <Table.Summary.Cell colSpan={4} index={1}>
-                                    Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
-                                        {paySummary?.paymentMode}
-                                    </Tag>
-                                </Table.Summary.Cell>
+                            <Table.Summary.Cell colSpan={2} index={1}>
+                            Paid by :  <Tag color="purple">
+                                    {paySummary?.paymentReceivedBy}
+                                </Tag>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell colSpan={2} index={1}>
+                                Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
+                                    {paySummary?.paymentMode}
+                                </Tag>
+                            </Table.Summary.Cell>
                                 <Table.Summary.Cell index={10}>
                                     <Text mark>
                                         {paySummary?.total.toLocaleString('en-IN', {
