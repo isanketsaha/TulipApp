@@ -1,4 +1,4 @@
-import { StudentBasicDetails } from "../component/StudentBasicDetails"
+
 import { IBasicDetails } from "./IBasicDetails";
 import { IFeesCatalog } from "./IFeesCatalog";
 import { IProductCatlog } from "./IProductCatalog";

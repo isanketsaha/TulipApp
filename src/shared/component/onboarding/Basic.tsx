@@ -27,6 +27,11 @@ export const AddBasic = () => {
             <Checkbox><WhatsAppOutlined /></Checkbox>
         </Form.Item>);
 
+    const prefixEveningClass = (
+        <Form.Item name="eveningClass" valuePropName="checked" noStyle>
+            <Checkbox>Evening </Checkbox>
+        </Form.Item>);
+
     return (
         <>
             <Form.Item hidden={true} name="type" >
@@ -68,9 +73,12 @@ export const AddBasic = () => {
                 <Row gutter={[40, 40]} >
                     <Col span={8}>
                         <Form.Item name="std" label="Class" rules={[{ required: true }]}>
+
                             <Select
                                 options={selectList.classList}
                             />
+
+
                         </Form.Item>
                     </Col>
                     <Col span={8}>
@@ -133,7 +141,19 @@ export const AddBasic = () => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Divider></Divider>
+            {state.type == 'student' &&
+                <Row gutter={[40, 40]} >
+                    <Col span={8}>
+                        <Form.Item name="eveningClass" label="Evening Class" rules={[{ required: true }]} >
+                            <Select
+                                options={[
+                                    { value: true, label: 'Yes' },
+                                    { value: false, label: 'No' }]}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>}
+            <Divider>Document Upload</Divider>
             <Row>
                 <Col span={12}>
                     <Form.Item
@@ -142,27 +162,27 @@ export const AddBasic = () => {
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
                     >
-                        <Upload {...uploadProps} 
+                        <Upload {...uploadProps}
                             listType="text" name="documents" accept={allowedFieldType} maxCount={2}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                {state.type == 'student' ?
-                    <Form.Item name={"birthCertificate"} valuePropName="fileList"  getValueFromEvent={normFile} label="Birth Certificate">
-                        <Upload {...uploadProps} 
-                            listType="text" name="documents" accept={allowedFieldType} maxCount={2} >
-                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Form.Item> :
-                    <Form.Item name={"panCard"} valuePropName="fileList"  getValueFromEvent={normFile} label="Pan Card">
-                        <Upload {...uploadProps} 
-                            listType="text" name="documents" accept={allowedFieldType} maxCount={1}>
-                            <Button icon=   {<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Form.Item> 
-        }
+                    {state.type == 'student' ?
+                        <Form.Item name={"birthCertificate"} valuePropName="fileList" getValueFromEvent={normFile} label="Birth Certificate">
+                            <Upload {...uploadProps}
+                                listType="text" name="documents" accept={allowedFieldType} maxCount={2} >
+                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                            </Upload>
+                        </Form.Item> :
+                        <Form.Item name={"panCard"} valuePropName="fileList" getValueFromEvent={normFile} label="Pan Card">
+                            <Upload {...uploadProps}
+                                listType="text" name="documents" accept={allowedFieldType} maxCount={1}>
+                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                            </Upload>
+                        </Form.Item>
+                    }
                 </Col>
             </Row>
 

@@ -1,12 +1,12 @@
-import { Descriptions, Badge, Space, Button, Divider, Switch, Modal, Row, notification, Upload } from "antd"
+import { Descriptions, Badge, Space, Button, Divider, Switch, Modal, Row, notification, Upload, Select } from "antd"
 import dayjs from "dayjs";
 import { useDeactivateStudentMutation, useSearchStudentQuery } from "../redux/api/feature/student/api";
 import { FeesCalender } from "./FeesCalender";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TransactionHistory } from "./TransactionHistory";
 import { Error500 } from "/src/error/Error500";
-import { CaretLeftOutlined, CaretRightOutlined , ExclamationCircleFilled} from '@ant-design/icons';
-import { useState } from "react";
+import { CaretLeftOutlined, CaretRightOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { useEffect, useState } from "react";
 import { useAppSelector } from "/src/store";
 import { Role } from "../utils/Role";
 import { WhatsAppOutlined, EditOutlined, PrinterOutlined } from '@ant-design/icons';
@@ -22,40 +22,47 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
     const { confirm } = Modal;
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const { user } = useAppSelector(state => state.userAuth);
-    const [sessionIndex, setSessionIndex] = useState<number>(0);
+    const [sessionId, setSessionId] = useState<number>();
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" });
     const [deactivateStudent] = useDeactivateStudentMutation();
-
+    useEffect(() => {
+        setSessionId(studentData?.classDetails[0]?.sessionId)
+    }, [studentData]);
     const showEditConfirm = () => {
         confirm({
-          title: `Are you sure to edit details of ${studentData?.name}  ?`,
-          icon: <ExclamationCircleFilled />,
-          okText: 'Yes',
-          centered: true,
-          okType: 'danger',
-          cancelText: 'No',
-          width: 600,
-          autoFocusButton:"cancel",
-          onOk() {
-            setTimeout(() => navigate(`/edit/${studentData?.id}`, { replace: true, state: { type: 'student' } }), 300);
-            ;
-          }
+            title: `Are you sure to edit details of ${studentData?.name}  ?`,
+            icon: <ExclamationCircleFilled />,
+            okText: 'Yes',
+            centered: true,
+            okType: 'danger',
+            cancelText: 'No',
+            width: 600,
+            autoFocusButton: "cancel",
+            onOk() {
+                setTimeout(() => navigate(`/edit/${studentData?.id}`, { replace: true, state: { type: 'student' } }), 300);
+                ;
+            }
         });
-      };
+    };
+
+    const selectedSession = () => {
+        return studentData?.classDetails.find(item => item.sessionId == sessionId);
+    }
 
     return (
         <>
             {studentData &&
                 <>
                     <Row justify={"end"}>
-                   <Space size={"large"}> <Button icon={<PrinterOutlined />}>Admission Letter</Button>
-                         <Button icon={<EditOutlined />}
-                        onClick={showEditConfirm}>
-                        Edit Details
-                    </Button>
-                    </Space></Row>
+                        <Space size={"large"}>
+                            {/* <Button icon={<PrinterOutlined />} type="text">Admission Letter</Button> */}
+                            <Button icon={<EditOutlined />} type="text"
+                                onClick={showEditConfirm}>
+                                Edit Details
+                            </Button>
+                        </Space></Row>
                     <Divider style={{ marginTop: '-2vh' }}> <h3>Student Detail</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
 
                         <Descriptions bordered>
@@ -91,31 +98,46 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                     {studentData?.phoneNumber}
                                 </Space>
                             </Descriptions.Item>
-                            <Descriptions.Item label="Classroom">{studentData?.classDetails[sessionIndex]?.std}</Descriptions.Item>
-                            <Descriptions.Item label="Class Teacher">{studentData?.classDetails[sessionIndex]?.headTeacher}</Descriptions.Item>
+                            <Descriptions.Item label="Classroom">{selectedSession()?.std}</Descriptions.Item>
+                            <Descriptions.Item label="Class Teacher">{selectedSession()?.headTeacher}</Descriptions.Item>
                             <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
-                            <Descriptions.Item label="Session"> {studentData?.classDetails.length > 1 && !(studentData?.classDetails.length == sessionIndex + 1) &&
+                            {/* <Descriptions.Item label="Session"> {studentData?.classDetails.length > 1 && !(studentData?.classDetails.length == sessionIndex + 1) &&
                                 <Button onClick={() => setSessionIndex(sessionIndex + 1)} type="link" icon={<CaretLeftOutlined />} />}
                                 {studentData?.classDetails[sessionIndex]?.session} {studentData?.classDetails.length > 1
                                     && !(sessionIndex == 0) &&
-                                    <Button onClick={() => setSessionIndex(sessionIndex - 1)} type="link" icon={<CaretRightOutlined />} />}</Descriptions.Item>
+                                    <Button onClick={() => setSessionIndex(sessionIndex - 1)} type="link" icon={<CaretRightOutlined />} />}</Descriptions.Item> */}
+                            <Descriptions.Item label="Session">{studentData?.classDetails.length > 1 ?
+                                <Select
+                                    bordered={false}
+                                    onSelect={setSessionId}
+                                    defaultValue={studentData?.classDetails[0]?.sessionId}
+                                    style={{ width: '20vmin' }}
+
+                                    options={studentData?.classDetails.map(item => {
+                                        return {
+                                            label: item.session,
+                                            value: item.sessionId
+                                        }
+                                    })}
+                                />
+                                : studentData?.classDetails[0]?.session}  </Descriptions.Item>
                             {isMobile ? null :
                                 <Descriptions.Item >
-                                    <Link to={`/payment/${studentData?.id}/${studentData?.classDetails[sessionIndex]?.id}`}>
+                                    <Link to={`/payment/${studentData?.id}/${selectedSession()?.id}`}>
                                         <Button type="primary">
                                             Payment
                                         </Button>
 
                                     </Link>
                                 </Descriptions.Item>
-                                 }
-                                  <Descriptions.Item label="Birth Certificate">{<Upload {...uploadProps}
-                                                fileList={studentData.birthCertificate}
-                                                listType="text" ></Upload>}</Descriptions.Item>
-                                <Descriptions.Item label="Aadhaar Card">{<Upload {...uploadProps}
-                                                fileList={studentData.aadhaarCard}
-                                                listType="text" ></Upload>}</Descriptions.Item>    
-                              
+                            }
+                            <Descriptions.Item label="Birth Certificate">{<Upload {...uploadProps}
+                                fileList={studentData.birthCertificate}
+                                listType="text" ></Upload>}</Descriptions.Item>
+                            <Descriptions.Item label="Aadhaar Card">{<Upload {...uploadProps}
+                                fileList={studentData.aadhaarCard}
+                                listType="text" ></Upload>}</Descriptions.Item>
+
                         </Descriptions>
 
                         <Divider> <h3>Guardian Details</h3></Divider>
@@ -138,13 +160,13 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                             <Upload {...uploadProps}
                                                 fileList={item.aadhaarCard}
                                                 listType="text" ></Upload>
-                                                </Descriptions.Item>
+                                        </Descriptions.Item>
                                     </Descriptions>
                                 );
                             })}
                         </Space>
 
-                        {studentData?.id && <FeesCalender studentId={studentData?.id} classId={studentData.classDetails[sessionIndex]?.id} />}
+                        {studentData?.id && <FeesCalender studentId={studentData?.id} classId={selectedSession()?.id } />}
                         {studentData?.id && <TransactionHistory studentId={studentData?.id} />}
                     </Space></>
             }

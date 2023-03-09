@@ -1,4 +1,4 @@
 export interface IPayGraphFilter {
     studentId : number,
-    classId : number
+    classId : number | undefined
 }
