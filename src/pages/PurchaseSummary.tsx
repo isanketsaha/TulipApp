@@ -1,4 +1,4 @@
-import { Button, Card, Descriptions, Divider, Modal, Space, Switch, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Descriptions, Divider, Empty, Modal, Space, Switch, Table, Tag, Typography, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
@@ -199,6 +199,7 @@ export const PurchaseSummary = () => {
     ];
 
     return (<>
+    {paySummary ?
         <Space direction="vertical" style={{ width: '100%' }} size="large">
             <Divider>Payment Summary</Divider>
             <Card key={item?.id}>
@@ -324,7 +325,9 @@ export const PurchaseSummary = () => {
                     sticky
                 />
             }
-        </Space>
+        </Space> :
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"No Transaction found."}/>
+} 
 
     </>);
 }

@@ -83,18 +83,18 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
             <Table<ITransactionReport> dataSource={financeReportData?.reportList} pagination={{ pageSize: 50 }} columns={columns} summary={() => (
                 <Table.Summary fixed={'bottom'}>
                     <Table.Summary.Row>
-                        <Table.Summary.Cell index={2} colSpan={1}>
+                        <Table.Summary.Cell index={3} colSpan={1}>
 
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell index={2} colSpan={1}>
-                            <Tag color={"green"} >
+                        <Table.Summary.Cell index={3} colSpan={1}>
+                            <Tag color={"purple"} >
                                 {financeReportData?.feesTotal.toLocaleString('en-IN', {
                                     maximumFractionDigits: 2,
                                     style: 'currency',
                                     currency: 'INR'
                                 })}</Tag>
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell index={2} colSpan={1}>
+                        <Table.Summary.Cell index={3} colSpan={1}>
                         <Tag color={"blue"} >
                             {financeReportData?.purchaseTotal.toLocaleString('en-IN', {
                                 maximumFractionDigits: 2,
@@ -103,7 +103,7 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
                             })}
                             </Tag>
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell index={2} colSpan={1}>
+                        <Table.Summary.Cell index={3} colSpan={1}>
                         <Tag color={"volcano"} >
                             {financeReportData?.expenseTotal.toLocaleString('en-IN', {
                                 maximumFractionDigits: 2,
@@ -112,7 +112,7 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
                             })}</Tag>
                         </Table.Summary.Cell>
                         <Table.Summary.Cell index={3}>
-                        <Tag color={"purple"} >
+                        <Tag color={"green"} >
                             {financeReportData?.amountTotal.toLocaleString('en-IN', {
                                 maximumFractionDigits: 2,
                                 style: 'currency',

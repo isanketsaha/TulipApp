@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Audit } from "../shared/component/reports/Audit";
 import { FinanceReport } from "../shared/component/reports/FinanceReport";
 import dayjs, { Dayjs } from "dayjs";
+import { Stock } from "../shared/component/reports/Stock";
 
 
 export const Accounts = () => {
@@ -26,12 +27,17 @@ export const Accounts = () => {
     const tabList: TabsProps['items'] = [
         {
             key: '1',
-            label: 'Report',
+            label: 'Transaction',
             children: <FinanceReport from={fromDate} to={toDate}/>
         }, {
             key: '2',
             label: 'Audit',
             children: <Audit />
+        },
+        {
+            key: '3',
+            label: '',
+            children: <Stock />
         }
     ];
 

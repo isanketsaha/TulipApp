@@ -17,7 +17,6 @@ export const Audit = () => {
             {data?.content && data.content.length > 0 ?
                 <List
                     bordered
-                    extra={"Hello"}
                     pagination={{
                         onChange: (page: number, pageSize: number) => { setPagination(page - 1) },
                         pageSize: data.size,

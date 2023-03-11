@@ -4,10 +4,8 @@ import { store } from '/src/store';
 import { Role } from '../shared/utils/Role';
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
+
 export const allowedFieldType = ".jpg,.pdf,.png";
-
-let appState: string | null | undefined;
-
 
 export const uploadProps = () => {
     const {userAuth} = store.getState();

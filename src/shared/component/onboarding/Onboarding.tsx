@@ -79,7 +79,6 @@ export const Onboarding = () => {
             navigate(`../employeeDetails/${id}`, { replace: true });
         }
         else if (state?.type == 'student') {
-
             navigate(`../payment/${id}/${data}`, { replace: true });
         }
     }

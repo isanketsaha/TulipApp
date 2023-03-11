@@ -42,7 +42,6 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
             autoFocusButton: "cancel",
             onOk() {
                 setTimeout(() => navigate(`/edit/${studentData?.id}`, { replace: true, state: { type: 'student' } }), 300);
-                ;
             }
         });
     };

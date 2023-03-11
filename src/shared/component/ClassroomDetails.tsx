@@ -91,7 +91,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             content: <List
                 bordered
                 dataSource={selectedId}
-                header={<Row justify={"end"}> <Switch
+                header={user?.authority && [Role.ADMIN].includes(user?.authority) && <Row justify={"end"}> <Switch 
                     checkedChildren={"Force Update"}
                     unCheckedChildren={"Force Update"}
                     defaultChecked = {false}
@@ -122,12 +122,12 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                 <Descriptions bordered>
                     <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
                     <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
-                    <Descriptions.Item>{<Checkbox onChange={onCheckAllChange} checked={checkAll}>
+                    {!isTabletOrMobile && <Descriptions.Item>{<Checkbox onChange={onCheckAllChange} checked={checkAll}>
                         Select All
-                    </Checkbox>} </Descriptions.Item>
+                    </Checkbox>} </Descriptions.Item>}
                 </Descriptions>
 
-                {user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled' &&
+                { !isTabletOrMobile && user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled' &&
                     <div>
                         <Divider />
                         <div hidden={!isSuccess} style={{ margin: ' 2vh 0' }}>
