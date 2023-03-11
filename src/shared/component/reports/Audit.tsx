@@ -38,7 +38,7 @@ export const Audit = () => {
                                 <List.Item.Meta
                                     description={
                                         <Card>
-                                        <Row >
+                                        <Row justify={"space-between"}>
                                             <Col span={1} >
                                                 {(index + 1) }.
                                             </Col>

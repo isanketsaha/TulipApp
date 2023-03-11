@@ -8,8 +8,9 @@ import { allowedFieldType, uploadProps } from "/src/configs/UploadConfig";
 
 export const AddBasic = () => {
     const { state } = useLocation();
-    const selectList = useAppSelector(state => state.commonData);
 
+    const selectList = useAppSelector(state => state.commonData);
+  const {user} = useAppSelector(state => state.userAuth);
     const disableDate = (currentDate: Dayjs) => {
         return currentDate.isAfter(new Date());
     };
@@ -162,7 +163,8 @@ export const AddBasic = () => {
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
                     >
-                        <Upload {...uploadProps}
+                        <Upload {...uploadProps()}
+                       
                             listType="text" name="documents" accept={allowedFieldType} maxCount={2}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                         </Upload>
@@ -171,13 +173,13 @@ export const AddBasic = () => {
                 <Col span={12}>
                     {state.type == 'student' ?
                         <Form.Item name={"birthCertificate"} valuePropName="fileList" getValueFromEvent={normFile} label="Birth Certificate">
-                            <Upload {...uploadProps}
+                            <Upload {...uploadProps()} 
                                 listType="text" name="documents" accept={allowedFieldType} maxCount={2} >
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
                             </Upload>
                         </Form.Item> :
                         <Form.Item name={"panCard"} valuePropName="fileList" getValueFromEvent={normFile} label="Pan Card">
-                            <Upload {...uploadProps}
+                            <Upload {...uploadProps()}
                                 listType="text" name="documents" accept={allowedFieldType} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
                             </Upload>

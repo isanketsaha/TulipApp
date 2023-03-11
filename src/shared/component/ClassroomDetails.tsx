@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Modal, Row, Select, Space, Table, Tabs, 
+import { Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Modal, Row, Select, Space, Switch, Table, Tabs, 
     TabsProps, Typography } from "antd"
 import { useFetchClassroomDetailsQuery, usePromoteStudentMutation } from "../redux/api/feature/classroom/api";
 import { Link } from "react-router-dom";
@@ -17,6 +17,7 @@ interface IClassDetailsProsp {
 }
 
 export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
+
     const { confirm } = Modal;
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { Text } = Typography;
@@ -89,8 +90,12 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             for ${sessionList.filter(item => item.value == value.sessionId).map(item => item.label)} session`,
             content: <List
                 bordered
-                
                 dataSource={selectedId}
+                header={<Row justify={"end"}> <Switch
+                    checkedChildren={"Force Update"}
+                    unCheckedChildren={"Force Update"}
+                    defaultChecked = {false}
+                  /> </Row>}
                 renderItem={(item, name) => (
                     <List.Item>
                       {name+1}. <Typography.Text mark> {classDetails?.students.find(student => student.id == item)?.name}</Typography.Text>
@@ -104,7 +109,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             width: 600,
             autoFocusButton: "cancel",
             onOk() {
-                onPromote(value)
+                onPromote({...value, forceUpdate: false})
             }
         });
     };

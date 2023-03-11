@@ -93,7 +93,7 @@ export const AddDependent = () => {
                                     <Form.Item name={[name, "aadhaarCard"]} valuePropName="fileList" getValueFromEvent={getFile} 
                                     label="Aadhaar Card"
                                     >
-                                        <Upload {...uploadProps} showUploadList={true}
+                                        <Upload {...uploadProps()} showUploadList={true} 
                                             listType="text" name="documents" accept={allowedFieldType} maxCount={2}>
                                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
                                         </Upload>

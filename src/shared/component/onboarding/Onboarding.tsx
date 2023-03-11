@@ -60,6 +60,10 @@ export const Onboarding = () => {
         }
     };
 
+    const confirmSubmit = (editFlow: boolean) => {
+        editFlow ? editUser() : createUser();
+    }
+
     if (editSuccess) {
         notification.success({
             message: 'Updated Succesfully'
@@ -257,7 +261,10 @@ export const Onboarding = () => {
             width={1000}
             destroyOnClose
             okText={editFlow ? "UPDATE" : state?.type == 'employee' ? 'ONBOARD' : "ENROLL"}
-            onOk={editFlow ? editUser : createUser}
+            onOk={() => {
+                setConfirmEnrollment(false);
+                editFlow ? editUser() : createUser();
+            }}
             onCancel={() => setConfirmEnrollment(false)}
         >
             {state?.type == 'employee' &&

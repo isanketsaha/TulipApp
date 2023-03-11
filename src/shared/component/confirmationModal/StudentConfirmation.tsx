@@ -62,13 +62,13 @@ export const StudentConfirm = ({ studentData, editedData }: IStudentConfirmProps
             {(studentData?.birthCertificate || studentData?.aadhaarCard) && <><Divider> <h3>Documents Uploaded</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
                 <Descriptions bordered>
                     {studentData?.aadhaarCard && <Descriptions.Item label="Aadhaar Card">
-                        <Upload {...uploadProps} className={editFlow && editedData.hasOwnProperty('aadhaarCard')
+                        <Upload {...uploadProps()} className={editFlow && editedData.hasOwnProperty('aadhaarCard')
                             ? 'upload-parent-updated' : ''}
                             fileList={studentData?.aadhaarCard}
                             listType="text"> </Upload>
                     </Descriptions.Item>}
                     {studentData?.birthCertificate && <Descriptions.Item label="Birth Certificate">
-                        <Upload {...uploadProps}
+                        <Upload {...uploadProps()}
                             className={editFlow && editedData.hasOwnProperty('birthCertificate')
                                 ? 'upload-parent-updated' : ''}
                             fileList={studentData?.birthCertificate}
@@ -107,7 +107,7 @@ export const StudentConfirm = ({ studentData, editedData }: IStudentConfirmProps
                                 && editedData.dependent[index]?.hasOwnProperty('occupation')
                                 ? <Text mark>{item.occupation}</Text> : item.occupation}</Descriptions.Item>
                             {item.aadhaarCard && <Descriptions.Item label="Aadhaar Document">
-                                <Upload {...uploadProps} className={editFlow && editedData.hasOwnProperty('birthCertificate')
+                                <Upload {...uploadProps()} className={editFlow && editedData.hasOwnProperty('birthCertificate')
                                     ? 'upload-parent-updated' : ''}
                                     fileList={item.aadhaarCard}
                                     listType="text" > </Upload>

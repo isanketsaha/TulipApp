@@ -2,14 +2,14 @@ import { Descriptions, Badge, Space, Button, Divider, Switch, Modal, Row, notifi
 import dayjs from "dayjs";
 import { useDeactivateStudentMutation, useSearchStudentQuery } from "../redux/api/feature/student/api";
 import { FeesCalender } from "./FeesCalender";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TransactionHistory } from "./TransactionHistory";
 import { Error500 } from "/src/error/Error500";
-import { CaretLeftOutlined, CaretRightOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 import { useAppSelector } from "/src/store";
 import { Role } from "../utils/Role";
-import { WhatsAppOutlined, EditOutlined, PrinterOutlined } from '@ant-design/icons';
+import { WhatsAppOutlined, EditOutlined } from '@ant-design/icons';
 import { useMediaQuery } from "react-responsive";
 import { uploadProps } from "/src/configs/UploadConfig";
 
@@ -66,7 +66,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                     <Divider style={{ marginTop: '-2vh' }}> <h3>Student Detail</h3></Divider><Space direction="vertical" style={{ width: '100%' }} size={"small"}>
 
                         <Descriptions bordered>
-                            <Descriptions.Item label="Student ID"> <Space size={"large"}> {studentData?.id} </Space></Descriptions.Item>
+                            <Descriptions.Item label="Student ID">  {studentData?.id}</Descriptions.Item>
                             <Descriptions.Item label="Name">{studentData?.name}</Descriptions.Item>
                             <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
                             <Descriptions.Item label="Date Of Birth">{dayjs(studentData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
@@ -132,10 +132,11 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                     </Link>
                                 </Descriptions.Item>
                             }
-                            <Descriptions.Item label="Birth Certificate">{<Upload {...uploadProps}
+                            <Descriptions.Item label="Birth Certificate">{<Upload {...uploadProps()} 
                                 fileList={studentData.birthCertificate}
                                 listType="text" ></Upload>}</Descriptions.Item>
-                            <Descriptions.Item label="Aadhaar Card">{<Upload {...uploadProps}
+                            <Descriptions.Item label="Aadhaar Card">{<Upload {...uploadProps()} 
+                           
                                 fileList={studentData.aadhaarCard}
                                 listType="text" ></Upload>}</Descriptions.Item>
 
@@ -158,7 +159,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                         <Descriptions.Item label="Occupation">{item.occupation}</Descriptions.Item>
                                         <Descriptions.Item label="Qualification">{item.qualification}</Descriptions.Item>
                                         <Descriptions.Item label="Aadhaar Document">
-                                            <Upload {...uploadProps}
+                                            <Upload {...uploadProps()}
                                                 fileList={item.aadhaarCard}
                                                 listType="text" ></Upload>
                                         </Descriptions.Item>
