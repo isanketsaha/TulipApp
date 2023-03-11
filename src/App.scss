@@ -1,4 +1,3 @@
-
 .ant-list-item:hover {
   position: relative;
   z-index: 1;
@@ -7,8 +6,13 @@
 
 
 .upload-parent-updated {
-    .ant-upload-list-item-name {
-      background-color: #ffe58f;
-    }
+  .ant-upload-list-item-name {
+    background-color: #ffe58f;
+  }
 }
 
+.header {
+  .ant-select-selection-item {
+    color: white;
+  }
+}

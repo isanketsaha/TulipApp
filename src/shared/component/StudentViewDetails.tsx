@@ -166,7 +166,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             })}
                         </Space>
 
-                        {studentData?.id && <FeesCalender studentId={studentData?.id} classId={selectedSession()?.id } />}
+                        {studentData?.id  && selectedSession() && <FeesCalender studentId={studentData?.id} classId={selectedSession()?.id } />}
                         {studentData?.id && <TransactionHistory studentId={studentData?.id} />}
                     </Space></>
             }

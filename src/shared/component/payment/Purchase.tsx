@@ -40,7 +40,8 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
             products = products.filter( (item : any, index: number)=> 
                  index != rowKey
             )
-          const productList : IProductCatlog[] | undefined =  productCatalog?.filter((item: IProductCatlog) => item.type==='UNIFORM');
+          const productList : IProductCatlog[] | undefined =  productCatalog?.filter((item: IProductCatlog) => 
+          item.std===selectedProduct.std && item.type !== 'PLACEHOLDER' );
           productList?.forEach(item =>{
             products.push({
                 productId: item?.id,
@@ -50,7 +51,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                     style: 'currency',
                     currency: 'INR'
                 }),
-                size: item?.size ? selectedProduct?.size : '',
+                size: `${item.tag ? item.tag : ''}  ${item.size ? ' | ' : ''} ${item.size ? item.size : ''}`,
                 qty: 1,
                 amount: item?.price.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -71,7 +72,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                     style: 'currency',
                     currency: 'INR'
                 }),
-                size: selectedProduct?.size ? selectedProduct?.size : '',
+                size: `${selectedProduct?.tag ? selectedProduct.tag : ''}  ${selectedProduct?.size ? ' | ' : ''} ${selectedProduct?.size ? selectedProduct.size : ''}`,
                 qty: 1,
                 amount: selectedProduct?.price.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -143,11 +144,11 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                     {fields.map(({ key, name, ...restField }, index) => (
                         <Space direction="vertical" key={key} style={{ width: '100%' }}>
                             <div key={key}>
-                                <Row >
+                                <Row justify={"space-between"}>
                                     <Col span={1}>
                                         {name + 1}.
                                     </Col>
-                                    <Col span={5}>
+                                    <Col span={6}>
                                         <Form.Item
                                             name={[name, "productName"]}
                                             rules={[{ required: true, message: "Select a product" }]}
@@ -182,7 +183,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={3} offset={1}>
+                                    <Col span={4} >
                                         <Form.Item
                                             name={[name, "size"]}
 
@@ -191,7 +192,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={2} offset={1}>
+                                    <Col span={2}>
                                         <Form.Item
                                             name={[name, "qty"]}
                                             rules={[{ required: true, message: "Enter Quantity" }]}
@@ -201,7 +202,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                     </Col>
 
 
-                                    <Col span={2} offset={2}>
+                                    <Col span={2} >
                                         <Form.Item
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}
