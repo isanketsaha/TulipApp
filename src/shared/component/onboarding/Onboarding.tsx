@@ -99,6 +99,7 @@ export const Onboarding = () => {
                 panCard: user.panCard,
                 birthCertificate: user.birthCertificate,
                 aadhaarCard: user.aadhaarCard,
+                eveningClass: user.eveningClass,
                 dependent: user.dependent.map((item: IDependent) => {
                     return {
                         ...item,
@@ -256,10 +257,7 @@ export const Onboarding = () => {
             width={1000}
             destroyOnClose
             okText={editFlow ? "UPDATE" : state?.type == 'employee' ? 'ONBOARD' : "ENROLL"}
-            onOk={() => {
-                setConfirmEnrollment(false);
-                editFlow ? editUser : createUser
-            }}
+            onOk={editFlow ? editUser : createUser}
             onCancel={() => setConfirmEnrollment(false)}
         >
             {state?.type == 'employee' &&

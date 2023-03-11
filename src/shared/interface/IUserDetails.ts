@@ -21,6 +21,7 @@ export interface IUserDetails {
     religion: string,
     authority: string,
     previousSchool: string,
+    eveningClass: boolean,
     whatsappAvailable: boolean,
     classDetails: IClassDetails[],
     dependent: IDependent[],

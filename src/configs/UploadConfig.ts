@@ -1,12 +1,12 @@
 import { UploadProps, message } from 'antd';
 
-import { store } from '/src/store';
+import { RootState, store } from '/src/store';
 import { Role } from '../shared/utils/Role';
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 export const allowedFieldType = ".jpg,.pdf,.png";
 
-const appState: any = store.getState();
+const appState: RootState = store.getState();
 export const uploadProps: UploadProps = {
     name: 'file',
 
@@ -15,9 +15,9 @@ export const uploadProps: UploadProps = {
         authorization: `Bearer ${appState?.userAuth?.user?.idToken}`,
     },
     showUploadList: {
-        showDownloadIcon: [Role.ADMIN, Role.PRINCIPAL].includes(appState?.userAuth?.user?.authority),
-        showPreviewIcon: [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(appState?.userAuth?.user?.authority),
-        showRemoveIcon: [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(appState?.userAuth?.user?.authority)
+        showDownloadIcon: [Role.ADMIN, Role.PRINCIPAL].includes(appState?.userAuth.user?.authority ?? Role.STAFF),
+        showPreviewIcon: [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(appState?.userAuth?.user?.authority ?? Role.STAFF),
+        showRemoveIcon: [Role.ADMIN, Role.PRINCIPAL, Role.STAFF].includes(appState?.userAuth?.user?.authority ?? Role.STAFF)
     },
     onChange({ file, fileList, event }) {
         if (file.status !== 'uploading') {

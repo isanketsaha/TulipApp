@@ -48,6 +48,11 @@ export const StudentConfirm = ({ studentData, editedData }: IStudentConfirmProps
                     ? <Text mark>
                         {studentData?.religion}</Text> : studentData?.religion}
             </Descriptions.Item>
+            <Descriptions.Item label="Evening Class">
+                {editFlow && editedData.hasOwnProperty('eveningClass')
+                    ? <Text mark>
+                        {studentData?.eveningClass ? "YES":"NO"}</Text> : studentData?.eveningClass?  "YES":"NO"}
+            </Descriptions.Item>
             {studentData?.previousSchool && <Descriptions.Item label="Previous School">
                 {editFlow && editedData.hasOwnProperty('previousSchool')
                     ? <Text mark>{studentData?.previousSchool}</Text> : studentData?.previousSchool}</Descriptions.Item>}

@@ -100,7 +100,8 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                             </Descriptions.Item>
                             <Descriptions.Item label="Classroom">{selectedSession()?.std}</Descriptions.Item>
                             <Descriptions.Item label="Class Teacher">{selectedSession()?.headTeacher}</Descriptions.Item>
-                            <Descriptions.Item label="Previous School">{studentData?.previousSchool}</Descriptions.Item>
+                            <Descriptions.Item label="Evening Class">{
+                            <Badge status={studentData?.eveningClass ? "success" : "error"} text={studentData?.eveningClass ? "Opted" : "Not-Opted"} />}</Descriptions.Item>
                             {/* <Descriptions.Item label="Session"> {studentData?.classDetails.length > 1 && !(studentData?.classDetails.length == sessionIndex + 1) &&
                                 <Button onClick={() => setSessionIndex(sessionIndex + 1)} type="link" icon={<CaretLeftOutlined />} />}
                                 {studentData?.classDetails[sessionIndex]?.session} {studentData?.classDetails.length > 1

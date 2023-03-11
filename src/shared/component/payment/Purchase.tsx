@@ -51,7 +51,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                     style: 'currency',
                     currency: 'INR'
                 }),
-                size: `${item.tag ? item.tag : ''}  ${item.size ? ' | ' : ''} ${item.size ? item.size : ''}`,
+                size: `${item.tag ? item.tag : ''}  ${item.tag && item.size  ? ' | ' : ''} ${item.size ? item.size : ''}`,
                 qty: 1,
                 amount: item?.price.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -72,7 +72,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                     style: 'currency',
                     currency: 'INR'
                 }),
-                size: `${selectedProduct?.tag ? selectedProduct.tag : ''}  ${selectedProduct?.size ? ' | ' : ''} ${selectedProduct?.size ? selectedProduct.size : ''}`,
+                size: `${selectedProduct?.tag ? selectedProduct.tag : ''}  ${selectedProduct?.tag && selectedProduct?.size ? ' | ' : ''} ${selectedProduct?.size ? selectedProduct.size : ''}`,
                 qty: 1,
                 amount: selectedProduct?.price.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -188,7 +188,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                             name={[name, "size"]}
 
                                         >
-                                            <InputNumber placeholder="Size" min={0} controls={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber placeholder="Description" min={0} controls={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
