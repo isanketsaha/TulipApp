@@ -180,7 +180,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                     <List.Item.Meta
                                         title={<Row>
                                             <Col md={{ span: 2 }} xs={{ span: 0 }}>
-                                                <Row> <div style={{ marginRight: '2vh' }} hidden={!(import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled')} ><Checkbox value={item.id} /></div>
+                                                <Row> <div style={{ marginRight: '2vh' }} ><Checkbox value={item.id} /></div>
                                                     {index + 1}. </Row>
                                             </Col>
                                             <Col md={{ span: 14 }}>
