@@ -34,27 +34,56 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
     }
 
     const onSelectProduct = (elementId: number, rowKey: number) => {
-        const products = fetchProductRows();
-        const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId)
-        products[rowKey] = {
-            ...products[rowKey],
-            productId: selectedProduct?.id,
-            productName: selectedProduct?.itemName,
-            unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
-                maximumFractionDigits: 2,
-                style: 'currency',
-                currency: 'INR'
-            }),
-            size: selectedProduct?.size ? selectedProduct?.size : '',
-            qty: 1,
-            amount: selectedProduct?.price.toLocaleString('en-IN', {
-                maximumFractionDigits: 2,
-                style: 'currency',
-                currency: 'INR'
+        let products = fetchProductRows();
+        const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId);
+        if (selectedProduct?.type === 'PLACEHOLDER') {
+            products = products.filter( (item : any, index: number)=> 
+                 index != rowKey
+            )
+          const productList : IProductCatlog[] | undefined =  productCatalog?.filter((item: IProductCatlog) => 
+          item.std===selectedProduct.std && item.type !== 'PLACEHOLDER' );
+          productList?.forEach(item =>{
+            products.push({
+                productId: item?.id,
+                productName: item?.itemName,
+                unitPrice: item?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                }),
+                size: `${item.tag ? item.tag : ''}  ${item.tag && item.size  ? ' | ' : ''} ${item.size ? item.size : ''}`,
+                qty: 1,
+                amount: item?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
             })
+          })
+
+        }
+        else {
+            products[rowKey] = {
+                ...products[rowKey],
+                productId: selectedProduct?.id,
+                productName: selectedProduct?.itemName,
+                unitPrice: selectedProduct?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                }),
+                size: `${selectedProduct?.tag ? selectedProduct.tag : ''}  ${selectedProduct?.tag && selectedProduct?.size ? ' | ' : ''} ${selectedProduct?.size ? selectedProduct.size : ''}`,
+                qty: 1,
+                amount: selectedProduct?.price.toLocaleString('en-IN', {
+                    maximumFractionDigits: 2,
+                    style: 'currency',
+                    currency: 'INR'
+                })
+            }
         }
         form.setFieldsValue({ purchaseItems: [...products] });
-        selectedProduct?.id && addSelectedItems(oldArray => [...oldArray, selectedProduct?.id])
+       const selectedId: number[] = products.map((item: any) => item.productId);
+        selectedProduct?.id && addSelectedItems(oldArray => [...oldArray, ...selectedId])
         calculateTotal();
 
     }
@@ -98,8 +127,8 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
     }
 
     const filterListConstruct = (rowKey: number) => {
-        const feeItem = fetchProductRows();
-        const id = feeItem[rowKey].feesId;
+        const products = fetchProductRows();
+        const id = products[rowKey].productId ;
         const items = selectedItems?.filter((item) => {
             return item !== id
         });
@@ -115,11 +144,11 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                     {fields.map(({ key, name, ...restField }, index) => (
                         <Space direction="vertical" key={key} style={{ width: '100%' }}>
                             <div key={key}>
-                                <Row >
+                                <Row justify={"space-between"}>
                                     <Col span={1}>
                                         {name + 1}.
                                     </Col>
-                                    <Col span={5}>
+                                    <Col span={6}>
                                         <Form.Item
                                             name={[name, "productName"]}
                                             rules={[{ required: true, message: "Select a product" }]}
@@ -154,16 +183,16 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={3} offset={1}>
+                                    <Col span={4} >
                                         <Form.Item
                                             name={[name, "size"]}
 
                                         >
-                                            <InputNumber placeholder="Size" min={0} controls={false} disabled={true} style={{ width: '100%' }} />
+                                            <InputNumber placeholder="Description" min={0} controls={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={2} offset={1}>
+                                    <Col span={2}>
                                         <Form.Item
                                             name={[name, "qty"]}
                                             rules={[{ required: true, message: "Enter Quantity" }]}
@@ -173,7 +202,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                     </Col>
 
 
-                                    <Col span={2} offset={2}>
+                                    <Col span={2} >
                                         <Form.Item
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}

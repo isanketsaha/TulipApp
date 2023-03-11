@@ -1,4 +1,4 @@
-import { StudentBasicDetails } from "../component/StudentBasicDetails"
+
 import { IBasicDetails } from "./IBasicDetails";
 import { IFeesCatalog } from "./IFeesCatalog";
 import { IProductCatlog } from "./IProductCatalog";
@@ -10,5 +10,6 @@ export interface IClassDetails {
     session: string,
     students: IBasicDetails[],
     feesCatalogs: IFeesCatalog[],
-    productCatalogs: IProductCatlog[]
+    productCatalogs: IProductCatlog[],
+    sessionId: number
 }

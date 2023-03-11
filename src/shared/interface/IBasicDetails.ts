@@ -9,5 +9,6 @@ export interface IBasicDetails {
     age: number,
     address: string,
     std: string,
+    pendingFees: number,
     classId: string
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Audit } from "../shared/component/reports/Audit";
 import { FinanceReport } from "../shared/component/reports/FinanceReport";
 import dayjs, { Dayjs } from "dayjs";
+import { Stock } from "../shared/component/reports/Stock";
 
 
 export const Accounts = () => {
@@ -26,12 +27,17 @@ export const Accounts = () => {
     const tabList: TabsProps['items'] = [
         {
             key: '1',
-            label: 'Report',
+            label: 'Transaction',
             children: <FinanceReport from={fromDate} to={toDate}/>
         }, {
             key: '2',
             label: 'Audit',
             children: <Audit />
+        },
+        {
+            key: '3',
+            label: '',
+            children: <Stock />
         }
     ];
 
@@ -46,7 +52,7 @@ export const Accounts = () => {
         <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
             <Row >
                 <Tabs style={{ width: '100%' }}  size="large" defaultActiveKey="1" 
-                tabBarExtraContent={<RangePicker disabled={[false, true]} format={"DD-MM-YYYY"} presets={rangePresets} onChange={dateRangeChanged}
+                tabBarExtraContent={<RangePicker allowClear={false} disabled={[false, true]} format={"DD-MM-YYYY"} presets={rangePresets} onChange={dateRangeChanged}
                     defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} />} items={tabList} />
             </Row>
 

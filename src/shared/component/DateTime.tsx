@@ -16,7 +16,7 @@ export const DateTime = () => {
 
     return (
         <>
-            <h4> {date.toLocaleTimeString()}   ||   {date.toLocaleDateString()} </h4>
+            <label> {date.toLocaleTimeString()}   ||   {date.toLocaleDateString()} </label>
         </>
     )
 

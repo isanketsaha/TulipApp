@@ -17,7 +17,6 @@ export const Audit = () => {
             {data?.content && data.content.length > 0 ?
                 <List
                     bordered
-                    extra={"Hello"}
                     pagination={{
                         onChange: (page: number, pageSize: number) => { setPagination(page - 1) },
                         pageSize: data.size,
@@ -38,7 +37,7 @@ export const Audit = () => {
                                 <List.Item.Meta
                                     description={
                                         <Card>
-                                        <Row >
+                                        <Row justify={"space-between"}>
                                             <Col span={1} >
                                                 {(index + 1) }.
                                             </Col>

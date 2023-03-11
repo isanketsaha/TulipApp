@@ -57,10 +57,21 @@ export const paymentApi = createApi({
                     body: expense
                 });
             },
-            invalidatesTags: ['Payment']
+            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }]: ['Payment']
+        }),
+        editPayment: builder.mutation<number, {paymentId: number, itemId: number, payTypeEnum: string}>({
+            query: (editVm) => {
+                return ({
+                    url: '/edit',
+                    method: 'POST',
+                    body: editVm
+                });
+            },
+            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }]: ['Payment']
         }),
     })
 });
 
-export const { usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery, useFetchFeesGraphQuery, useAddExpenseMutation } = paymentApi
+export const { usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery,
+     useFetchFeesGraphQuery, useAddExpenseMutation, useEditPaymentMutation } = paymentApi
 

@@ -18,7 +18,8 @@ export const employeeApi = createApi({
             providesTags: () => [{ type: 'Employee' }]
         }),
         searchEmployeeById: builder.query<IUserDetails, string>({
-            query: (id) => `/search/${id}`
+            query: (id) => `/search/${id}`,
+            providesTags: (result, error, arg) => [{ type: 'Employee', id: result?.id }]
         }),
         seachEmployeeByName: builder.query<IBasicDetails[], string>({
             query: (name) => `/searchByName/${name}`

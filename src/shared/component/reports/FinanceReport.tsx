@@ -4,6 +4,7 @@ import { useFetchTransactionReportQuery } from "../../redux/api/feature/account/
 import { ITransactionReport } from "../../interface/ITransactionReport";
 import { ColumnsType } from "antd/es/table";
 import { render } from "sass";
+import { useEffect, useState } from "react";
 
 interface IFinanceReportProps {
     from: string,
@@ -16,8 +17,9 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
         page: 0,
         data: { fromDate: from, toDate: to }
     });
-    
-    const columns : ColumnsType<ITransactionReport> = [
+
+
+    const columns: ColumnsType<ITransactionReport> = [
         {
             title: 'Date',
             dataIndex: 'transactionDate',
@@ -29,27 +31,44 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
             title: 'Fees',
             dataIndex: 'fees',
             key: 'fees',
-            render: (item) => <Tag color={"green"} >{item}</Tag>,
-            responsive:['md']
+            render:(item) => item.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }),
+            responsive: ['md']
         },
         {
             title: 'Purchase',
             dataIndex: 'purchase',
             key: 'purchase',
-            render: (item) => <Tag color={"blue"} >{item}</Tag>,
-            responsive:['md']
+            render: (item) => item.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }),
+            responsive: ['md']
         },
         {
             title: 'Expense',
             dataIndex: 'expense',
             key: 'expense',
-            render: (item) => <Tag color={"volcano"} >{item}</Tag>,
-            responsive:['md']
+            render: (item) => item.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }),
+            responsive: ['md']
         },
         {
             title: 'Total',
             dataIndex: 'total',
             key: 'total',
+            render:(item) => item.toLocaleString('en-IN', {
+                maximumFractionDigits: 2,
+                style: 'currency',
+                currency: 'INR'
+            }),
             sorter: (a, b) => a.total - b.total
         },
     ];
@@ -61,7 +80,50 @@ export const FinanceReport = ({ from, to }: IFinanceReportProps) => {
                     <Select style={{ width: '100%' }} options={[]}></Select>
                 </Col>
             </Row> */}
-          <Table<ITransactionReport> dataSource={financeReportData} columns={columns} />
+            <Table<ITransactionReport> dataSource={financeReportData?.reportList} pagination={{ pageSize: 50 }} columns={columns} summary={() => (
+                <Table.Summary fixed={'bottom'}>
+                    <Table.Summary.Row>
+                        <Table.Summary.Cell index={3} colSpan={1}>
+
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={3} colSpan={1}>
+                            <Tag color={"purple"} >
+                                {financeReportData?.feesTotal.toLocaleString('en-IN', {
+                                    maximumFractionDigits: 2,
+                                    style: 'currency',
+                                    currency: 'INR'
+                                })}</Tag>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={3} colSpan={1}>
+                        <Tag color={"blue"} >
+                            {financeReportData?.purchaseTotal.toLocaleString('en-IN', {
+                                maximumFractionDigits: 2,
+                                style: 'currency',
+                                currency: 'INR'
+                            })}
+                            </Tag>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={3} colSpan={1}>
+                        <Tag color={"volcano"} >
+                            {financeReportData?.expenseTotal.toLocaleString('en-IN', {
+                                maximumFractionDigits: 2,
+                                style: 'currency',
+                                currency: 'INR'
+                            })}</Tag>
+                        </Table.Summary.Cell>
+                        <Table.Summary.Cell index={3}>
+                        <Tag color={"green"} >
+                            {financeReportData?.amountTotal.toLocaleString('en-IN', {
+                                maximumFractionDigits: 2,
+                                style: 'currency',
+                                currency: 'INR'
+                            })}
+                            </Tag>
+                        </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                </Table.Summary>
+            )}
+                sticky />
         </Space>
     </>)
 }

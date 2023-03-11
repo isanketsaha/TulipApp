@@ -13,7 +13,7 @@ import { IPageRequest } from "/src/shared/interface/IPageRequest";
 export const reportApi = createApi({
     reducerPath: 'reportApi',
     baseQuery: baseQueryWithRetry("report"),
-    tagTypes: ['Payment', 'Student','Employee'],
+    tagTypes: ['Payment', 'AdmissionReport', 'StaffReport', 'InventoryReport'],
     endpoints: (builder) => ({
         fetchTransactionHistory: builder.query<IPageResponse<IPayDetailsSummary>, IPageRequest<string>>({
             query: (item) => `/transaction/${item.data}?page=${item.page}`,
@@ -21,17 +21,18 @@ export const reportApi = createApi({
         }),
         fetchStudentReport: builder.query<IAdmissionReport, void>({
             query: () => '/admission',
-            providesTags: ['Student']
+            providesTags: ['AdmissionReport']
         }),
         fetchStaffReport: builder.query<IStaffReport, void>({
             query: () => '/staff',
-            providesTags: ['Employee']
+            providesTags: ['StaffReport']
         }),
         fetchInventoryReport: builder.query<IStockReport[], void>({
             query: () => '/inventory',
-            providesTags: ['Payment']
-        })
+            providesTags: ['InventoryReport']
+        }),
+       
     })
 })
 
-export const {  useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery, useFetchInventoryReportQuery } = reportApi;
+export const { useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery, useFetchInventoryReportQuery} = reportApi;

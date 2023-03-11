@@ -146,7 +146,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                         <Space direction="vertical" key={key} style={{ width: '100%' }}>
 
                             <div key={key}>
-                                <Row >
+                                <Row justify={"space-between"}>
                                     <Col span={1}>
                                         {name + 1}.
                                     </Col>
@@ -184,7 +184,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             <Input />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} offset={1}>
+                                    <Col span={3} >
                                         <Form.Item
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
@@ -192,7 +192,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             <DatePicker format="MMM-YYYY" placeholder="From Date" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} offset={1}>
+                                    <Col span={3} >
                                         <Form.Item
                                             name={[name, "to"]}
                                             rules={[{ required: true }]}
@@ -201,14 +201,14 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={2} offset={1}>
+                                    <Col span={3} >
                                         <Form.Item
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true }]}>
                                             <InputNumber min={1} max={10000} controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} offset={1}>
+                                    <Col span={3} >
                                         <Form.Item
                                             name={[name, "amount"]}
                                             rules={[{ required: true }]}
@@ -216,7 +216,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             <InputNumber bordered={false} controls={false} placeholder="Amount" disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={2} offset={1}>
+                                    <Col span={2} >
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {
                                                 filterListConstruct(name);

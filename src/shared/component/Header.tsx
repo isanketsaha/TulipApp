@@ -20,18 +20,20 @@ export const AppHeader = () => {
 
     return (
         <Header className="header" style={{ background: '#800000', color: 'white', top: 0, right: 0, left: 0, zIndex: 10, position: 'fixed' , overflow:"hidden"}} >
-            <Row style={{ marginTop: '-2vh' }}>
+            <Row align={"top"}>
                 <Col >
                     <Link to="/">
 
-                        <h1 style={{ fontFamily: 'EB Garamond, serif',marginTop: '2vh', fontSize: 'xx-large', color: 'white' }}>Tulip English School </h1>
+                        <h1 style={{ fontFamily: 'EB Garamond, serif',marginTop: 0, fontSize: 'xx-large', color: 'white' }}>Tulip English School </h1>
 
                     </Link>
                 </Col>
                 <Col span={3} offset={12}>
                     <Select
                         labelInValue
-                        style={{ width: '100%', marginTop: '4vh' , background:'white'}}
+                        style={{ width: '100%'}}
+                        dropdownStyle={{color:'white'}}
+                        bordered={false}
                         onChange={onSessionChange}
                         disabled={true}
                         value={selectList?.selectedSession.value}

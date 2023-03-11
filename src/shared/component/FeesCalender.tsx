@@ -1,4 +1,4 @@
-import { Card, Divider, Space } from "antd";
+import { Card, Col, Divider, Row, Space } from "antd";
 import dayjs from "dayjs";
 import localeData from 'dayjs/plugin/localeData'
 import isBetween from 'dayjs/plugin/isBetween';
@@ -8,16 +8,16 @@ import { FeesRuleType } from "../utils/FeesRuleType";
 
 interface IFeesGraphProps {
     studentId: number,
-    classId: number
+    classId: number | undefined
 }
 export const FeesCalender = ({ studentId, classId }: IFeesGraphProps) => {
 
     dayjs.extend(isBetween)
     const { data } = useFetchFeesGraphQuery({
         studentId, classId
-    });
+    },{skip : !classId});
 
-    const { data: feesCatalog } = useFetchAllfeesCatalogQuery(String(classId));
+    const { data: feesCatalog } = useFetchAllfeesCatalogQuery(String(classId), {skip : !classId});
 
     dayjs.extend(localeData);
     const months = dayjs().localeData().monthsShort().slice(3, 12).concat(dayjs().localeData().monthsShort().slice(0, 3));
@@ -34,7 +34,7 @@ export const FeesCalender = ({ studentId, classId }: IFeesGraphProps) => {
 
     const annualGridStyle = (item: number) => {
         return {
-            width: '33.33%',
+          
             textAlign: 'center',
             background: determineColor(item, FeesRuleType.Yearly)
         }
@@ -76,7 +76,6 @@ export const FeesCalender = ({ studentId, classId }: IFeesGraphProps) => {
                         return <Card.Grid style={gridStyle(_) as React.CSSProperties} key={_}>{_}</Card.Grid>;
                     })}
                 </Card>
-
             </Space>
 
         </>
