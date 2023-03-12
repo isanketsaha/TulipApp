@@ -1,5 +1,7 @@
-import { Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Modal, Row, Select, Space, Switch, Table, Tabs, 
-    TabsProps, Typography } from "antd"
+import {
+    Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Modal, Row, Select, Space, Switch, Table, Tabs,
+    TabsProps, Typography
+} from "antd"
 import { useFetchClassroomDetailsQuery, usePromoteStudentMutation } from "../redux/api/feature/classroom/api";
 import { Link } from "react-router-dom";
 import { IClassList } from "../interface/IClassList";
@@ -11,6 +13,9 @@ import { useMediaQuery } from "react-responsive";
 import { DownloadOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import { useExportStudentMutation } from "../redux/api/feature/exports/api";
 import { Role } from "../utils/Role";
+import { ColumnsType } from "antd/es/table";
+import { IProductCatlog } from "../interface/IProductCatalog";
+import { IFeesCatalog } from "../interface/IFeesCatalog";
 
 interface IClassDetailsProsp {
     stdList: IClassList,
@@ -28,11 +33,21 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     const { user } = useAppSelector(app => app.userAuth);
     const [selectedId, setSelectedId] = useState<number[]>([]);
     const [exportStudent] = useExportStudentMutation();
-    const feesColumns = [
+
+    const feesColumns: ColumnsType<IFeesCatalog> = [
         {
+            title: 'SL',
+            key: 'index',
+            render: (record, row, index) => index + 1,
+            width: "50px",
+            responsive: ['md']
+            
+        }, {
             title: 'Fees',
             dataIndex: 'name',
             key: 'name',
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            defaultSortOrder: 'descend'
         },
         {
             title: 'Amount',
@@ -46,22 +61,32 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
         },
     ];
 
-    const productColumns = [
+    const productColumns: ColumnsType<IProductCatlog> = [
+        {
+            title: 'SL',
+            key: 'index',
+            render: (record, row, index) => index + 1,
+            width: "50px",
+            responsive: ['md']
+        },
         {
             title: 'Product',
             dataIndex: 'itemName',
             key: 'itemName',
         },
         {
+            title: 'Desctiption',
+            dataIndex: 'tag',
+            key: 'tag',
+            sorter: (a, b) => a.tag.localeCompare(b.tag),
+            defaultSortOrder: 'descend'
+        },
+        {
             title: 'Amount',
             dataIndex: 'price',
             key: 'price',
-        },
-        {
-            title: 'Type',
-            dataIndex: 'applicableRule',
-            key: 'applicableRule',
         }
+
     ];
 
     const onChange = (checkedValues: CheckboxValueType[]) => {
@@ -86,19 +111,19 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     const showPromoteConfirm = (value: any) => {
         confirm({
             icon: <ExclamationCircleFilled />,
-            title:`Promoting below student to Class ${value.std} 
+            title: `Promoting below student to Class ${value.std} 
             for ${sessionList.filter(item => item.value == value.sessionId).map(item => item.label)} session`,
             content: <List
                 bordered
                 dataSource={selectedId}
-                header={user?.authority && [Role.ADMIN].includes(user?.authority) && <Row justify={"end"}> <Switch 
+                header={user?.authority && [Role.ADMIN].includes(user?.authority) && <Row justify={"end"}> <Switch
                     checkedChildren={"Force Update"}
                     unCheckedChildren={"Force Update"}
-                    defaultChecked = {false}
-                  /> </Row>}
+                    defaultChecked={false}
+                /> </Row>}
                 renderItem={(item, name) => (
                     <List.Item>
-                      {name+1}. <Typography.Text mark> {classDetails?.students.find(student => student.id == item)?.name}</Typography.Text>
+                        {name + 1}. <Typography.Text mark> {classDetails?.students.find(student => student.id == item)?.name}</Typography.Text>
                     </List.Item>
                 )}
             />,
@@ -109,7 +134,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             width: 600,
             autoFocusButton: "cancel",
             onOk() {
-                onPromote({...value, forceUpdate: false})
+                onPromote({ ...value, forceUpdate: false })
             }
         });
     };
@@ -127,7 +152,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                     </Checkbox>} </Descriptions.Item>}
                 </Descriptions>
 
-                { !isTabletOrMobile && user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled' &&
+                {!isTabletOrMobile && user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && import.meta.env.VITE_BASE_PROMOTE_WINDOW === 'enabled' &&
                     <div>
                         <Divider />
                         <div hidden={!isSuccess} style={{ margin: ' 2vh 0' }}>
@@ -210,8 +235,8 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             key: '2',
             label: `Fees`,
             children: <Space direction="vertical" style={{ width: '100%' }} >
-                <Table dataSource={classDetails?.feesCatalogs} size="small" columns={feesColumns} />
-                <Table dataSource={classDetails?.productCatalogs} size="small" columns={productColumns} />
+                <Table dataSource={classDetails?.feesCatalogs} size="small" scroll={{ y: 340 }} columns={feesColumns} />
+                <Table dataSource={classDetails?.productCatalogs} size="small" scroll={{ y: 340 }} columns={productColumns} />
             </Space >,
         }
     ];
