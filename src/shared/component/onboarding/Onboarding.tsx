@@ -60,10 +60,6 @@ export const Onboarding = () => {
         }
     };
 
-    const confirmSubmit = (editFlow: boolean) => {
-        editFlow ? editUser() : createUser();
-    }
-
     if (editSuccess) {
         notification.success({
             message: 'Updated Succesfully'

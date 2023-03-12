@@ -61,10 +61,11 @@ export const Login = () => {
                 <Row justify="space-around" align="middle">
                     <Col lg={7} md={12} sm={4} >
                         <Card style={{ width: '100%' }}>
+                        <Space direction="vertical" style={{ width: '100%' }}>
                             <div hidden={!isError}>
-                                <Space direction="vertical" style={{ width: '100%' }}>
+                               
                                     <Alert message={(error as any)?.data?.detail} type="error" closable />
-                                </Space>
+                              
                             </div>
                             <Form
                                 name="login"
@@ -106,6 +107,7 @@ export const Login = () => {
                                 </Row>
 
                             </Form>
+                            </Space>
                         </Card>
                     </Col>
                 </Row>

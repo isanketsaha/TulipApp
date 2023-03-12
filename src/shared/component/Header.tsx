@@ -32,8 +32,6 @@ export const AppHeader = () => {
                     <Select
                         labelInValue
                         style={{ width: '100%'}}
-                        dropdownStyle={{color:'white'}}
-                        bordered={false}
                         onChange={onSessionChange}
                         disabled={true}
                         value={selectList?.selectedSession.value}
