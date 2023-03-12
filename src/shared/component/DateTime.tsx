@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 
@@ -16,7 +17,7 @@ export const DateTime = () => {
 
     return (
         <>
-            <label> {date.toLocaleTimeString()}   ||   {date.toLocaleDateString()} </label>
+            <label> {dayjs(date).format('hh:mm:ss A')}   ||   {dayjs(date).format('DD-MMM-YYYY')} </label>
         </>
     )
 
