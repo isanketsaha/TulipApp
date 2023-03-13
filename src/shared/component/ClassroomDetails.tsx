@@ -116,11 +116,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             content: <List
                 bordered
                 dataSource={selectedId}
-                header={user?.authority && [Role.ADMIN].includes(user?.authority) && <Row justify={"end"}> <Switch
-                    checkedChildren={"Force Update"}
-                    unCheckedChildren={"Force Update"}
-                    defaultChecked={false}
-                /> </Row>}
+               
                 renderItem={(item, name) => (
                     <List.Item>
                         {name + 1}. <Typography.Text mark> {classDetails?.students.find(student => student.id == item)?.name}</Typography.Text>
@@ -134,7 +130,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             width: 600,
             autoFocusButton: "cancel",
             onOk() {
-                onPromote({ ...value, forceUpdate: false })
+                onPromote({ ...value})
             }
         });
     };
