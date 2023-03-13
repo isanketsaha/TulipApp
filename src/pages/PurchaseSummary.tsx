@@ -9,6 +9,9 @@ import { useAppSelector } from "../store";
 import { Role } from "../shared/utils/Role";
 import { PrinterOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import { usePrintReceiptMutation } from "../shared/redux/api/feature/exports/api";
+import { ColumnsType } from "antd/es/table";
+import { IFeesItemSummary } from "../shared/interface/IFeesItemSummary";
+import { IPurchaseItemSummary } from "../shared/interface/IPurchaseItemSummary";
 
 export const PurchaseSummary = () => {
     const { confirm } = Modal;
@@ -50,7 +53,7 @@ export const PurchaseSummary = () => {
         }).then(info =>
             message.info('Updated order succesfully.'))
     }
-    const feesColumns = [
+    const feesColumns  = [
         {
             title: 'Fees Name',
             dataIndex: 'feesTitle',
@@ -65,10 +68,12 @@ export const PurchaseSummary = () => {
             title: 'Fees Type',
             dataIndex: 'applicableRule',
             key: 'applicableRule',
+            responsive: ['md']
         }, {
             title: ' Unit Price',
             dataIndex: 'unitPrice',
             key: 'unitPrice',
+            responsive: ['md'],
             render: (item: number) => {
                 return item.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -91,6 +96,7 @@ export const PurchaseSummary = () => {
         }, {
             title: 'Action',
             key: 'action',
+            responsive: ['md'],
             hidden: user?.authority && !deleteAllowedRole.includes(user?.authority),
             render: (_: any, record: any) => (
                 <Space size="middle">
@@ -114,6 +120,7 @@ export const PurchaseSummary = () => {
             title: 'Size',
             dataIndex: 'productSize',
             key: 'productSize',
+            responsive: ['md'],
             render: (size: string) => {
                 return size ? size : 'N/A';
             }
@@ -126,6 +133,7 @@ export const PurchaseSummary = () => {
             title: ' Unit Price',
             dataIndex: 'unitPrice',
             key: 'unitPrice',
+            responsive: ['md'],
             render: (item: number) => {
                 return item.toLocaleString('en-IN', {
                     maximumFractionDigits: 2,
@@ -148,6 +156,7 @@ export const PurchaseSummary = () => {
         }, {
             title: 'Action',
             key: 'action',
+            responsive: ['md'],
             hidden: user?.authority && !deleteAllowedRole.includes(user?.authority),
             render: (_: any, record: any) => (
                 <Space size="middle">
@@ -216,7 +225,7 @@ export const PurchaseSummary = () => {
                 </Descriptions>
             </Card>
 
-            {paySummary?.payType == 'FEES' && <Table columns={feesColumns}
+            {paySummary?.payType == 'FEES' && <Table<IFeesItemSummary> columns={feesColumns as ColumnsType<IFeesItemSummary>}
                 dataSource={paySummary?.feesItem}
                 pagination={{
                     pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
@@ -253,7 +262,7 @@ export const PurchaseSummary = () => {
             />
             }
 
-            {(paySummary?.payType == 'PURCHASE') && <Table columns={purchaseColumns}
+            {(paySummary?.payType == 'PURCHASE') && <Table<IPurchaseItemSummary> columns={purchaseColumns as ColumnsType<IPurchaseItemSummary>}
                 dataSource={paySummary?.purchaseItems}
                 pagination={{
                     pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
