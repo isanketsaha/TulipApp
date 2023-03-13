@@ -171,7 +171,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                     </Form.Item>
                                 </Col>
                                 <Col span={2} offset={5}>
-                                    <Button type={"primary"} htmlType="submit"> Promote </Button>
+                                    <Button type={"primary"} htmlType="submit" disabled={selectedId.length<1}> Promote </Button>
                                 </Col>
                             </Row>
                         </Form>
