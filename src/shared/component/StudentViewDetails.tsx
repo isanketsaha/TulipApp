@@ -177,6 +177,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
             <Modal
                 centered
                 open={open}
+                maskClosable={false}
                 okText={"Confirm"}
                 onOk={() => deactivateStudent(studentId).then(data => setOpen(false))}
                 onCancel={() => setOpen(false)}

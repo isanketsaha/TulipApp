@@ -252,6 +252,7 @@ export const Onboarding = () => {
         <Modal
             title="Confirm Details"
             centered
+            maskClosable={false}
             open={confirmEnrollment}
             width={1000}
             destroyOnClose
