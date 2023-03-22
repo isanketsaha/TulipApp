@@ -31,7 +31,7 @@ export const AddExpense = ({ onExpenseSubmit }: IExpenseProps) => {
     };
 
     return (<>
-        <Form form={form} preserve={false} style={{ marginTop: '3vh' }} name="expense-form" size="large"
+        <Form form={form} preserve={true} style={{ marginTop: '3vh' }} name="expense-form" size="large"
             initialValues={{ expenceItem: [{}] }} onFinish={onExpenseSubmit}>
             <Form.List name="expenceItem">
                 {(fields, { add, remove }) => (
@@ -70,7 +70,7 @@ export const AddExpense = ({ onExpenseSubmit }: IExpenseProps) => {
                                             name={[name, "amount"]}
                                             rules={[{ required: true, message: "Provide amount" }]}
                                         >
-                                            <InputNumber placeholder="Amount" min={1} controls={false} style={{ width: '100%' }} onInput={(value) => reCalculateAmount(value, name)} />
+                                            <InputNumber placeholder="Amount" min={1} controls={false} style={{ width: '100%' }} onInput={(value) => reCalculateAmount()} />
                                         </Form.Item>
                                     </Col>
 
@@ -103,7 +103,6 @@ export const AddExpense = ({ onExpenseSubmit }: IExpenseProps) => {
                                         </Space>
                                     </Col>
                                 </Row>
-
                             </Space>
                         ))}
                     </>
@@ -118,8 +117,8 @@ export const AddExpense = ({ onExpenseSubmit }: IExpenseProps) => {
                         <InputNumber placeholder="Total" controls={false} disabled style={{ width: '100%' }} />
                     </Form.Item>
                 </Col>
-                <Col offset={4}>
-                    <Button htmlType={"submit"} type={"primary"}>Confirm</Button>
+                <Col offset={3} span={4}>
+                    <Button htmlType={"submit"} style={{width: '100%'}} type={"primary"}>Confirm</Button>
                 </Col>
             </Row>
         </Form>
