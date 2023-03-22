@@ -61,7 +61,11 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
         }, {
             label: 'Classroom',
             icon: <FolderOpenFilled />,
-        }
+        },
+        ...(user?.authority && [Role.ADMIN].includes(user?.authority) ? [{
+            label: 'Accounts',
+            icon: <FundFilled />,
+        }] : [])
     ]
 
     const showLogoutConfirm = () => {
@@ -78,13 +82,6 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
           }
         });
       };
-
-    if (user?.authority && [Role.ADMIN].includes(user?.authority)) {
-        navigatons.push({
-            label: 'Accounts',
-            icon: <FundFilled />,
-        })
-    }
 
     const options: MenuProps['items'] = navigatons.map(
         (item, index) => {

@@ -152,6 +152,7 @@ export const Payment = () => {
                 centered
                 open={openConfirmPayment}
                 destroyOnClose
+                maskClosable={false}
                 okText={"Payment Recieved"}
                 onOk={() => {
                     setOpenConfirmPayment(false);

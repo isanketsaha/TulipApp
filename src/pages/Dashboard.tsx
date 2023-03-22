@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Form, Modal, Row } from "antd"
+import { Button, Card, Col, DatePicker, Form, Modal, Row, message } from "antd"
 import { useState } from "react";
 import { Space } from 'antd';
 import { TransactionReport } from "../shared/component/reports/TransactionReports";
@@ -25,8 +25,12 @@ export const Dashboard = () => {
         const payload = value['expenceItem'];
         console.log(payload);
         addExpense(payload).then((id: any) => {
-            console.log(id.data)
+            if(id.data) {
             navigate(`/purchaseSummary/${id.data}`);
+            }
+            else{
+                message.error("Error while creating Expense.")
+            }
         })
     }
     const disableDate = (currentDate: Dayjs)  =>{
@@ -92,7 +96,7 @@ export const Dashboard = () => {
                 </Space>
 
                 <Modal destroyOnClose title="Add Expense" open={isExpenseModelOpen}
-                    onCancel={() => setIsExpenseModelOpen(false)} width={1200} footer={[
+                    onCancel={() => setIsExpenseModelOpen(false)} maskClosable={false} width={1200} footer={[
 
                     ]}>
                     <AddExpense onExpenseSubmit={onExpenseSubmit} />
