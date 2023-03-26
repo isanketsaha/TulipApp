@@ -41,7 +41,7 @@ export const paymentApi = createApi({
         fetchFeesGraph: builder.query<IPayGraph, IPayGraphFilter>({
             query: (item) => `/feesgraph/${item.studentId}/${item.classId}`,
             providesTags: ['Payment'],
-            transformResponse: (response:  IPayGraph ) => {
+            transformResponse: (response: IPayGraph) => {
                 const months = response?.paidMonths.map(month => month.split("/")[0]);
                 return {
                     ...response,
@@ -57,9 +57,9 @@ export const paymentApi = createApi({
                     body: expense
                 });
             },
-            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }]: ['Payment']
+            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }] : ['Payment']
         }),
-        editPayment: builder.mutation<number, {paymentId: number, itemId: number, payTypeEnum: string}>({
+        editPayment: builder.mutation<number, { paymentId: number, itemId: number, payTypeEnum: string }>({
             query: (editVm) => {
                 return ({
                     url: '/edit',
@@ -67,11 +67,20 @@ export const paymentApi = createApi({
                     body: editVm
                 });
             },
-            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }]: ['Payment']
+            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }] : ['Payment']
+        }),
+        deletePayment: builder.mutation<number, number>({
+            query: (id) => {
+                return ({
+                    url: `/delete?transactionId=${id}`,
+                    method: 'POST'
+                });
+            },
+            invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }] : ['Payment']
         }),
     })
 });
 
 export const { usePaymentMutation, useFetchPaymentDetailsByIdQuery, useFetchPaymentHistoryQuery,
-     useFetchFeesGraphQuery, useAddExpenseMutation, useEditPaymentMutation } = paymentApi
+    useFetchFeesGraphQuery, useAddExpenseMutation, useEditPaymentMutation, useDeletePaymentMutation } = paymentApi
 
