@@ -1,8 +1,10 @@
 import { Badge, Menu, MenuProps, Modal, Typography, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import React, { useEffect, useState } from "react";
-import { SnippetsFilled, ExclamationCircleFilled, EyeFilled, IdcardFilled, FolderOpenFilled,
-     LogoutOutlined, FundFilled, UserOutlined } from '@ant-design/icons';
+import {
+    SnippetsFilled, ExclamationCircleFilled, EyeFilled, IdcardFilled, FolderOpenFilled,
+    LogoutOutlined, FundFilled, UserOutlined
+} from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { logout } from "../redux/slices/UserAuthSlice";
@@ -70,18 +72,18 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
 
     const showLogoutConfirm = () => {
         confirm({
-          title: `Are you sure to Logout ?`,
-          icon: <ExclamationCircleFilled />,
-          okText: 'Yes',
-          okType: 'danger',
-          centered: true,
-          cancelText: 'No',
-          autoFocusButton:"cancel",
-          onOk() {
-            setTimeout(logoutUser, 300)
-          }
+            title: `Are you sure to Logout ?`,
+            icon: <ExclamationCircleFilled />,
+            okText: 'Yes',
+            okType: 'danger',
+            centered: true,
+            cancelText: 'No',
+            autoFocusButton: "cancel",
+            onOk() {
+                setTimeout(logoutUser, 300)
+            }
         });
-      };
+    };
 
     const options: MenuProps['items'] = navigatons.map(
         (item, index) => {
@@ -126,13 +128,7 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
                 <div style={{ marginTop: '2vh' }}>
                     <Text strong>{user?.userName}</Text>
                     <br />
-                    {
-                        import.meta.env.VITE_ENVIRONMENT ?
-                            <Badge.Ribbon color={"blue"} text={`${import.meta.env.VITE_ENVIRONMENT}`}>
-                                <Text type="secondary">{user?.authority}</Text>
-                            </Badge.Ribbon> :
-                            <Text type="secondary">{user?.authority}</Text>
-                    }
+                    <Text type="secondary">{user?.authority.split("_")[1]}</Text>
                 </div>
             </div>
 
