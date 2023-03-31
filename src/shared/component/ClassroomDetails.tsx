@@ -1,6 +1,6 @@
 import {
     Alert, Button, Card, Checkbox, Col, Descriptions, Divider, Form, List, Modal, Row, Select, Space, Switch, Table, Tabs,
-    TabsProps, Typography
+    TabsProps, Tag, Typography
 } from "antd"
 import { useFetchClassroomDetailsQuery, usePromoteStudentMutation } from "../redux/api/feature/classroom/api";
 import { Link } from "react-router-dom";
@@ -10,19 +10,19 @@ import { useState } from "react";
 import { useAppSelector } from "/src/store";
 import dayjs from "dayjs";
 import { useMediaQuery } from "react-responsive";
-import { DownloadOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { DownloadOutlined, ExclamationCircleFilled, CheckCircleOutlined } from '@ant-design/icons';
 import { useExportStudentMutation } from "../redux/api/feature/exports/api";
 import { Role } from "../utils/Role";
 import { ColumnsType } from "antd/es/table";
 import { IProductCatlog } from "../interface/IProductCatalog";
 import { IFeesCatalog } from "../interface/IFeesCatalog";
 
+
 interface IClassDetailsProsp {
     stdList: IClassList,
 }
 
 export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
-
     const { confirm } = Modal;
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { Text } = Typography;
@@ -33,7 +33,6 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
     const { user } = useAppSelector(app => app.userAuth);
     const [selectedId, setSelectedId] = useState<number[]>([]);
     const [exportStudent] = useExportStudentMutation();
-
     const feesColumns: ColumnsType<IFeesCatalog> = [
         {
             title: 'SL',
@@ -41,7 +40,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             render: (record, row, index) => index + 1,
             width: "50px",
             responsive: ['md']
-            
+
         }, {
             title: 'Fees',
             dataIndex: 'name',
@@ -116,7 +115,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             content: <List
                 bordered
                 dataSource={selectedId}
-               
+
                 renderItem={(item, name) => (
                     <List.Item>
                         {name + 1}. <Typography.Text mark> {classDetails?.students.find(student => student.id == item)?.name}</Typography.Text>
@@ -130,7 +129,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
             width: 600,
             autoFocusButton: "cancel",
             onOk() {
-                onPromote({ ...value})
+                onPromote({ ...value })
             }
         });
     };
@@ -171,7 +170,7 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
                                     </Form.Item>
                                 </Col>
                                 <Col span={2} offset={5}>
-                                    <Button type={"primary"} htmlType="submit" disabled={selectedId.length<1}> Promote </Button>
+                                    <Button type={"primary"} htmlType="submit" disabled={selectedId.length < 1}> Promote </Button>
                                 </Col>
                             </Row>
                         </Form>
@@ -199,13 +198,21 @@ export const ClassroomDetails = ({ stdList }: IClassDetailsProsp) => {
 
                                 <List.Item>
                                     <List.Item.Meta
-                                        title={<Row>
+                                        title={<Row justify={"space-around"}>
                                             <Col md={{ span: 2 }} xs={{ span: 0 }}>
                                                 <Row> <div style={{ marginRight: '2vh' }} ><Checkbox value={item.id} /></div>
                                                     {index + 1}. </Row>
                                             </Col>
-                                            <Col md={{ span: 14 }}>
+                                            <Col md={{ span: 4 }}>
                                                 {item.name}
+                                            </Col>
+                                            <Col md={{ span: 10 }}>
+                                                <Space wrap>
+                                                    {item.annualPaidFees.map((tag) => (
+                                                        <Tag icon={<CheckCircleOutlined />} 
+                                                         key={tag} color="geekblue">{tag}</Tag>
+                                                    ))}
+                                                </Space>
                                             </Col>
                                             <Col md={{ span: 6 }} style={{ fontWeight: 'normal' }}>
                                                 {item.pendingFees > 0 ? <Text type="danger">{item.pendingFees} Months dues</Text> :

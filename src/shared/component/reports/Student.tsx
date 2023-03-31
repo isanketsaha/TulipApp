@@ -4,20 +4,22 @@ import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 
 export const StudentReport = () => {
     const { Text } = Typography;
-
+   
     const { data } = useFetchStudentReportQuery()
     return (<>
 
         <Row gutter={16}>
             <Col span={10} offset={4}>
-                <h3>Active Student</h3>
+                <h2>Active Student</h2>
+               
             </Col>
             <Col span={10}>
-                <Text type="success" style={{ fontSize: 'xxx-large' }}>{data?.schoolStrength} </Text>
+            <Text type="success" style={{ fontSize: 'xxx-large' }}>{data?.schoolStrength} </Text>
+                
             </Col>
         </Row>
         <Divider>Enrollment</Divider>
-        <Row gutter={16}>
+        <Row >
             <Col span={10} offset={2}>
                 <Statistic prefix={<ArrowUpOutlined />} valueStyle={{ color: 'orange' }} suffix ={ <div style={{marginLeft:'3vmin', color: 'red'}}><>{data?.withdrawnThisWeek}</><ArrowDownOutlined /></div>}  title="Current Week" value={data?.admissionThisWeek} />
             </Col>

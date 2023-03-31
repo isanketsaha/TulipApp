@@ -12,7 +12,7 @@ import styles from '/src/shared/styles/CommonStyles.scss?inline'
 export const AppHeader = () => {
     const dispatch = useAppDispatch();
 
-    const selectList = useAppSelector(state => state.commonData);
+    const {selectedSession, sessionList} = useAppSelector(state => state.commonData);
 
     const onSessionChange = (data: any) => {
         dispatch(updateSelectedSession(data));
@@ -34,8 +34,8 @@ export const AppHeader = () => {
                         style={{ width: '100%'}}
                         onChange={onSessionChange}
                         disabled={true}
-                        value={selectList?.selectedSession.value}
-                        options={selectList?.sessionList}
+                        value={selectedSession?.value}
+                        options={sessionList}
                     />
                 </Col>
                 <Col offset={1}>

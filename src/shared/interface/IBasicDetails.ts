@@ -11,4 +11,5 @@ export interface IBasicDetails {
     std: string,
     pendingFees: number,
     classId: string
+    annualPaidFees: string[]
 }

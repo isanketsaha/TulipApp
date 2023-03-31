@@ -1,7 +1,6 @@
 
 export interface IClassList {
-
       id: number,
-      std: string
-
+      std: string,
+      studentStrength: number
 }
