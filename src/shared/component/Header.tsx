@@ -6,7 +6,6 @@ import MenuItem from "antd/es/menu/MenuItem"
 import { Link } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../store"
 import { updateSelectedSession } from "../redux/slices/CommonSlice"
-import styles from '/src/shared/styles/CommonStyles.scss?inline'
 
 
 export const AppHeader = () => {
