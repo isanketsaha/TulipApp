@@ -1,4 +1,4 @@
-import { Badge, Menu, MenuProps, Modal, Typography, theme } from "antd";
+import { Avatar, Badge, Menu, MenuProps, Modal, Typography, theme } from "antd";
 import Sider from "antd/es/layout/Sider";
 import React, { useEffect, useState } from "react";
 import {
@@ -123,8 +123,8 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
                 bottom: 0,
                 paddingTop: '15vh'
             }}>
-            <div hidden={collapsed && user != null} style={{ textAlign: 'center', margin: '5vh' }} >
-                <UserOutlined style={{ fontSize: '15vh' }} />
+            <div hidden={collapsed && user != null} style={{ textAlign: 'center', marginBottom: '3vh' }} >
+            <Avatar style={{ backgroundColor: '#f56a00', verticalAlign: 'middle' }}  size={150} icon={<UserOutlined />} />
                 <div style={{ marginTop: '2vh' }}>
                     <Text strong>{user?.userName}</Text>
                     <br />

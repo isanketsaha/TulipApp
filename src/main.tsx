@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import App from './App'
 import './index.scss'
-import { AppRouter } from './routes/AppRouter'
 import { store } from './store'
+import "chart.js/auto";
 
 const validateMessages = {
   required: '${label} is required!',
