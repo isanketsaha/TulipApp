@@ -3,8 +3,6 @@ import dayjs, { Dayjs } from "dayjs"
 import { useFetchTransactionReportQuery } from "../../redux/api/feature/account/api";
 import { ITransactionReport } from "../../interface/ITransactionReport";
 import { ColumnsType } from "antd/es/table";
-import { render } from "sass";
-import { useEffect, useState } from "react";
 
 interface IFinanceReportProps {
     from: string,

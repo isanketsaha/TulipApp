@@ -4,7 +4,7 @@ import { Audit } from "../shared/component/reports/Audit";
 import { FinanceReport } from "../shared/component/reports/FinanceReport";
 import dayjs, { Dayjs } from "dayjs";
 import { Stock } from "../shared/component/reports/Stock";
-import { Bar, Pie } from "react-chartjs-2";
+// import { Bar, Pie } from "react-chartjs-2";
 import { useAppSelector } from "../store";
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { useFetchTransactionReportQuery } from "../shared/redux/api/feature/account/api";
@@ -113,37 +113,13 @@ export const Accounts = () => {
 
         <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
             <Row justify={"space-around"}>
-                <Col>
-                    <Pie data={chartData} options={{
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: "bottom"
-                            },
-                            title: {
-                                display: true,
-                                text: ' Student Strength',
-                            }
-                        },
-                    }} />
-                </Col>
-                <Col>
+                {/* <Col>
+                    <Pie data={chartData}  />
+                </Col> */}
+                {/* <Col>
                     <Bar width={500}
-                        height={250} options={{
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top' as const,
-                                },
-
-                                title: {
-                                    display: true,
-                                    text: 'Transaction History',
-                                },
-                            }
-                        }} data={transactionData} />
-                </Col>
+                        height={250} data={transactionData} />
+                </Col> */}
             </Row>
             <Row >
                 <Tabs style={{ width: '100%' }} size="large" defaultActiveKey="1"
