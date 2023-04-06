@@ -4,14 +4,12 @@ import { Audit } from "../shared/component/reports/Audit";
 import { FinanceReport } from "../shared/component/reports/FinanceReport";
 import dayjs, { Dayjs } from "dayjs";
 import { Stock } from "../shared/component/reports/Stock";
-// import { Bar, Pie } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import { useAppSelector } from "../store";
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { useFetchTransactionReportQuery } from "../shared/redux/api/feature/account/api";
 
-
 export const Accounts = () => {
-
     const { RangePicker } = DatePicker;
     const [fromDate, setFromDate] = useState<string>(dayjs(new Date()).add(-30, 'd').format('DD-MM-YYYY'));
     const [toDate, setToDate] = useState<string>(dayjs(new Date()).format('DD-MM-YYYY'));
@@ -68,7 +66,7 @@ export const Accounts = () => {
                     'rgba(255, 159, 64, 1)',
                 ],
                 borderWidth: 1,
-               
+
             },
         ],
     };
@@ -113,13 +111,13 @@ export const Accounts = () => {
 
         <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
             <Row justify={"space-around"}>
-                {/* <Col>
-                    <Pie data={chartData}  />
-                </Col> */}
-                {/* <Col>
+                <Col>
+                    <Pie data={chartData} />
+                </Col>
+                <Col>
                     <Bar width={500}
                         height={250} data={transactionData} />
-                </Col> */}
+                </Col>
             </Row>
             <Row >
                 <Tabs style={{ width: '100%' }} size="large" defaultActiveKey="1"

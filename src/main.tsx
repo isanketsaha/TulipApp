@@ -5,9 +5,8 @@ import { Provider } from 'react-redux'
 import App from './App'
 import './index.scss'
 import { store } from './store'
-import Chart from "chart.js/auto";
-
-
+import 'chart.js/auto';
+   
 const validateMessages = {
   required: '${label} is required!',
   types: {
