@@ -28,12 +28,7 @@ export const Accounts = () => {
             {
                 label: 'Fees',
                 data: financeReportData?.reportList?.map(item => item.fees),
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            },
-            {
-                label: 'Expense',
-                data: financeReportData?.reportList?.map(item => item.expense),
-                backgroundColor: 'rgba(255, 206, 86, 0.5)',
+                backgroundColor: '#82B4E1',
             },
             {
                 label: 'Purchase',
@@ -50,12 +45,12 @@ export const Accounts = () => {
                 label: 'Student Strength',
                 data: classList?.map(item => item.studentStrength),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.3)',
+                    'rgba(54, 162, 235, 0.3)',
+                    'rgba(255, 206, 86, 0.3)',
+                    'rgba(75, 192, 192, 0.3)',
+                    'rgba(153, 102, 255, 0.3)',
+                    'rgba(255, 159, 64, 0.3)',
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
