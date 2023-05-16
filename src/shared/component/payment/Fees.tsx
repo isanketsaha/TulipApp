@@ -8,10 +8,11 @@ import { useFetchAllfeesCatalogQuery } from "../../redux/api/feature/catalog/api
 interface IFeesPros {
     form: FormInstance,
     classId: string,
-    calculate: boolean
+    calculate: boolean,
+    duesAmount: number,
 }
 
-export const Fees = ({ form, classId, calculate }: IFeesPros) => {
+export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
 
     const { Text } = Typography;
 
@@ -20,10 +21,10 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const [selectedFees, addSelectedFees] = useState<number[]>([]);
 
     useEffect(() => {
-        if (calculate) {
+        if (calculate || duesAmount) {
             calculateTotal();
         }
-    }, [calculate])
+    }, [calculate, duesAmount])
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
         const { feeItem } = fields;
@@ -34,12 +35,12 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         const feeItem = fetchFeeRows();
         const currentFees = feeItem[rowKey];
         if (inputType == 'to' && currentFees.from) {
-            const monthNumber =  date.diff(currentFees.from, 'month')
+            const monthNumber = date.diff(currentFees.from, 'month')
             // const monthNumber = input - currentFees.from.get('month');
             calculateAmount(rowKey, monthNumber + 1);
         }
         else if (inputType == 'from' && currentFees.to) {
-            const monthNumber =  date.diff(currentFees.to, 'month')
+            const monthNumber = date.diff(currentFees.to, 'month')
             // const monthNumber = currentFees.to.get('month') - input;
             calculateAmount(rowKey, monthNumber + 1);
         }
@@ -108,6 +109,27 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                 total += amount;
             }
         });
+
+        const fields = form.getFieldsValue();
+        const { dueOpted } = fields;
+        if (dueOpted == true) {
+            const fields = form.getFieldsValue();
+            const { dueInfo } = fields;
+            if (total >= dueInfo[0].dueAmount) {
+                total = total - dueInfo[0].dueAmount;
+            }
+            else {
+                form.setFields([
+                    {
+                        name: ['total'],
+                        errors: ['Due Amount is greater than total.'],
+                    }
+                ]
+
+                );
+            }
+
+        }
 
         form.setFieldsValue({
             total: total.toLocaleString('en-IN', {

@@ -182,15 +182,23 @@ export const PurchaseSummary = () => {
             title: 'Category',
             dataIndex: 'category',
             key: 'category',
+            width: '20%',
 
-        }
-        ,
+        },
         {
             title: 'Received By',
             dataIndex: 'receivedBy',
             key: 'receivedBy',
+           
 
         },
+        {
+            title: ' Unit Price',
+            dataIndex: 'unitPrice',
+            key: 'unitPrice',
+
+        },
+
         {
             title: 'Quantity',
             dataIndex: 'qty',
@@ -215,8 +223,11 @@ export const PurchaseSummary = () => {
             <Space direction="vertical" style={{ width: '100%' }} size="large">
                 <Divider>Payment Summary</Divider>
                 <Card key={item?.id}>
-                    {paySummary?.payType != 'EXPENSE' && <BasicDetails data={item ?? {} as IBasicDetails} key={item?.id} />}
-                    <Divider></Divider>
+                    {paySummary?.payType != 'EXPENSE' && <><BasicDetails data={item ?? {} as IBasicDetails} key={item?.id} /> :
+                        <Divider></Divider>
+                    </>
+                    }
+
                     <Descriptions>
                         <Descriptions.Item span={1} label="Transaction Id">
                             {user?.authority && [Role.ADMIN].includes(user?.authority) ? <Space style={{ marginTop: '-5px' }} size={"large"} >
@@ -232,6 +243,15 @@ export const PurchaseSummary = () => {
                         </Tag> {paySummary?.payType && printReceiptAvailable.includes(paySummary?.payType)
                             && <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>Reciept</Button>}</Space></Descriptions.Item>
                     </Descriptions>
+
+                    <Descriptions>
+                        <Descriptions.Item label="Comment">
+                            {paySummary.comments}
+                        </Descriptions.Item>
+                        <Descriptions.Item  label="Upload">
+                            
+                        </Descriptions.Item>
+                        </Descriptions>
                 </Card>
 
                 {paySummary?.payType == 'FEES' && <Table<IFeesItemSummary> columns={feesColumns as ColumnsType<IFeesItemSummary>}
@@ -318,17 +338,24 @@ export const PurchaseSummary = () => {
                         summary={() => (
                             <Table.Summary fixed={'bottom'} >
                                 <Table.Summary.Row >
-                                    <Table.Summary.Cell colSpan={2} index={1}>
-                                        Paid by :  <Tag color="purple">
-                                            {paySummary?.paymentReceivedBy}
-                                        </Tag>
-                                    </Table.Summary.Cell>
-                                    <Table.Summary.Cell colSpan={2} index={1}>
+                                <Table.Summary.Cell colSpan={1} index={1}>
                                         Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                             {paySummary?.paymentMode}
                                         </Tag>
                                     </Table.Summary.Cell>
-                                    <Table.Summary.Cell index={10}>
+                                
+                                    <Table.Summary.Cell colSpan={1} index={1}>
+                                        Paid by :  <Tag color="purple">
+                                            {paySummary?.paymentReceivedBy}
+                                        </Tag>
+                                    </Table.Summary.Cell>
+                                    <Table.Summary.Cell colSpan={3} index={1}>
+                                    <Tag color="default">
+                                            {paySummary?.comments}
+                                        </Tag>
+                                    </Table.Summary.Cell>
+                                   
+                                    <Table.Summary.Cell index={1}>
                                         <Text mark>
                                             {paySummary?.total.toLocaleString('en-IN', {
                                                 maximumFractionDigits: 2,

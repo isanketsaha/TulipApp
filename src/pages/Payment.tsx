@@ -1,7 +1,7 @@
-import { Button, Card, Col, Divider, Form, Input, InputNumber, Modal, Radio, Row, Select, Space, Table, Tag, Typography } from "antd"
+import { Button, Card, Col, DatePicker, Divider, Form, Input, InputNumber, Modal, Radio, Row, Select, Space, Switch, Table, Tag, Typography } from "antd"
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdAndClassQuery } from "../shared/redux/api/feature/student/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { Search, useNavigate, useParams } from "react-router-dom";
 import { Fees } from "../shared/component/payment/Fees";
 import { Purchase } from "../shared/component/payment/Purchase";
 import { useAppSelector } from "../store";
@@ -13,7 +13,9 @@ import { FeesRuleType } from "../shared/utils/FeesRuleType";
 import dayjs, { Dayjs } from "dayjs";
 
 export const Payment = () => {
+    const { Search } = Input;
     const { id, classId } = useParams();
+
     const { paymentOptions } = useAppSelector(state => state.commonData);
     const [openConfirmPayment, setOpenConfirmPayment] = useState(false);
     const [payData, setPayData] = useState<IPay>();
@@ -21,12 +23,17 @@ export const Payment = () => {
     const { data: studentDetails } = useBasicSearchByIdAndClassQuery({ id, classId }, { skip: !(id && classId) });
     const [form] = Form.useForm();
     let navigate = useNavigate();
+    const [dueAmount , setDueAmount] = useState<number>(0);
 
     let paymentTypeValue = Form.useWatch('payType', form);
 
     const [payment] = usePaymentMutation();
 
-
+    const addDue = (ind: boolean) => {
+        form.setFieldsValue({
+            ...(ind ? { dueInfo: [{}] } : { dueInfo: [] }),
+        })
+    }
 
     const submit = (value: any) => {
         console.log(value);
@@ -86,6 +93,14 @@ export const Payment = () => {
         })
     }
 
+    const calculateDue = (amount: number | null) => {
+        if (amount && amount > 0) {
+            
+            setDueAmount(amount);
+
+        }
+    }
+
     const submitPayment = () => {
 
         payData && payment(payData).then((id: any) => {
@@ -105,7 +120,10 @@ export const Payment = () => {
             </Row>
 
             <Form form={form} name="fees-collection-form" size="large" onFinish={submit}
-                initialValues={{ payType: 'FEES', feeItem: [{}], purchaseItems: [{}] }}>
+                initialValues={
+                    {
+                        payType: 'FEES', feeItem: [{}], purchaseItems: [{}]
+                    }}>
                 <Card>
 
 
@@ -120,9 +138,64 @@ export const Payment = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId} calculate={paymentTypeValue == 'FEES'} />}
-                        {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE'} />}
-                        <Row>
+                        {paymentTypeValue == 'FEES' && studentDetails && <Fees form={form} classId={studentDetails?.classId} 
+                        duesAmount={dueAmount} calculate={paymentTypeValue == 'FEES'} />}
+                        {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form} 
+                        classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE' } />}
+                        <Form.List name="dueInfo" >
+                            {(fields, { add, remove }, { errors }) => (
+                                <>
+                                    {fields.map(({ key, name, ...restField }, index) => (
+
+                                        <div key={key} style={{ margin: '0 10vmin' }}>
+                                            <Row justify={"space-between"}>
+                                                <Col span={3}>
+                                                    <Input defaultValue={"DUE"} disabled={true} />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Item
+                                                        name={[name, "paymentDate"]}
+                                                        rules={[{ required: true, message: 'Payment Date is Manditory.' }]}
+                                                    >
+                                                        <DatePicker />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col >
+                                                    <Form.Item
+                                                        name={[name, "reason"]}
+                                                    >
+                                                        <Input placeholder="Reason" />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={4}>
+                                                    <Form.Item
+                                                        name={[name, "approvedBy"]}
+                                                        rules={[{ required: true, message: 'Approved by is Manditory.' }]}
+                                                    >
+                                                        <Input placeholder="Approved By" />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={3} style={{ marginRight: "5vmin" }}>
+                                                    <Form.Item
+                                                        name={[name, "dueAmount"]}
+                                                         rules={[{ required: true, message: 'Due amount is manditory' }
+                                                        ]}
+                                                    >
+                                                        <InputNumber max={10000} controls={false}
+                                                            placeholder="Amount" onChange={calculateDue}
+
+                                                        />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+                                        </div>
+
+                                    ))}
+                                </>
+                            )}
+                        </Form.List>
+                        <Row className="paymant-details">
+
                             <Col span={6}>
                                 <Form.Item label="Mode Of Payment" name={"paymentMode"} rules={[{ required: true }]}>
                                     <Select
@@ -130,13 +203,32 @@ export const Payment = () => {
                                         options={paymentOptions} />
                                 </Form.Item>
                             </Col>
+                            <Col offset={1} style={{ marginTop: '1vmin' }}>
+                            <Form.Item label="Mode Of Payment" name={"dueOpted"} rules={[{ required: true }]}>
+                                <Switch checkedChildren="Dues" unCheckedChildren="No Dues" defaultChecked={false}
+                                    onChange={addDue} />
+                                    </Form.Item>
 
-                            <Col span={3} offset={12}>
+                            </Col >
+                            {/* <Col span={6} offset={1}>
+
+                                <Search
+                                    status="error"
+                                    suffix={<WarningOutlined style={{
+                                        color: 'red',
+                                    }}
+                                    />}
+                                    addonBefore="Discount"
+                                    placeholder="Coupon"
+                                    allowClear
+                                />
+                            </Col> */}
+                            <Col span={3} offset={6}>
                                 <Form.Item name={"total"}>
                                     <InputNumber disabled={true} controls={false} style={{ fontWeight: 'bold', width: '100%' }} placeholder="Total" bordered={false} />
                                 </Form.Item>
                             </Col>
-                            <Col span={1} offset={1}>
+                            <Col span={1} style={{ marginLeft: '2vmin' }}>
                                 <Button htmlType={"submit"} type={"primary"}>Confirm</Button>
                             </Col>
                         </Row>

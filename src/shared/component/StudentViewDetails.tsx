@@ -73,7 +73,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                                 {dayjs(studentData?.admissionDate).format("DD-MM-YYYY")}
                             </Descriptions.Item>
                             <Descriptions.Item label="Active" span={1}>
-                                {user?.authority && [Role.PRINCIPAL].includes(user?.authority) ?
+                                {user?.authority && [Role.PRINCIPAL, Role.ADMIN].includes(user?.authority) ?
                                     <Switch checkedChildren="ACTIVE" unCheckedChildren="INACTIVE" checked={studentData?.active} onClick={(checked) => setOpen(!checked)} />
                                     : <Badge status={studentData?.active ? "success" : "error"} text={studentData?.active ? "ACTIVE" : "INACTIVE"} />
                                 }

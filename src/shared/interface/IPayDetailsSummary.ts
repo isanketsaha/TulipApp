@@ -13,6 +13,7 @@ export interface IPayDetailsSummary {
     total: number,
     paymentId: number,
     paymentDateTime: Date,
-    paymentReceivedBy: string
+    paymentReceivedBy: string,
+    comments: string
 }
 

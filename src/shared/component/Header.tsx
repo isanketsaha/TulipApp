@@ -19,7 +19,7 @@ export const AppHeader = () => {
 
     return (
         <Header className="header" style={{ background: '#800000', color: 'white', top: 0, right: 0, left: 0, zIndex: 10, position: 'fixed' , overflow:"hidden"}} >
-            <Row align={"top"}>
+            <Row align={"top"} justify={"space-between"}>
                 <Col >
                     <Link to="/">
 
@@ -27,7 +27,7 @@ export const AppHeader = () => {
 
                     </Link>
                 </Col>
-                <Col span={3} offset={12}>
+                <Col style={{marginLeft:'50%'}}>
                     <Select
                         labelInValue
                         style={{ width: '100%'}}
