@@ -37,7 +37,7 @@ export const studentApi = createApi({
         }),
         deactivateStudent: builder.mutation<void, string>({
             query: (id) => `/deactivate?studentId=${id}`,
-            invalidatesTags:  ['Classroom','Student']
+            invalidatesTags: ['Classroom','Student']
         }),
         editStudentDetails: builder.mutation<number, any>({
             query: (editUserVm: any) => {
@@ -46,7 +46,6 @@ export const studentApi = createApi({
                     method: 'POST',
                     body: editUserVm
                 });
-               
             },
             invalidatesTags:  (result) => result ? [{ type: 'Student', id: result }]: ['Student'],
         })

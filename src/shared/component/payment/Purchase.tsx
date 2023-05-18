@@ -8,10 +8,11 @@ interface IPurchaseProps {
     form: FormInstance,
     classId: string,
     calculate: boolean,
+    calculatePriceBreakDown: (subTotal: number, dueAmount: number) => void
 }
 
 
-export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
+export const Purchase = ({ form, classId, calculate, calculatePriceBreakDown }: IPurchaseProps) => {
 
     const { data: productCatalog } = useFetchAllProductCatalogQuery(classId);
 
@@ -37,29 +38,29 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
         let products = fetchProductRows();
         const selectedProduct = productCatalog?.find((item: IProductCatlog) => item.id === elementId);
         if (selectedProduct?.type === 'PLACEHOLDER') {
-            products = products.filter( (item : any, index: number)=> 
-                 index != rowKey
+            products = products.filter((item: any, index: number) =>
+                index != rowKey
             )
-          const productList : IProductCatlog[] | undefined =  productCatalog?.filter((item: IProductCatlog) => 
-          item.std===selectedProduct.std && item.type !== 'PLACEHOLDER' );
-          productList?.forEach(item =>{
-            products.push({
-                productId: item?.id,
-                productName: item?.itemName,
-                unitPrice: item?.price.toLocaleString('en-IN', {
-                    maximumFractionDigits: 2,
-                    style: 'currency',
-                    currency: 'INR'
-                }),
-                size: `${item.tag ? item.tag : ''}  ${item.tag && item.size  ? ' | ' : ''} ${item.size ? item.size : ''}`,
-                qty: 1,
-                amount: item?.price.toLocaleString('en-IN', {
-                    maximumFractionDigits: 2,
-                    style: 'currency',
-                    currency: 'INR'
+            const productList: IProductCatlog[] | undefined = productCatalog?.filter((item: IProductCatlog) =>
+                item.std === selectedProduct.std && item.type !== 'PLACEHOLDER');
+            productList?.forEach(item => {
+                products.push({
+                    productId: item?.id,
+                    productName: item?.itemName,
+                    unitPrice: item?.price.toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                        style: 'currency',
+                        currency: 'INR'
+                    }),
+                    size: `${item.tag ? item.tag : ''}  ${item.tag && item.size ? ' | ' : ''} ${item.size ? item.size : ''}`,
+                    qty: 1,
+                    amount: item?.price.toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                        style: 'currency',
+                        currency: 'INR'
+                    })
                 })
             })
-          })
 
         }
         else {
@@ -82,7 +83,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
             }
         }
         form.setFieldsValue({ purchaseItems: [...products] });
-       const selectedId: number[] = products.map((item: any) => item.productId);
+        const selectedId: number[] = products.map((item: any) => item.productId);
         selectedProduct?.id && addSelectedItems(oldArray => [...oldArray, ...selectedId])
         calculateTotal();
 
@@ -111,12 +112,31 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
 
     const calculateTotal = () => {
         let total: number = 0;
+        let subTotal = 0;
         fetchProductRows().map((item: any) => {
             if (item.amount) {
                 const amount: number = Number(item.amount.replace(/[^0-9-]+/g, "")) / 100;
                 total += amount;
             }
         });
+        subTotal = total;
+        const fields = form.getFieldsValue();
+        const { dueOpted } = fields;
+        const { dueInfo } = fields;
+        if (dueOpted == true) {
+            if (total >= dueInfo[0].dueAmount) {
+                total = total - dueInfo[0].dueAmount;
+            }
+            else {
+                form.setFields([
+                    {
+                        name: ['total'],
+                        errors: ['Due Amount is greater than total.'],
+                    }
+                ]
+                );
+            }
+        }
         form.setFieldsValue({
             total: total.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -124,11 +144,12 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                 currency: 'INR'
             })
         });
+        calculatePriceBreakDown(subTotal, total >= dueInfo[0]?.dueAmount ? dueInfo[0].dueAmount : 0);
     }
 
     const filterListConstruct = (rowKey: number) => {
         const products = fetchProductRows();
-        const id = products[rowKey].productId ;
+        const id = products[rowKey].productId;
         const items = selectedItems?.filter((item) => {
             return item !== id
         });
@@ -192,7 +213,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col span={2}>
+                                    <Col span={3}>
                                         <Form.Item
                                             name={[name, "qty"]}
                                             rules={[{ required: true, message: "Enter Quantity" }]}
@@ -202,7 +223,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                     </Col>
 
 
-                                    <Col span={2} >
+                                    <Col span={3} >
                                         <Form.Item
                                             name={[name, "unitPrice"]}
                                             rules={[{ required: true, message: "Unit Price is required" }]}
@@ -210,7 +231,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                             <InputNumber min={1} max={10000} controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} offset={1}>
+                                    <Col span={4}>
                                         <Form.Item
                                             name={[name, "amount"]}
                                             rules={[{ required: true, message: "Amount is required" }]}
@@ -218,7 +239,7 @@ export const Purchase = ({ form, classId, calculate }: IPurchaseProps) => {
                                             <InputNumber bordered={false} controls={false} disabled={true} style={{ width: '100%' }} />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={2} offset={1}>
+                                    <Col span={2}>
 
                                         <Space>
                                             {fields.length > 1 ? <Button type="link" onClick={() => {

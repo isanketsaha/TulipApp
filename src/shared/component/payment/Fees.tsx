@@ -10,9 +10,10 @@ interface IFeesPros {
     classId: string,
     calculate: boolean,
     duesAmount: number,
+    calculatePriceBreakDown: (subTotal: number, dueAmount: number) => void
 }
 
-export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
+export const Fees = ({ form, classId, calculate, duesAmount, calculatePriceBreakDown }: IFeesPros) => {
 
     const { Text } = Typography;
 
@@ -103,18 +104,18 @@ export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
 
     const calculateTotal = () => {
         let total = 0;
+        let subTotal = 0;
         fetchFeeRows().map((item: any) => {
             if (item?.amount) {
                 const amount: number = Number(item.amount.replace(/[^0-9-]+/g, "")) / 100;
                 total += amount;
             }
         });
-
+        subTotal = total;
         const fields = form.getFieldsValue();
         const { dueOpted } = fields;
+        const { dueInfo } = fields;
         if (dueOpted == true) {
-            const fields = form.getFieldsValue();
-            const { dueInfo } = fields;
             if (total >= dueInfo[0].dueAmount) {
                 total = total - dueInfo[0].dueAmount;
             }
@@ -125,12 +126,9 @@ export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
                         errors: ['Due Amount is greater than total.'],
                     }
                 ]
-
                 );
             }
-
         }
-
         form.setFieldsValue({
             total: total.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -138,6 +136,7 @@ export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
                 currency: 'INR'
             })
         });
+        calculatePriceBreakDown(subTotal, dueOpted && total >= dueInfo[0]?.dueAmount ? -dueInfo[0].dueAmount : 0);
     }
 
     const disableDate = (currentDate: Dayjs, rowKey: number) => {
@@ -172,7 +171,7 @@ export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
                                     <Col span={1}>
                                         {name + 1}.
                                     </Col>
-                                    <Col span={5}>
+                                    <Col span={6}>
                                         <Form.Item
                                             name={[name, "feesTitle"]}
                                             rules={[{ required: true }]}
@@ -206,7 +205,7 @@ export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
                                             <Input />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} >
+                                    <Col span={4} >
                                         <Form.Item
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
@@ -214,7 +213,7 @@ export const Fees = ({ form, classId, calculate, duesAmount }: IFeesPros) => {
                                             <DatePicker format="MMM-YYYY" placeholder="From Date" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} >
+                                    <Col span={4} >
                                         <Form.Item
                                             name={[name, "to"]}
                                             rules={[{ required: true }]}
