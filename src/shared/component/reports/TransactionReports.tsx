@@ -7,9 +7,7 @@ import VirtualList from 'rc-virtual-list';
 import { IPayDetailsSummary } from "../../interface/IPayDetailsSummary";
 
 interface ITransactionProps{
-
-    transactionDate:Dayjs
-
+    transactionDate: Dayjs
 }
 
 export const TransactionReport = ({transactionDate}:ITransactionProps) => {
@@ -64,7 +62,7 @@ export const TransactionReport = ({transactionDate}:ITransactionProps) => {
                                 </Col>
                                 <Col md={{ span: 5 }} >
 
-                                   { item.payType !='EXPENSE' ? <Link to={`studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
+                                   { item.payType !='EXPENSE' ? <Link to={`../studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
                                 </Col>
                                 <Col md={{ span: 3 }}>
                                     <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>

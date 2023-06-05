@@ -1,29 +1,28 @@
-import { Row, Col, Card, DatePicker, Tabs, Space, TabsProps } from "antd";
-import { useState } from "react";
+import { Row, Col, DatePicker, Tabs, Space, TabsProps, Segmented, Button } from "antd";
+import { useEffect, useState } from "react";
 import { Audit } from "../shared/component/reports/Audit";
 import { FinanceReport } from "../shared/component/reports/FinanceReport";
 import dayjs, { Dayjs } from "dayjs";
 import { Stock } from "../shared/component/reports/Stock";
 import { Bar, Pie } from "react-chartjs-2";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { useFetchTransactionReportQuery } from "../shared/redux/api/feature/account/api";
+import { DownloadOutlined} from '@ant-design/icons';
 
 export const Accounts = () => {
     const { RangePicker } = DatePicker;
-    const [fromDate, setFromDate] = useState<string>(dayjs(new Date()).add(-30, 'd').format('DD-MM-YYYY'));
-    const [toDate, setToDate] = useState<string>(dayjs(new Date()).format('DD-MM-YYYY'));
     const { selectedSession } = useAppSelector(state => state.commonData);
     const { data: classList } = useFetchAllClassroomQuery(selectedSession.value);
-
+    const [selectedRange, setSelectedRange] = useState<Dayjs[]>([dayjs(new Date()).startOf('month').add(-3, 'month').startOf('month'),
+    dayjs(new Date())]);
 
     const { data: financeReportData } = useFetchTransactionReportQuery({
-        page: 0,
-        data: { fromDate: fromDate, toDate: toDate }
+            fromDate: selectedRange[0].format('DD-MM-YYYY'), toDate: selectedRange[1].endOf('month').format('DD-MM-YYYY'),
+            groupByType: 'MONTHLY'
     });
-
     const transactionData = {
-        labels: financeReportData?.reportList?.map(item => item.transactionDate),
+        labels: financeReportData?.reportList?.map(item => dayjs(item.transactionDate).format('MMM-YYYY')),
         datasets: [
             {
                 label: 'Fees',
@@ -67,23 +66,11 @@ export const Accounts = () => {
     };
 
 
-
-    const rangePresets: {
-        label: string;
-        value: [Dayjs, Dayjs];
-    }[] = [
-            { label: 'Last 7 Days', value: [dayjs().add(-7, 'd'), dayjs()] },
-            { label: 'Last 14 Days', value: [dayjs().add(-14, 'd'), dayjs()] },
-            { label: 'Last 30 Days', value: [dayjs().add(-30, 'd'), dayjs()] },
-            { label: 'Last 90 Days', value: [dayjs().add(-90, 'd'), dayjs()] },
-        ];
-
-
     const tabList: TabsProps['items'] = [
         {
             key: '1',
             label: 'Transaction',
-            children: <FinanceReport from={fromDate} to={toDate} />
+            children: <FinanceReport selectedRange={selectedRange} />
         }, {
             key: '2',
             label: 'Audit',
@@ -95,11 +82,9 @@ export const Accounts = () => {
             children: <Stock />
         }
     ];
-
-    const dateRangeChanged = (values: any, formatString: [string, string]) => {
-        setFromDate(formatString[0]);
-        setToDate(formatString[1]);
-    }
+    const disabledDate = (current: Dayjs) => {
+        return current && current > dayjs().endOf('day'); // Disable future dates
+    };
 
 
     return (<>
@@ -116,8 +101,24 @@ export const Accounts = () => {
             </Row>
             <Row >
                 <Tabs style={{ width: '100%' }} size="large" defaultActiveKey="1"
-                    tabBarExtraContent={<RangePicker allowClear={false} disabled={[false, true]} format={"DD-MM-YYYY"} presets={rangePresets} onChange={dateRangeChanged}
-                        defaultValue={[dayjs(new Date()).add(-30, 'd'), dayjs(new Date())]} />} items={tabList} />
+                    tabBarExtraContent={
+                        <Row justify={"space-evenly"}>
+
+                            <Col>
+                                <Button  icon={<DownloadOutlined />}>
+                                    Export To Excel
+                                </Button>
+                            </Col>
+
+                            <Col> <RangePicker picker="month"
+                                disabledDate={disabledDate}
+                                allowClear={false}
+                                onCalendarChange={(val : null | (Dayjs | null)[] ) => val &&  setSelectedRange((val.filter(Boolean) as Dayjs[]))}
+                                format={"MMM-YYYY"}
+                                defaultValue={[selectedRange[0], selectedRange[1]]}
+                            /> </Col>
+                        </Row>}
+                    items={tabList} />
             </Row>
 
         </Space>

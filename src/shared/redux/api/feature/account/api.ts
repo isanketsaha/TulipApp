@@ -7,11 +7,11 @@ import { ITransactionReportSummary } from "/src/shared/interface/ITransactionRep
 export const accountApi = createApi({
     reducerPath: 'accountApi',
     baseQuery: baseQueryWithRetry("account"),
-    tagTypes:['Account'],
+    tagTypes:['Account','Transaction'],
     endpoints: (builder) => ({
-        fetchTransactionReport: builder.query<ITransactionReportSummary, IPageRequest<ITransactionReportFilter>>({
-            query: (item) => `/finance?from=${item.data.fromDate}&to=${item.data.toDate}&page=${item.page}`,
-            providesTags: ['Account']
+        fetchTransactionReport: builder.query<ITransactionReportSummary, ITransactionReportFilter>({
+            query: (item) => `/finance?from=${item.fromDate}&to=${item.toDate}&groupByType=${item.groupByType}`,
+            providesTags: ['Account', 'Transaction']
         })
     })
 });
