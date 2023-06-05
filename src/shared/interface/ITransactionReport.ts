@@ -1,4 +1,5 @@
 export interface ITransactionReport {
+    id : string,
     transactionDate: Date,
     expense: number,
     fees: number,

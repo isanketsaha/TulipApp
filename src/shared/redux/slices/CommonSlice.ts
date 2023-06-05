@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DefaultOptionType } from "antd/es/select";
 import { ISelectDefault } from "../../interface/ISelectDefault";
+import dayjs, { Dayjs } from "dayjs";
 
 
 interface ICommonSelect {
@@ -13,7 +14,7 @@ interface ICommonSelect {
     selectedSession: ISelectDefault,
     classList: DefaultOptionType[],
     paymentOptions: DefaultOptionType[],
-    expenseCategoryOptions: DefaultOptionType[],
+    expenseCategoryOptions: DefaultOptionType[]
 }
 
 const commonSelect: ICommonSelect = {
@@ -69,4 +70,5 @@ const CommonSlice = createSlice({
 export default CommonSlice.reducer;
 
 export const { updateBloodGroupList, updateGenderList, updateRelationList, updateReligionList,
-    updateUserRoleList, updateSelectedSession, updateSessionList, updateClassList, updatePaymentOptions, updateExpenseCategoryOptions } = CommonSlice.actions;
+    updateUserRoleList, updateSelectedSession, updateSessionList, updateClassList, updatePaymentOptions, 
+    updateExpenseCategoryOptions  } = CommonSlice.actions;

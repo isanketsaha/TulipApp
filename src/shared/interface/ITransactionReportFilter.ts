@@ -1,4 +1,5 @@
 export interface ITransactionReportFilter {
 fromDate : string,
-toDate : string
+toDate : string,
+groupByType: string
 }
