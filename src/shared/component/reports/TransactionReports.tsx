@@ -6,10 +6,9 @@ import dayjs, { Dayjs } from "dayjs";
 import VirtualList from 'rc-virtual-list';
 import { IPayDetailsSummary } from "../../interface/IPayDetailsSummary";
 import { FilterOutlined } from '@ant-design/icons';
+
 interface ITransactionProps {
-
     transactionDate: Dayjs
-
 }
 
 export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
@@ -73,25 +72,25 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
                                         </Col>
                                         <Col md={{ span: 5 }} >
 
-                                            {item.payType != 'EXPENSE' ? <Link to={`studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
-                                        </Col>
-                                        <Col md={{ span: 3 }}>
-                                            <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>
-                                        </Col>
-                                        <Col md={{ span: 2, offset: 1 }}>
-                                            <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
-                                        </Col>
-                                        <Col md={{ span: 5, offset: 1 }}>
-                                            {
-                                                item.total.toLocaleString('en-IN', {
-                                                    maximumFractionDigits: 2,
-                                                    style: 'currency',
-                                                    currency: 'INR'
-                                                })}
-                                        </Col>
-                                    </Row>
-                                }
-                            >
+                                   { item.payType !='EXPENSE' ? <Link to={`../studentDetails/${item.studentId}`}>{item.studentName}</Link> : item.paymentReceivedBy}
+                                </Col>
+                                <Col md={{ span: 3 }}>
+                                    <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>
+                                </Col>
+                                <Col md={{ span: 2 , offset:1}}>
+                                    <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
+                                </Col>
+                                <Col md={{ span: 5, offset:1 }}>
+                                    {
+                                    item.total.toLocaleString('en-IN', {
+                                        maximumFractionDigits: 2,
+                                        style: 'currency',
+                                        currency: 'INR'
+                                    })}
+                                </Col>
+                            </Row>
+                        }
+                    >
 
                             </List.Item.Meta>
                         </List.Item>

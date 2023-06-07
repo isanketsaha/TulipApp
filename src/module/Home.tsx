@@ -20,7 +20,7 @@ export const Home = () => {
             <AppHeader />
             <Layout hasSider>
                 <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
-                <Layout style={{ marginLeft: !collapsed ? '30vh' : '10vh' }}>
+                <Layout style={{ marginLeft: !collapsed ? '16vw' : '5vw' }}>
                     <Content
                         style={{
                             margin: isMobile ? '12vh 3vh' : '10vh 3vh',
