@@ -1,4 +1,4 @@
-import { Button, Card, Descriptions, Divider, Empty, Modal, Row, Space, Switch, Table, Tag, Typography, message } from "antd";
+import { Button, Card, Descriptions, Divider, Empty, Modal, Row, Space, Switch, Table, Tag, Typography, Upload, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdQuery } from "../shared/redux/api/feature/student/api";
@@ -12,6 +12,7 @@ import { usePrintReceiptMutation } from "../shared/redux/api/feature/exports/api
 import { ColumnsType } from "antd/es/table";
 import { IFeesItemSummary } from "../shared/interface/IFeesItemSummary";
 import { IPurchaseItemSummary } from "../shared/interface/IPurchaseItemSummary";
+import { uploadProps } from "../configs/UploadConfig";
 
 export const PurchaseSummary = () => {
     const { confirm } = Modal;
@@ -186,13 +187,6 @@ export const PurchaseSummary = () => {
 
         },
         {
-            title: 'Received By',
-            dataIndex: 'receivedBy',
-            key: 'receivedBy',
-           
-
-        },
-        {
             title: ' Unit Price',
             dataIndex: 'unitPrice',
             key: 'unitPrice',
@@ -244,14 +238,16 @@ export const PurchaseSummary = () => {
                             && <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>Reciept</Button>}</Space></Descriptions.Item>
                     </Descriptions>
 
-                    <Descriptions>
-                        <Descriptions.Item label="Comment">
-                            {paySummary.comments}
+                    {paySummary?.payType == 'EXPENSE' && <Descriptions>
+                        <Descriptions.Item label="Recieved By">
+                            {paySummary.expenseItems[0].receivedBy}
                         </Descriptions.Item>
-                        <Descriptions.Item  label="Upload">
-                            
-                        </Descriptions.Item>
-                        </Descriptions>
+                       {paySummary.expenseDocs && <Descriptions.Item label="Upload">
+                            {<Upload {...uploadProps()}
+                                    fileList={paySummary.expenseDocs}
+                                    listType="text" />}
+                        </Descriptions.Item>}
+                    </Descriptions>}
                 </Card>
 
                 {paySummary?.payType == 'FEES' && <Table<IFeesItemSummary> columns={feesColumns as ColumnsType<IFeesItemSummary>}
@@ -267,7 +263,7 @@ export const PurchaseSummary = () => {
 
                                 <Table.Summary.Cell colSpan={2} index={1}>
                                     Recieved by :  <Tag color="purple">
-                                        {paySummary?.paymentReceivedBy}
+                                        {paySummary?.createdBy}
                                     </Tag>
                                 </Table.Summary.Cell>
                                 <Table.Summary.Cell colSpan={2} index={1}>
@@ -303,7 +299,7 @@ export const PurchaseSummary = () => {
                             <Table.Summary.Row >
                                 <Table.Summary.Cell colSpan={2} index={1}>
                                     Recieved by :  <Tag color="purple">
-                                        {paySummary?.paymentReceivedBy}
+                                        {paySummary?.createdBy}
                                     </Tag>
                                 </Table.Summary.Cell>
                                 <Table.Summary.Cell colSpan={2} index={1}>
@@ -338,23 +334,23 @@ export const PurchaseSummary = () => {
                         summary={() => (
                             <Table.Summary fixed={'bottom'} >
                                 <Table.Summary.Row >
-                                <Table.Summary.Cell colSpan={1} index={1}>
+                                    <Table.Summary.Cell colSpan={1} index={1}>
                                         Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
                                             {paySummary?.paymentMode}
                                         </Tag>
                                     </Table.Summary.Cell>
-                                
+
                                     <Table.Summary.Cell colSpan={1} index={1}>
                                         Paid by :  <Tag color="purple">
-                                            {paySummary?.paymentReceivedBy}
+                                            {paySummary?.createdBy}
                                         </Tag>
                                     </Table.Summary.Cell>
-                                    <Table.Summary.Cell colSpan={3} index={1}>
-                                    <Tag color="default">
+                                    <Table.Summary.Cell colSpan={2} index={1}>
+                                        {paySummary?.comments ? <Tag color="default">
                                             {paySummary?.comments}
-                                        </Tag>
+                                        </Tag> : ""}
                                     </Table.Summary.Cell>
-                                   
+
                                     <Table.Summary.Cell index={1}>
                                         <Text mark>
                                             {paySummary?.total.toLocaleString('en-IN', {

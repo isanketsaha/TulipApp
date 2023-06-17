@@ -9,11 +9,14 @@ import { useAppDispatch, useAppSelector } from "../store";
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api";
 import { useFetchTransactionReportQuery } from "../shared/redux/api/feature/account/api";
 import { DownloadOutlined} from '@ant-design/icons';
+import { useTransactionDownloadMutation } from "../shared/redux/api/feature/exports/api";
 
 export const Accounts = () => {
     const { RangePicker } = DatePicker;
+   const [transactionDownload] = useTransactionDownloadMutation();
     const { selectedSession } = useAppSelector(state => state.commonData);
     const { data: classList } = useFetchAllClassroomQuery(selectedSession.value);
+    const [selectedTransactionMonth, setSelectedTransactionMonth] = useState<string[]>([]);
     const [selectedRange, setSelectedRange] = useState<Dayjs[]>([dayjs(new Date()).startOf('month').add(-3, 'month').startOf('month'),
     dayjs(new Date())]);
 
@@ -70,7 +73,7 @@ export const Accounts = () => {
         {
             key: '1',
             label: 'Transaction',
-            children: <FinanceReport selectedRange={selectedRange} />
+            children: <FinanceReport selectedTransactionMonth={setSelectedTransactionMonth} selectedRange={selectedRange} />
         }, {
             key: '2',
             label: 'Audit',
@@ -105,7 +108,8 @@ export const Accounts = () => {
                         <Row justify={"space-evenly"}>
 
                             <Col>
-                                <Button  icon={<DownloadOutlined />}>
+                                <Button disabled={selectedTransactionMonth.length == 0}
+                                 onClick={() =>transactionDownload(selectedTransactionMonth)}  icon={<DownloadOutlined />}>
                                     Export To Excel
                                 </Button>
                             </Col>
