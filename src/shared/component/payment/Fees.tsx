@@ -136,7 +136,7 @@ export const Fees = ({ form, classId, calculate, duesAmount, calculatePriceBreak
                 currency: 'INR'
             })
         });
-        calculatePriceBreakDown(subTotal, dueOpted && total >= dueInfo[0]?.dueAmount ? -dueInfo[0].dueAmount : 0);
+        calculatePriceBreakDown(subTotal, dueOpted && subTotal >= dueInfo[0]?.dueAmount ? -dueInfo[0].dueAmount : 0);
     }
 
     const disableDate = (currentDate: Dayjs, rowKey: number) => {

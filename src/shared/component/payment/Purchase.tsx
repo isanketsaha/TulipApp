@@ -144,7 +144,7 @@ export const Purchase = ({ form, classId, calculate, calculatePriceBreakDown }: 
                 currency: 'INR'
             })
         });
-        calculatePriceBreakDown(subTotal, total >= dueInfo[0]?.dueAmount ? dueInfo[0].dueAmount : 0);
+        calculatePriceBreakDown(subTotal,  dueOpted && subTotal >= dueInfo[0]?.dueAmount ? dueInfo[0].dueAmount : 0);
     }
 
     const filterListConstruct = (rowKey: number) => {

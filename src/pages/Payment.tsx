@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Descriptions, Divider, Form, Input, InputNumber, Modal, Radio, Row, Select, Space, Switch, Table, Tag, Typography } from "antd"
+import { Button, Card, Col, DatePicker, Descriptions, Divider, Form, Input, InputNumber, Modal, Radio, Row, Select, Space, Switch, Table, Tag, Typography, Upload } from "antd"
 import { BasicDetails } from "../shared/component/BasicDetails";
 import { useBasicSearchByIdAndClassQuery } from "../shared/redux/api/feature/student/api";
 import { Search, useNavigate, useParams } from "react-router-dom";
@@ -11,8 +11,9 @@ import { useState } from "react";
 import { PaymentConfirmation } from "../shared/component/confirmationModal/PaymentConfirmation";
 import { FeesRuleType } from "../shared/utils/FeesRuleType";
 import dayjs, { Dayjs } from "dayjs";
-import { CloseCircleTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
+import { CloseCircleTwoTone, UploadOutlined } from '@ant-design/icons';
 import { PriceBreakDown } from "../shared/component/payment/PriceBreakdown";
+import { allowedFieldType, uploadProps } from "../configs/UploadConfig";
 
 
 interface IBreakdownPrice {
@@ -40,16 +41,19 @@ export const Payment = () => {
     const [dueAmount, setDueAmount] = useState<number>(0);
 
     let paymentTypeValue = Form.useWatch('payType', form);
-    const { Title } = Typography;
     const [payment] = usePaymentMutation();
 
     const addDue = (ind: boolean) => {
+
         form.setFieldsValue({
             ...(ind ? { dueInfo: [{}] } : { dueInfo: [] }),
-        })
+        });
+        if (!ind) {
+            setDueAmount(0);
+        }
     }
 
-    const calculatePriceBreakDown = (subTotal: number, duesAmount : number) => {
+    const calculatePriceBreakDown = (subTotal: number, duesAmount: number) => {
         setPriceBreakdown({
             total: form.getFieldValue('total'),
             dues: duesAmount,
@@ -78,7 +82,9 @@ export const Payment = () => {
 
         const pay = {
             ...value,
-            total: Number(value.total.replace(/[^0-9-]+/g, "")) / 100,
+            dueInfo: value.dueInfo ? value.dueInfo[0] : null,
+            subTotal: priceBreakDown.subTotal,
+            total: Number(String(priceBreakDown.total).replace(/[^0-9-]+/g, "")) / 100,
             studentId: studentDetails?.id,
             purchaseItems: value.purchaseItems ? value.purchaseItems.map((item: any) => {
                 return {
@@ -128,6 +134,9 @@ export const Payment = () => {
             }
         });
     }
+    const disabledDate = (current: Dayjs) => {
+        return current && current < dayjs().endOf('day'); // Disable future dates
+    };
 
     return (
         <><Space direction="vertical" style={{ width: '100%' }} size="large">
@@ -138,7 +147,7 @@ export const Payment = () => {
                 </Card>
             </Row>
 
-            <Form form={form} name="fees-collection-form" size="large" onFinish={submit} 
+            <Form form={form} name="fees-collection-form" size="large" onFinish={submit}
                 initialValues={
                     {
                         payType: 'FEES', feeItem: [{}], purchaseItems: [{}]
@@ -147,21 +156,20 @@ export const Payment = () => {
                     <Col span={19}>
                         <Card>
                             <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
-                                <Row>
-                                    <Col offset={18}>
+                                <Row justify={"end"}>
                                         <Form.Item name="payType">
                                             <Radio.Group>
                                                 <Radio.Button value="FEES">Fees</Radio.Button>
                                                 <Radio.Button value="PURCHASE">Purchase</Radio.Button>
                                             </Radio.Group>
                                         </Form.Item>
-                                    </Col>
+                                 
                                 </Row>
-                                {paymentTypeValue == 'FEES' && studentDetails && 
-                                <Fees form={form} classId={studentDetails?.classId}
-                                    duesAmount={dueAmount} calculate={paymentTypeValue == 'FEES'} calculatePriceBreakDown = {calculatePriceBreakDown}/>}
+                                {paymentTypeValue == 'FEES' && studentDetails &&
+                                    <Fees form={form} classId={studentDetails?.classId}
+                                        duesAmount={dueAmount} calculate={paymentTypeValue == 'FEES'} calculatePriceBreakDown={calculatePriceBreakDown} />}
                                 {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form}
-                                    classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE'}  calculatePriceBreakDown = {calculatePriceBreakDown}/>}
+                                    classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE'} calculatePriceBreakDown={calculatePriceBreakDown} />}
                                 <Form.List name="dueInfo" >
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
@@ -177,14 +185,17 @@ export const Payment = () => {
                                                                 name={[name, "paymentDate"]}
                                                                 rules={[{ required: true, message: 'Payment Date is Manditory.' }]}
                                                             >
-                                                                <DatePicker />
+                                                                <DatePicker placeholder="Pay Date" format={'DD-MM-YYYY'} disabledDate={disabledDate} />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col >
                                                             <Form.Item
-                                                                name={[name, "reason"]}
+                                                                name={[name, "dueDocs"]}
                                                             >
-                                                                <Input placeholder="Reason" />
+                                                                <Upload {...uploadProps()} showUploadList={true}
+                                                                    listType="text" name="documents" accept={allowedFieldType}>
+                                                                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                                                </Upload>
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={4}>
@@ -198,18 +209,25 @@ export const Payment = () => {
                                                         <Col span={3} style={{ marginRight: "5vmin" }}>
                                                             <Form.Item
                                                                 name={[name, "dueAmount"]}
-                                                                rules={[{ required: true, message: 'Due amount is manditory' }
+                                                                rules={[{ required: true, message: 'Due amount is manditory' },
+                                                                ({ getFieldValue }) => ({
+                                                                    validator(_, value) {
+                                                                        if (!value || priceBreakDown.subTotal >= value) {
+                                                                            return Promise.resolve();
+                                                                        }
+                                                                        return Promise.reject(new Error('Due limit exceded.'));
+                                                                    },
+                                                                }),
+
                                                                 ]}
                                                             >
                                                                 <InputNumber max={10000} controls={false}
                                                                     placeholder="Amount" onChange={calculateDue}
-
                                                                 />
                                                             </Form.Item>
                                                         </Col>
                                                     </Row>
                                                 </div>
-
                                             ))}
                                         </>
                                     )}
@@ -232,18 +250,10 @@ export const Payment = () => {
                                     </Col >
                                     <Col span={6}>
 
-                                        {/* <Search
-                                    status=""
-                                    suffix={false ? <CheckCircleTwoTone twoToneColor="#52c41a" 
-                                    /> : <CloseCircleTwoTone twoToneColor="#eb2f96"/>}
-                                    placeholder="Discount"
-                                    allowClear
-                                /> */}
-
-                                        <Space.Compact style={{ width: '100%' }}>
+                                        {/* <Space.Compact style={{ width: '100%' }}>
                                             <Input placeholder="Discount Coupon" />
                                             <Button type="primary">Apply</Button>
-                                        </Space.Compact>
+                                        </Space.Compact> */}
                                     </Col>
                                 </Row>
                             </Space>

@@ -47,11 +47,14 @@ export const Stock = () => {
         }
     });
 
-    const save = async (key: React.Key) => {
+    const save = async (record: IStockReport ) => {
         try {
-          const row = (await form.validateFields()) as IStockReport;
-            console.log(row);
-         
+          const row = (await form.validateFields()) as IStockReport;  
+          const val = {
+                ...row,
+                stockId: record.id
+            }
+            console.log(val);
         } catch (errInfo) {
           console.log('Validate Failed:', errInfo);
         }
@@ -122,7 +125,9 @@ export const Stock = () => {
                 const editable = isEditing(record);
                 return editable ? (
                     <Space size="middle">
-                    <Typography.Link onClick={() => save(record.key)} >
+                    <Typography.Link onClick={
+                        () =>
+                         save(record)} >
                       Save
                     </Typography.Link>
                     <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
@@ -135,7 +140,7 @@ export const Stock = () => {
                         <a onClick={() => edit(record)}>Edit</a>
                     
                     <Popconfirm title={`Sure to remove ${record.product.itemName}?`}
-                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={() => disableProduct(record.id)}>
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={() => disableProduct(record.product.id)}>
                         <a>Remove</a>
                     </Popconfirm>
                 </Space>)
@@ -164,15 +169,8 @@ export const Stock = () => {
     return (
         <>
             {stockDate &&
-
-                // <Table<IStockReport> title={() => <Row justify="end" align={"middle"}>
-                //     <Button shape="round" icon={<DownloadOutlined />} onClick={() => exportStock()}>
-                //         Export to Excel
-                //     </Button>
-                // </Row>} rowKey={(record) => record.id} dataSource={stockDate} scroll={{ y: 300 }} pagination={false} columns={columns} size="small" />
-
                 <Form form={form} component={false}>
-                    <Table
+                    <Table<IStockReport>
                     title={() => <Row justify="end" align={"middle"}>
                        <Button shape="round" icon={<DownloadOutlined />} onClick={() => exportStock()}>
                            Export to Excel
@@ -183,6 +181,7 @@ export const Stock = () => {
                                 cell: EditableCell,
                             },
                         }}
+                        rowKey={record => record.product.id}
                         bordered
                         dataSource={stockDate}
                         columns={mergedColumns as ColumnsType<IStockReport>}

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import VirtualList from 'rc-virtual-list';
 import { IPayDetailsSummary } from "../../interface/IPayDetailsSummary";
-import { FilterOutlined, FileTextTwoTone } from '@ant-design/icons';
+import { FilterOutlined, FileTextTwoTone, BellTwoTone } from '@ant-design/icons';
 
 interface ITransactionProps {
     transactionDate: Dayjs
@@ -14,7 +14,6 @@ interface ITransactionProps {
 export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
 
     const [totalCollection, setTotalCollection] = useState(0);
-    const [pagination, setPagination] = useState<number>(0);
     const { data: transactionReport } = useFetchTransactionHistoryQuery(transactionDate.toDate().toString());
     const [transaction, setTransactions] = useState<IPayDetailsSummary[]>(transactionReport ?? []);
     useEffect(() => {
@@ -43,7 +42,7 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
                         onSelect={(item) => setTransactions(transactionReport?.filter(val => val.paymentMode === item) ?? [])}
                         options={[...new Set(transactionReport?.map(item => item.paymentMode))]?.flatMap(item => { return { value: item, label: item } })}
                     /></Col>
-                    <Col md={{ span: 2, offset: 1 }} xs={{ span: 16, offset: 5 }}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
+                    <Col md={{ span: 3, offset: 3 }} xs={{ span: 16, offset: 5 }}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                         maximumFractionDigits: 2,
                         style: 'currency',
                         currency: 'INR'
@@ -71,19 +70,24 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
                                         <Col md={{ span: 6 }} >
                                             {dayjs(item.paymentDateTime).format('MMM D, YYYY h:mm A')}
                                         </Col>
-                                        <Col md={{ span: 5 }} >
-
+                                        <Col md={{ span: 5 }}>
+                                        <Space >
                                             {item.payType != 'EXPENSE' ? <Link to={`../studentDetails/${item.studentId}`}>
-                                                {item.studentName}</Link> : <Space> <>{item.expenseItems[0].receivedBy}</> 
-                                                 {item.expenseDocs.length>0 && <FileTextTwoTone />}</Space>}
+                                                {item.studentName}</Link> :  <>{item.expenseItems[0].receivedBy}</>}
+                                                 {item.docs?.length > 0 
+                                                    && <FileTextTwoTone />}
+                                                    </Space>
                                         </Col>
-                                        <Col md={{ span: 3 }}>
+                                        <Col md={{ span: 2 }}>
                                             <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>
                                         </Col>
                                         <Col md={{ span: 2, offset: 1 }}>
                                             <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
                                         </Col>
-                                        <Col md={{ span: 5, offset: 1 }}>
+                                        <Col md={{ span: 2, offset: 1 }}>
+                                    {item.dueOpted ? <><> -{item.dues.dueAmount} </><BellTwoTone twoToneColor="#eb2f96" /></>  : null}
+                                        </Col>
+                                        <Col md={{ span: 3, offset: 1 }}>
                                             {
                                                 item.total.toLocaleString('en-IN', {
                                                     maximumFractionDigits: 2,

@@ -12,7 +12,7 @@ export const StaffReport = () => {
     return (<>
         <Row gutter={16}>
             <Col span={10} offset={4}>
-                <h3>Active Employee</h3>
+                <h2>Active Employee</h2>
             </Col>
             <Col span={10}>
                 <Text style={{ fontSize: 'xxx-large' }}>{data?.staffCount} </Text>

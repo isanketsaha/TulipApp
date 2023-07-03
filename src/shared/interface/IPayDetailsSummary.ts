@@ -3,6 +3,7 @@ import { IExpenseItem } from "./IExpenseItems";
 import { IFeesItemSummary } from "./IFeesItemSummary";
 import { IPurchaseItemSummary } from "./IPurchaseItemSummary";
 import { UploadFile } from "antd";
+import { Dues } from "./IDues";
 
 export interface IPayDetailsSummary {
     studentId: number,
@@ -12,11 +13,13 @@ export interface IPayDetailsSummary {
     purchaseItems: IPurchaseItemSummary[],
     feesItem: IFeesItemSummary[],
     expenseItems: IExpenseItem[],
-    expenseDocs: UploadFile[]
+    docs: any[]
     total: number,
     paymentId: number,
     paymentDateTime: Date,
     createdBy: string,
-    comments: string
+    comments: string,
+    dueOpted: boolean,
+    dues: Dues,
 }
 

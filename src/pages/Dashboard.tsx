@@ -11,6 +11,7 @@ import { useMediaQuery } from "react-responsive";
 import { useAppSelector } from "../store";
 import { Role } from "../shared/utils/Role";
 import { useNavigate } from "react-router-dom";
+import { Dues } from "../shared/component/reports/Dues";
 
 export const Dashboard = () => {
     const { user } = useAppSelector(app => app.userAuth);
@@ -30,7 +31,6 @@ export const Dashboard = () => {
         <>
             <div className="site-card-wrapper">
                 <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                    
                     <Row gutter={16}>
                         <Col span={24}>
                             <Card title="Collection Report"
@@ -49,23 +49,25 @@ export const Dashboard = () => {
 
                         </Col>
                     </Row>
-                    <Row justify={"space-evenly"} gutter={[16, 16]}>
+                    <Row>
+                    <Col xs={{ span: 24 }} >
+                            <Dues/>
+                        </Col>
+                    </Row>
+                    <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
+                    
                         <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                             <Card >
                                 <StudentReport />
                             </Card>
                         </Col>
-                        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+                        <Col xs={{ span: 24 }} lg={{ span: 12}}>
                             <Card >
                                 <StaffReport />
 
                             </Card>
                         </Col>
-                        {/* <Col span={8} >
-                            <Card title="Upcoming Holiday">
-                                Card content
-                            </Card>
-                        </Col> */}
+                       
                     </Row>
                 </Space>
 
