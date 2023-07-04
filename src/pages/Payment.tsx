@@ -191,6 +191,7 @@ export const Payment = () => {
                                                         <Col >
                                                             <Form.Item
                                                                 name={[name, "dueDocs"]}
+                                                                rules={[{ required: true, message: 'Document is Manditory.' }]}
                                                             >
                                                                 <Upload {...uploadProps()} showUploadList={true}
                                                                     listType="text" name="documents" accept={allowedFieldType}>
