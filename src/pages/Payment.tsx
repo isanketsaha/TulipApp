@@ -188,7 +188,7 @@ export const Payment = () => {
                                                                 <DatePicker placeholder="Pay Date" format={'DD-MM-YYYY'} disabledDate={disabledDate} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col >
+                                                        <Col span={6}>
                                                             <Form.Item
                                                                 name={[name, "dueDocs"]}
                                                                 rules={[{ required: true, message: 'Document is Manditory.' }]}

@@ -163,6 +163,31 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
             }} scroll={{ y: 240 }}
             summary={() => (
                 <Table.Summary fixed={'bottom'} >
+                    {payData?.dueOpted && <Table.Summary.Row >
+                            <Table.Summary.Cell colSpan={1} index={1}>
+                                <Tag color={"violet"}>
+                                    Dues
+                                </Tag>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell colSpan={1} index={1}>
+                                 {dayjs(payData.dueInfo.paymentDate).format('DD/MM/YYYY')}
+                            </Table.Summary.Cell>
+
+                            <Table.Summary.Cell colSpan={2} index={10}>
+                                <Text>
+                                    {payData.dueInfo.approvedBy}
+                                </Text>
+                            </Table.Summary.Cell>
+                            <Table.Summary.Cell colSpan={1} index={10}>
+                                <Text mark>
+                                    -{(Number(payData.dueInfo.dueAmount)).toLocaleString('en-IN', {
+                                        maximumFractionDigits: 2,
+                                        style: 'currency',
+                                        currency: 'INR'
+                                    })}
+                                </Text>
+                            </Table.Summary.Cell>
+                        </Table.Summary.Row>}
                     <Table.Summary.Row >
                         <Table.Summary.Cell colSpan={4} index={1}>
                             Pay Mode :  <Tag color={payData?.paymentMode == "CASH" ? "green" : "cyan"}>
