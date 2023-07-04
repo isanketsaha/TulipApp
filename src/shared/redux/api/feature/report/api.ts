@@ -15,8 +15,8 @@ export const reportApi = createApi({
     baseQuery: baseQueryWithRetry("report"),
     tagTypes: ['Payment', 'AdmissionReport', 'StaffReport', 'InventoryReport'],
     endpoints: (builder) => ({
-        fetchTransactionHistory: builder.query<IPageResponse<IPayDetailsSummary>, IPageRequest<string>>({
-            query: (item) => `/transaction/${item.data}?page=${item.page}`,
+        fetchTransactionHistory: builder.query<IPayDetailsSummary[], string>({
+            query: (item) => `/transaction/${item}`,
             providesTags: ['Payment']
         }),
         fetchStudentReport: builder.query<IAdmissionReport, void>({
@@ -31,8 +31,17 @@ export const reportApi = createApi({
             query: () => '/inventory',
             providesTags: ['InventoryReport']
         }),
-       
-    })
+        updateProductVisibility: builder.mutation<void, number>({
+            query: (id) => {
+                return ({
+                    url: `/productVisibility?productId=${id}`,
+                    method: 'POST',
+                });
+            },
+            invalidatesTags: ['InventoryReport']
+        })
+    }) 
 })
 
-export const { useFetchTransactionHistoryQuery, useFetchStudentReportQuery, useFetchStaffReportQuery, useFetchInventoryReportQuery} = reportApi;
+export const { useFetchTransactionHistoryQuery, useFetchStudentReportQuery, 
+    useFetchStaffReportQuery, useFetchInventoryReportQuery, useUpdateProductVisibilityMutation} = reportApi;

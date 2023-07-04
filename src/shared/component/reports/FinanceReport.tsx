@@ -1,20 +1,21 @@
-import { Button, Col, DatePicker, Row, Select, Space, Table, Tag } from "antd"
+import { Button, Space, Table, Tag } from "antd"
 import dayjs, { Dayjs } from "dayjs"
 import { useFetchTransactionReportQuery } from "../../redux/api/feature/account/api";
 import { ITransactionReport } from "../../interface/ITransactionReport";
 import { ColumnsType } from "antd/es/table";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { useAppSelector } from "/src/store";
 import { TransactionReport } from "./TransactionReports";
 
 interface IFinanceReportProps {
     selectedRange: Dayjs[],
+    selectedTransactionMonth : (val : string[]) => void 
 }
 
-export const FinanceReport = ({ selectedRange }: IFinanceReportProps) => {
+export const FinanceReport = ({ selectedRange, selectedTransactionMonth }: IFinanceReportProps) => {
     const [monthSelected , setMonthSelected] = useState<Dayjs[]>([])
     const [groupByFilter, setGroupByFilter] = useState<string>('MONTHLY')
+  
     const { data: financeReportData } = useFetchTransactionReportQuery({
         fromDate:  groupByFilter == 'MONTHLY' ? selectedRange[0].format('DD-MM-YYYY') : monthSelected[0]?.format('DD-MM-YYYY'),
         toDate: groupByFilter == 'MONTHLY' ? selectedRange[1].endOf('month').format('DD-MM-YYYY') : monthSelected[0]?.endOf('month').format('DD-MM-YYYY'),
@@ -23,7 +24,8 @@ export const FinanceReport = ({ selectedRange }: IFinanceReportProps) => {
 
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: ITransactionReport[]) => {
-            console.log(`groupByFilter: ${groupByFilter}`, 'monthSelected: ', monthSelected);
+            const selectedMonths = selectedRows.map(item => dayjs(item.transactionDate).format('YYYY-MM-DD'));
+            selectedTransactionMonth(selectedMonths);
         }
     };
 
@@ -102,7 +104,7 @@ export const FinanceReport = ({ selectedRange }: IFinanceReportProps) => {
     return (<>
         <Space direction="vertical" style={{ width: '100%' }}>
 
-            <Table<ITransactionReport> rowKey="id" dataSource={financeReportData?.reportList}
+            <Table<ITransactionReport> rowKey="transactionDate" dataSource={financeReportData?.reportList}
             
                 rowSelection={{
                     type: "checkbox",

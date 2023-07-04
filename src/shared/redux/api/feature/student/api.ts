@@ -7,7 +7,7 @@ import { IPageResponse } from "/src/shared/interface/IPageResponse";
 
 export const studentApi = createApi({
     reducerPath: 'studentApi',
-    tagTypes: ['Student'],
+    tagTypes: ['Student','Classroom'],
     baseQuery: baseQueryWithRetry("student"),
     endpoints: (builder) => ({
         fetchAllStudent: builder.query<IPageResponse<IBasicDetails>, number>({
@@ -37,7 +37,7 @@ export const studentApi = createApi({
         }),
         deactivateStudent: builder.mutation<void, string>({
             query: (id) => `/deactivate?studentId=${id}`,
-            invalidatesTags: ['Student']
+            invalidatesTags: ['Classroom','Student']
         }),
         editStudentDetails: builder.mutation<number, any>({
             query: (editUserVm: any) => {
@@ -46,7 +46,6 @@ export const studentApi = createApi({
                     method: 'POST',
                     body: editUserVm
                 });
-               
             },
             invalidatesTags:  (result) => result ? [{ type: 'Student', id: result }]: ['Student'],
         })

@@ -8,10 +8,12 @@ import { useFetchAllfeesCatalogQuery } from "../../redux/api/feature/catalog/api
 interface IFeesPros {
     form: FormInstance,
     classId: string,
-    calculate: boolean
+    calculate: boolean,
+    duesAmount: number,
+    calculatePriceBreakDown: (subTotal: number, dueAmount: number) => void
 }
 
-export const Fees = ({ form, classId, calculate }: IFeesPros) => {
+export const Fees = ({ form, classId, calculate, duesAmount, calculatePriceBreakDown }: IFeesPros) => {
 
     const { Text } = Typography;
 
@@ -20,10 +22,10 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
     const [selectedFees, addSelectedFees] = useState<number[]>([]);
 
     useEffect(() => {
-        if (calculate) {
+        if (calculate || duesAmount) {
             calculateTotal();
         }
-    }, [calculate])
+    }, [calculate, duesAmount])
     const fetchFeeRows = () => {
         const fields = form.getFieldsValue();
         const { feeItem } = fields;
@@ -34,12 +36,12 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
         const feeItem = fetchFeeRows();
         const currentFees = feeItem[rowKey];
         if (inputType == 'to' && currentFees.from) {
-            const monthNumber =  date.diff(currentFees.from, 'month')
+            const monthNumber = date.diff(currentFees.from, 'month')
             // const monthNumber = input - currentFees.from.get('month');
             calculateAmount(rowKey, monthNumber + 1);
         }
         else if (inputType == 'from' && currentFees.to) {
-            const monthNumber =  date.diff(currentFees.to, 'month')
+            const monthNumber = date.diff(currentFees.to, 'month')
             // const monthNumber = currentFees.to.get('month') - input;
             calculateAmount(rowKey, monthNumber + 1);
         }
@@ -102,13 +104,31 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
 
     const calculateTotal = () => {
         let total = 0;
+        let subTotal = 0;
         fetchFeeRows().map((item: any) => {
             if (item?.amount) {
                 const amount: number = Number(item.amount.replace(/[^0-9-]+/g, "")) / 100;
                 total += amount;
             }
         });
-
+        subTotal = total;
+        const fields = form.getFieldsValue();
+        const { dueOpted } = fields;
+        const { dueInfo } = fields;
+        if (dueOpted == true) {
+            if (total >= dueInfo[0].dueAmount) {
+                total = total - dueInfo[0].dueAmount;
+            }
+            else {
+                form.setFields([
+                    {
+                        name: ['total'],
+                        errors: ['Due Amount is greater than total.'],
+                    }
+                ]
+                );
+            }
+        }
         form.setFieldsValue({
             total: total.toLocaleString('en-IN', {
                 maximumFractionDigits: 2,
@@ -116,6 +136,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                 currency: 'INR'
             })
         });
+        calculatePriceBreakDown(subTotal, dueOpted && subTotal >= dueInfo[0]?.dueAmount ? -dueInfo[0].dueAmount : 0);
     }
 
     const disableDate = (currentDate: Dayjs, rowKey: number) => {
@@ -150,7 +171,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                     <Col span={1}>
                                         {name + 1}.
                                     </Col>
-                                    <Col span={5}>
+                                    <Col span={6}>
                                         <Form.Item
                                             name={[name, "feesTitle"]}
                                             rules={[{ required: true }]}
@@ -184,7 +205,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             <Input />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} >
+                                    <Col span={4} >
                                         <Form.Item
                                             name={[name, "from"]}
                                             rules={[{ required: true }]}
@@ -192,7 +213,7 @@ export const Fees = ({ form, classId, calculate }: IFeesPros) => {
                                             <DatePicker format="MMM-YYYY" placeholder="From Date" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={3} >
+                                    <Col span={4} >
                                         <Form.Item
                                             name={[name, "to"]}
                                             rules={[{ required: true }]}

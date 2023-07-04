@@ -15,6 +15,7 @@ import { Accounts } from "../pages/Account";
 import { PurchaseSummary } from "../pages/PurchaseSummary";
 import { AuthRotes } from "./AuthRoters";
 import { Role } from "../shared/utils/Role";
+import { DuePayment } from "../shared/component/payment/DuesPayment";
 
 
 export const AppRouter = createBrowserRouter([
@@ -60,6 +61,10 @@ export const AppRouter = createBrowserRouter([
                     }, {
                         path: 'purchaseSummary/:id',
                         element: <PurchaseSummary />
+                    },
+                    {
+                        path: 'duePayment/:id',
+                        element: <DuePayment />
                     },
                     {
                         path: 'edit/:id',
