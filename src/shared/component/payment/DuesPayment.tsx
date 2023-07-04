@@ -26,11 +26,11 @@ export const DuePayment = () => {
             transactionId: paySummary?.paymentId
         }
         console.log(value);
-        duesPayment(value).then((val) => {
-            if (val) {
+        duesPayment(value).then((val: any) => {
+            if (val && val.data) {
                 navigate(`/purchaseSummary/${paySummary?.paymentId}`)
             }
-            else{
+            else {
                 message.error('Due Payment Failed')
             }
         })
@@ -85,7 +85,7 @@ export const DuePayment = () => {
                 </Descriptions.Item>
                 <Descriptions.Item span={1} label="Due Amount">
                     <Tag color={"blue"}>
-                        -{paySummary?.dues.dueAmount.toLocaleString('en-IN', {
+                        {paySummary?.dues.dueAmount.toLocaleString('en-IN', {
                             maximumFractionDigits: 2,
                             style: 'currency',
                             currency: 'INR'
@@ -145,12 +145,13 @@ export const DuePayment = () => {
                             <InputNumber controls={false} style={{ width: '70%' }} defaultValue={0} onChange={calcTotal} />
                         </Form.Item>
                     </Col>
+
                     <Col span={6}>
                         <Form.Item
                             label="Total Amount"
                             name="totalAmount"
                         >
-                            <InputNumber controls={false} style={{ width: '70%' }} disabled={true} defaultValue={0} min={1}/>
+                            <InputNumber controls={false} style={{ width: '70%' }} disabled={true} defaultValue={0} min={1} />
                         </Form.Item>
                     </Col>
                 </Row>
