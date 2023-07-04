@@ -32,9 +32,9 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
         {transaction.length > 0 ?
             <List
                 header={transaction.length > 0 ? <Row >
-                    <Col md={{ span: 2, offset: 14 }} xs={{ span: 0 }}>   <Select
+                    <Col md={{ span: 2, offset: 13 }} xs={{ span: 0 }}>   <Select
                         placeholder={'Filter'}
-                        style={{ width: '13vmin' }}
+                        style={{ width: '100%' }}
                         suffixIcon={<FilterOutlined />}
                         bordered={false}
                         allowClear={true}
@@ -42,7 +42,8 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
                         onSelect={(item) => setTransactions(transactionReport?.filter(val => val.paymentMode === item) ?? [])}
                         options={[...new Set(transactionReport?.map(item => item.paymentMode))]?.flatMap(item => { return { value: item, label: item } })}
                     /></Col>
-                    <Col md={{ span: 3, offset: 3 }} xs={{ span: 16, offset: 5 }}><Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
+                    <Col md={{ span: 3, offset: 4 }} xs={{ span: 16, offset: 5 }}>
+                        <Typography.Text mark>{totalCollection.toLocaleString('en-IN', {
                         maximumFractionDigits: 2,
                         style: 'currency',
                         currency: 'INR'
