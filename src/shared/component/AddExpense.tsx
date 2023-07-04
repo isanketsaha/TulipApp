@@ -64,7 +64,7 @@ export const AddExpense = () => {
     const calcAmount = (rowKey: number) => {
         const { expenseItem } = form.getFieldsValue();
         const item = expenseItem[rowKey];
-        if (item && item.unitPrice && item.unitPrice > 1 && item.qty && item.qty > 1) {
+        if (item && item.unitPrice && item.unitPrice > 0 && item.qty && item.qty > 0) {
             expenseItem[rowKey] = {
                 ...expenseItem[rowKey],
                 amount: item.unitPrice * item.qty
