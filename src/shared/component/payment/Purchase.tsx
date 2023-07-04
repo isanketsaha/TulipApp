@@ -8,11 +8,12 @@ interface IPurchaseProps {
     form: FormInstance,
     classId: string,
     calculate: boolean,
+    duesAmount: number,
     calculatePriceBreakDown: (subTotal: number, dueAmount: number) => void
 }
 
 
-export const Purchase = ({ form, classId, calculate, calculatePriceBreakDown }: IPurchaseProps) => {
+export const Purchase = ({ form, classId, calculate, calculatePriceBreakDown , duesAmount}: IPurchaseProps) => {
 
     const { data: productCatalog } = useFetchAllProductCatalogQuery(classId);
 
@@ -21,11 +22,11 @@ export const Purchase = ({ form, classId, calculate, calculatePriceBreakDown }: 
     const [selectedItems, addSelectedItems] = useState<number[]>([]);
 
     useEffect(() => {
-        if (calculate) {
+        if (calculate || duesAmount) {
             calculateTotal();
         }
 
-    }, [calculate])
+    }, [calculate, duesAmount])
 
 
     const fetchProductRows = () => {
@@ -144,7 +145,7 @@ export const Purchase = ({ form, classId, calculate, calculatePriceBreakDown }: 
                 currency: 'INR'
             })
         });
-        calculatePriceBreakDown(subTotal,  dueOpted && subTotal >= dueInfo[0]?.dueAmount ? dueInfo[0].dueAmount : 0);
+          calculatePriceBreakDown(subTotal, dueOpted && subTotal >= dueInfo[0]?.dueAmount ? -dueInfo[0].dueAmount : 0);
     }
 
     const filterListConstruct = (rowKey: number) => {

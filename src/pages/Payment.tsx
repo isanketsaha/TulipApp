@@ -169,7 +169,7 @@ export const Payment = () => {
                                     <Fees form={form} classId={studentDetails?.classId}
                                         duesAmount={dueAmount} calculate={paymentTypeValue == 'FEES'} calculatePriceBreakDown={calculatePriceBreakDown} />}
                                 {paymentTypeValue == 'PURCHASE' && studentDetails && <Purchase form={form}
-                                    classId={studentDetails?.classId} calculate={paymentTypeValue == 'PURCHASE'} calculatePriceBreakDown={calculatePriceBreakDown} />}
+                                    classId={studentDetails?.classId} duesAmount={dueAmount} calculate={paymentTypeValue == 'PURCHASE'} calculatePriceBreakDown={calculatePriceBreakDown} />}
                                 <Form.List name="dueInfo" >
                                     {(fields, { add, remove }, { errors }) => (
                                         <>
