@@ -138,7 +138,7 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                                     {payData?.paymentMode}
                                 </Tag>
                             </Table.Summary.Cell>
-                            <Table.Summary.Cell index={10}>
+                            <Table.Summary.Cell colSpan={1}  index={10}>
                                 <Text mark>
                                     {payData?.total.toLocaleString('en-IN', {
                                         maximumFractionDigits: 2,
@@ -194,7 +194,7 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                                 {payData?.paymentMode}
                             </Tag>
                         </Table.Summary.Cell>
-                        <Table.Summary.Cell index={10}>
+                        <Table.Summary.Cell colSpan={1}  index={10}>
                             <Text mark>
                                 {payData?.total.toLocaleString('en-IN', {
                                     maximumFractionDigits: 2,
