@@ -132,7 +132,7 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                                 </Text>
                             </Table.Summary.Cell>
                         </Table.Summary.Row>}
-                        <Table.Summary.Row >
+                        {<Table.Summary.Row >
                             <Table.Summary.Cell colSpan={3} index={1}>
                                 Pay Mode :  <Tag color={payData?.paymentMode == "CASH" ? "green" : "cyan"}>
                                     {payData?.paymentMode}
@@ -147,7 +147,7 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                                     })}
                                 </Text>
                             </Table.Summary.Cell>
-                        </Table.Summary.Row>
+                        </Table.Summary.Row>}
 
                     </Table.Summary>
                 )}
