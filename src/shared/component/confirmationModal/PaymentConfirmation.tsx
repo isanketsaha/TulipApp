@@ -150,16 +150,10 @@ export const PaymentConfirmation = ({ payData }: IPaymentConfirmProps) => {
                         </Table.Summary.Row>} */}
                         <Table.Summary.Row >
                             <Table.Summary.Cell colSpan={3} index={1}>
-                                Pay Mode :  <Tag color={payData?.paymentMode == "CASH" ? "green" : "cyan"}>
-                                    {payData?.paymentMode}
-                                </Tag>
+                                Pay Mode 
                             </Table.Summary.Cell>
                             <Table.Summary.Cell colSpan={1} index={1}>
-                                {payData?.total.toLocaleString('en-IN', {
-                                    maximumFractionDigits: 2,
-                                    style: 'currency',
-                                    currency: 'INR'
-                                })}
+                                amount
                             </Table.Summary.Cell>
                         </Table.Summary.Row>
 
