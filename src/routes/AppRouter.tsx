@@ -16,6 +16,7 @@ import { PurchaseSummary } from "../pages/PurchaseSummary";
 import { AuthRotes } from "./AuthRoters";
 import { Role } from "../shared/utils/Role";
 import { DuePayment } from "../shared/component/payment/DuesPayment";
+import { Social } from "../module/Social";
 
 
 export const AppRouter = createBrowserRouter([
@@ -76,5 +77,8 @@ export const AppRouter = createBrowserRouter([
     }, {
         path: "/login",
         element: <Login />,
+    },{
+        path: "/social",
+        element: <Social />
     }
 ]);

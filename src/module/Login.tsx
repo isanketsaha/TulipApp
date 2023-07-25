@@ -48,65 +48,66 @@ export const Login = () => {
 
     return (
         <>
-            <Row justify="space-around" align={"middle"}>
-                <Col lg={{ span: 2, order: 1, offset: 3 }} md={{ span: 12, order: 2, offset: 6 }} xs={{ span: 12, order: 2, offset: 6 }} >
+            <Row style={{marginBottom: '10vmin'}} justify={isMobile ? "center" : "space-around"} align={"middle"}>
+                <Col >
                     <img width={100} src={logo} />
                 </Col>
-                <Col lg={{ span: 10, order: 2, offset: 2 }} md={{ span: 20, order: 1, offset: 4 }} xs={{ span: 24, order: 1, offset: 5 }}> {isMobile ? <h2 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h2>
+                <Col > <Row>{isMobile ? <h2 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h2>
                     : <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>}
-                    <div> <h4 style={{ fontFamily: 'EB Garamond, serif', marginLeft: '4vmin' }}>Shaping the lives of those, who will shape the nation.</h4></div>
+                     <h4 style={{ fontFamily: 'EB Garamond, serif' }}>Shaping the lives of those, who will shape the nation.</h4> 
+                     </Row>
                 </Col>
-                {!isMobile ? <Col lg={{ span: 4, order: 3, offset: 1 }} md={{ span: 12, order: 3, offset: 4 }} ><DateTime /></Col> : null}</Row>
-            <div style={{ marginTop: '10vw' }}>
-                <Row justify="space-around" align="middle">
+                 <Col><DateTime /></Col> </Row>
+            <div >
+                <Row style={{minHeight: '50vmin'}} justify="space-around" align="middle" >
                     <Col lg={7} md={12} sm={4} >
                         <Card style={{ width: '100%' }}>
-                        <Space direction="vertical" style={{ width: '100%' }}>
-                            <div hidden={!isError}>
-                               
+                            <Space direction="vertical" style={{ width: '100%' }}>
+                                <div hidden={!isError}>
+
                                     <Alert message={(error as any)?.data?.detail} type="error" closable />
-                              
-                            </div>
-                            <Form
-                                name="login"
-                                labelCol={{ span: 8 }}
-                                wrapperCol={{ span: 16 }}
-                                initialValues={{ rememberMe: false }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
-                                autoComplete="off"
-                            >
-                                <Form.Item
-                                    label="Username"
-                                    name="username"
-                                    rules={[{ required: true, message: 'Please input your username!' }]}
+
+                                </div>
+                                <Form
+                                    name="login"
+                                    labelCol={{ span: 8 }}
+                                    wrapperCol={{ span: 16 }}
+                                    initialValues={{ rememberMe: false }}
+                                    onFinish={onFinish}
+                                    onFinishFailed={onFinishFailed}
+                                    autoComplete="off"
                                 >
-                                    <Input />
-                                </Form.Item>
+                                    <Form.Item
+                                        label="Username"
+                                        name="username"
+                                        rules={[{ required: true, message: 'Please input your username!' }]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
 
-                                <Form.Item
-                                    label="Password"
-                                    name="password"
-                                    rules={[{ required: true, message: 'Please input your password!' }]}
-                                >
-                                    <Input.Password />
-                                </Form.Item>
+                                    <Form.Item
+                                        label="Password"
+                                        name="password"
+                                        rules={[{ required: true, message: 'Please input your password!' }]}
+                                    >
+                                        <Input.Password />
+                                    </Form.Item>
 
-                                <Row align={"middle"}>
-                                    <Col md={{ span: 4, offset: 8 }} xs={{ span: 2, offset: 4 }} >
-                                        <Button type="default" htmlType="reset">
-                                            Reset
-                                        </Button>
-                                    </Col>
-                                    <Col md={{ span: 8, offset: 2 }} xs={{ span: 2, offset: 6 }} >
-                                        <Button type="primary" htmlType="submit">
-                                            Submit
-                                        </Button>
-                                    </Col>
+                                    <Row align={"middle"}>
+                                        <Col md={{ span: 4, offset: 8 }} xs={{ span: 2, offset: 4 }} >
+                                            <Button type="default" htmlType="reset">
+                                                Reset
+                                            </Button>
+                                        </Col>
+                                        <Col md={{ span: 8, offset: 2 }} xs={{ span: 2, offset: 6 }} >
+                                            <Button type="primary" htmlType="submit">
+                                                Submit
+                                            </Button>
+                                        </Col>
 
-                                </Row>
+                                    </Row>
 
-                            </Form>
+                                </Form>
                             </Space>
                         </Card>
                     </Col>

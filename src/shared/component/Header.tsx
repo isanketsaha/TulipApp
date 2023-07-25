@@ -1,11 +1,9 @@
 import { Col, Row, Select } from "antd"
 import { Header } from "antd/es/layout/layout"
-import { DateTime } from "./DateTime"
-import { useState } from "react"
-import MenuItem from "antd/es/menu/MenuItem"
 import { Link } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../store"
 import { updateSelectedSession } from "../redux/slices/CommonSlice"
+import { DateTime } from "./DateTime"
 
 
 export const AppHeader = () => {
