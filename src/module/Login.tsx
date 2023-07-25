@@ -53,7 +53,7 @@ export const Login = () => {
                     <img width={100} src={logo} />
                 </Col>
                 <Col > {isMobile ? <h2 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h2>
-                    : <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>}
+                    : <h1 style={{ fontFamily: 'EB Garamond, serif', textAlign: "center" }}>Tulip School Managment System </h1>}
                      <h4 style={{ fontFamily: 'EB Garamond, serif', textAlign: "center" }}>Shaping the lives of those, who will shape the nation.</h4> 
                      
                 </Col>
