@@ -52,10 +52,10 @@ export const Login = () => {
                 <Col >
                     <img width={100} src={logo} />
                 </Col>
-                <Col > <Row>{isMobile ? <h2 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h2>
+                <Col > {isMobile ? <h2 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h2>
                     : <h1 style={{ fontFamily: 'EB Garamond, serif' }}>Tulip School Managment System </h1>}
-                     <h4 style={{ fontFamily: 'EB Garamond, serif' }}>Shaping the lives of those, who will shape the nation.</h4> 
-                     </Row>
+                     <h4 style={{ fontFamily: 'EB Garamond, serif', textAlign: "center" }}>Shaping the lives of those, who will shape the nation.</h4> 
+                     
                 </Col>
                  <Col><DateTime /></Col> </Row>
             <div >
