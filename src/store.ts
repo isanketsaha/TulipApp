@@ -15,6 +15,7 @@ import { paymentApi } from './shared/redux/api/feature/payment/api';
 import { reportApi } from './shared/redux/api/feature/report/api';
 import { auditApi } from './shared/redux/api/feature/audit/api';
 import { accountApi } from './shared/redux/api/feature/account/api';
+import { visualizeApi } from './shared/redux/api/feature/vizualize/api';
 
 export const store = configureStore({
   reducer: {
@@ -29,12 +30,13 @@ export const store = configureStore({
     [reportApi.reducerPath] : reportApi.reducer,
     [auditApi.reducerPath] : auditApi.reducer,
     [accountApi.reducerPath] : accountApi.reducer,
+    [visualizeApi.reducerPath]  : visualizeApi.reducer ,
     userAuth: userAuthReducer,
     globalState: GlobalAppSlice,
     commonData: CommonSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware,
+    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware, visualizeApi.middleware,
        onboardingApi.middleware, commonApi.middleware, studentApi.middleware, classroomApi.middleware, catalogApi.middleware,
        paymentApi.middleware, reportApi.middleware, auditApi.middleware, accountApi.middleware),
 });

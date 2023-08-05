@@ -1,6 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "/src/configs/BaseApi";
-import { IPageRequest } from "/src/shared/interface/IPageRequest";
 import { ITransactionReportFilter } from "/src/shared/interface/ITransactionReportFilter";
 import { ITransactionReportSummary } from "/src/shared/interface/ITransactionReportSummary";
 
