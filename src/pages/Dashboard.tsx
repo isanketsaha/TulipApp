@@ -1,82 +1,123 @@
-import { Button, Card, Col, DatePicker, Form, Modal, Row, message } from "antd"
-import { useState } from "react";
-import { Space } from 'antd';
-import { TransactionReport } from "../shared/component/reports/TransactionReports";
-import { StudentReport } from "../shared/component/reports/Student";
-import { StaffReport } from "../shared/component/reports/StaffReport";
-import { Stock } from "../shared/component/reports/Stock";
-import { AddExpense } from "../shared/component/AddExpense"
-import dayjs, { Dayjs } from "dayjs";
-import { useMediaQuery } from "react-responsive";
-import { useAppSelector } from "../store";
-import { Role } from "../shared/utils/Role";
-import { useNavigate } from "react-router-dom";
-import { Dues } from "../shared/component/reports/Dues";
+import { Card, Col, Divider, Row, Space } from "antd"
+import { StaffReport } from "../shared/component/reports/StaffReport"
+import { StudentReport } from "../shared/component/reports/Student"
+import { Bar, Line, Pie } from "react-chartjs-2"
+import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api"
+import { useAppSelector } from "../store"
+import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
+import { ChartData } from "chart.js"
 
 export const Dashboard = () => {
-    const { user } = useAppSelector(app => app.userAuth);
-    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
-    const [transactionDate, setTransactionDate] = useState<Dayjs>(dayjs(new Date()).startOf('date'));
-    const [isExpenseModelOpen, setIsExpenseModelOpen] = useState(false);
-    const dateFormat = 'DD-MMM-YYYY';
-    let navigate = useNavigate();
+  const { selectedSession } = useAppSelector((state) => state.commonData)
+  const { data: classList } = useFetchAllClassroomQuery(selectedSession.value)
+  const { data: admissionMonthly } = useAdmissionByMonthQuery()
+  const { data: expenseMonthly } = useExpenseReportQuery()
+  const graphOption = (title: string, aspectRatio = 1) => {
+    return {
+      indexAxis: "x" as const,
+      aspectRatio,
+      filler: {
+        propagate: false, // To disable the default behavior of filling under the line
+      },
+      elements: {
+        bar: {
+          borderWidth: 1,
+        },
+      },
+      interaction: {
+        mode: "index" as const,
+        intersect: false,
+      },
+      responsive: true,
+      plugins: {
+        colors: {
+          forceOverride: true,
+        },
+        legend: {
+          display: true,
+          fillStyle: "red",
+          labels: {
+            color: "black",
+            usePointStyle: true,
+          },
+          position: "top" as const,
+        },
+        title: {
+          display: true,
+          text: title,
+        },
+      },
+      redraw: true,
+      tooltip: {
+        mode: "index",
+        intersect: false,
+      },
+    }
+  }
 
+  const chartData: ChartData<"pie", number[], string> = {
+    labels: classList?.map((item) => item.std),
+    datasets: [
+      {
+        data: (classList && classList?.map((item) => item.studentStrength)) ?? [],
+        borderWidth: 1,
+      },
+    ],
+  }
 
-    const disableDate = (currentDate: Dayjs) => {
-        return user?.authority == Role.ADMIN ? currentDate.isAfter(new Date()) || currentDate.isBefore(dayjs().add(-60, "days"))
-            : currentDate.isAfter(new Date()) || currentDate.isBefore(dayjs().add(-7, "days"));
-    };
+  const admission: ChartData<"line", number[], string> = {
+    labels: admissionMonthly && Object.keys(admissionMonthly).reverse(),
+    datasets: [
+      {
+        label: "Admission",
+        data: (admissionMonthly && Object.values(admissionMonthly).reverse()) ?? [],
+      },
+    ],
+  }
 
-    return (
-        <>
-            <div className="site-card-wrapper">
-                <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                    <Row gutter={16}>
-                        <Col span={24}>
-                            <Card title="Collection Report"
-                                extra={<Space size={"large"}>
-                                    <DatePicker allowClear={false} format={dateFormat} onChange={(date, dateString) => date && setTransactionDate(date.startOf('date'))}
-                                        disabledDate={disableDate} defaultValue={dayjs(new Date())} />
-                                    {isMobile ? null : <Button onClick={() => setIsExpenseModelOpen(true)}>Add Expense</Button>}</Space>} >
-                                <TransactionReport transactionDate={transactionDate} />
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24}>
+  const expenseLabel = [
+    ...new Set(expenseMonthly && Object.values(expenseMonthly).flatMap((innerRecord) => Object.keys(innerRecord))),
+  ]
 
-                            <Stock />
+  const expense = {
+    labels: expenseLabel,
+    datasets:
+      (expenseMonthly &&
+        Object.entries(expenseMonthly).map(([category, expenses]) => {
+          return {
+            label: category,
+            data: expenseLabel.map((month) => (expenses[month] ? expenses[month] : 0)),
+          }
+        })) ??
+      [],
+  }
 
-                        </Col>
-                    </Row>
-                    <Row>
-                    <Col xs={{ span: 24 }} >
-                            <Dues/>
-                        </Col>
-                    </Row>
-                    <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
-                    
-                        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-                            <Card >
-                                <StudentReport />
-                            </Card>
-                        </Col>
-                        <Col xs={{ span: 24 }} lg={{ span: 12}}>
-                            <Card >
-                                <StaffReport />
-
-                            </Card>
-                        </Col>
-                       
-                    </Row>
-                </Space>
-
-                <Modal destroyOnClose title="Add Expense" open={isExpenseModelOpen} 
-                    onCancel={() => setIsExpenseModelOpen(false)} maskClosable={false} width={1300} footer={[
-                    ]}>
-                    <AddExpense/>
-                </Modal>
-            </div></>
-    )
-
+  return (
+    <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+      <Row justify={"space-around"}>
+        <Col>
+          <Pie data={chartData} options={graphOption("Student")} />
+        </Col>
+        <Col>
+          <Bar options={graphOption("Expense")} data={expense} />
+        </Col>
+        <Col>
+          <Line options={graphOption("Admission")} data={admission} />
+        </Col>
+      </Row>
+      <Row></Row>
+      <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
+        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+          <Card>
+            <StudentReport />
+          </Card>
+        </Col>
+        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+          <Card>
+            <StaffReport />
+          </Card>
+        </Col>
+      </Row>
+    </Space>
+  )
 }

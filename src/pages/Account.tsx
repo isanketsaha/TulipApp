@@ -40,92 +40,139 @@ export const Accounts = () => {
         ],
     };
 
-    const chartData = {
-        labels: classList?.map(item => item.std),
-        datasets: [
-            {
-                label: 'Student Strength',
-                data: classList?.map(item => item.studentStrength),
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.3)',
-                    'rgba(54, 162, 235, 0.3)',
-                    'rgba(255, 206, 86, 0.3)',
-                    'rgba(75, 192, 192, 0.3)',
-                    'rgba(153, 102, 255, 0.3)',
-                    'rgba(255, 159, 64, 0.3)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
-                borderWidth: 1,
-
-            },
-        ],
-    };
-
-
-    const tabList: TabsProps['items'] = [
-        {
-            key: '1',
-            label: 'Transaction',
-            children: <FinanceReport selectedTransactionMonth={setSelectedTransactionMonth} selectedRange={selectedRange} />
-        }, {
-            key: '2',
-            label: 'Audit',
-            children: <Audit />
+    const graphOption = (title: string) => {
+      return {
+        indexAxis: "x" as const,
+        aspectRatio: 1,
+        filler: {
+          propagate: false, // To disable the default behavior of filling under the line
         },
+        elements: {
+          bar: {
+            borderWidth: 1,
+          },
+        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            fillStyle: "red",
+            labels: {
+              color: "black",
+              usePointStyle: true,
+            },
+            position: "top" as const,
+          },
+          title: {
+            display: true,
+            text: title,
+          },
+        },
+        redraw: true,
+        tooltip: {
+          mode: "index",
+          intersect: false,
+        },
+      }
+    }
+
+    const chartData = {
+      labels: classList?.map((item) => item.std),
+      datasets: [
         {
-            key: '3',
-            label: '',
-            children: <Stock />
-        }
-    ];
+          label: "Student Strength",
+          data: classList?.map((item) => item.studentStrength),
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.3)",
+            "rgba(54, 162, 235, 0.3)",
+            "rgba(255, 206, 86, 0.3)",
+            "rgba(75, 192, 192, 0.3)",
+            "rgba(153, 102, 255, 0.3)",
+            "rgba(255, 159, 64, 0.3)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    }
+
+    const tabList: TabsProps["items"] = [
+      {
+        key: "1",
+        label: "Transaction",
+        children: (
+          <FinanceReport selectedTransactionMonth={setSelectedTransactionMonth} selectedRange={selectedRange} />
+        ),
+      },
+      {
+        key: "2",
+        label: "Audit",
+        children: <Audit />,
+      },
+      {
+        key: "3",
+        label: "",
+        children: <Stock />,
+      },
+    ]
     const disabledDate = (current: Dayjs) => {
-        return current && current > dayjs().endOf('day'); // Disable future dates
-    };
+      return current && current > dayjs().endOf("day") // Disable future dates
+    }
 
+    return (
+      <>
+        <Space direction="vertical" style={{ width: "100%" }} size={"large"}>
+          <Row justify={"space-around"}>
+            <Col>
+              <Pie options={graphOption("Class Strength")} data={chartData} />
+            </Col>
+            <Col>
+              <Bar options={graphOption("Monthly Transaction")} data={transactionData} />
+            </Col>
+          </Row>
+          <Row>
+            <Tabs
+              style={{ width: "100%" }}
+              size="large"
+              defaultActiveKey="1"
+              tabBarExtraContent={
+                <Row justify={"space-evenly"}>
+                  <Col>
+                    <Button
+                      disabled={selectedTransactionMonth.length == 0}
+                      onClick={() => transactionDownload(selectedTransactionMonth)}
+                      icon={<DownloadOutlined />}
+                    >
+                      Export To Excel
+                    </Button>
+                  </Col>
 
-    return (<>
-
-        <Space direction="vertical" style={{ width: '100%' }} size={"large"}>
-            <Row justify={"space-around"}>
-                <Col>
-                    <Pie data={chartData} />
-                </Col>
-                <Col>
-                    <Bar width={500}
-                        height={250} data={transactionData} />
-                </Col>
-            </Row>
-            <Row >
-                <Tabs style={{ width: '100%' }} size="large" defaultActiveKey="1"
-                    tabBarExtraContent={
-                        <Row justify={"space-evenly"}>
-
-                            <Col>
-                                <Button disabled={selectedTransactionMonth.length == 0}
-                                 onClick={() =>transactionDownload(selectedTransactionMonth)}  icon={<DownloadOutlined />}>
-                                    Export To Excel
-                                </Button>
-                            </Col>
-
-                            <Col> <RangePicker picker="month"
-                                disabledDate={disabledDate}
-                                allowClear={false}
-                                onCalendarChange={(val : null | (Dayjs | null)[] ) => val &&  setSelectedRange((val.filter(Boolean) as Dayjs[]))}
-                                format={"MMM-YYYY"}
-                                defaultValue={[selectedRange[0], selectedRange[1]]}
-                            /> </Col>
-                        </Row>}
-                    items={tabList} />
-            </Row>
-
+                  <Col>
+                    {" "}
+                    <RangePicker
+                      picker="month"
+                      disabledDate={disabledDate}
+                      allowClear={false}
+                      onCalendarChange={(val: null | (Dayjs | null)[]) =>
+                        val && setSelectedRange(val.filter(Boolean) as Dayjs[])
+                      }
+                      format={"MMM-YYYY"}
+                      defaultValue={[selectedRange[0], selectedRange[1]]}
+                    />{" "}
+                  </Col>
+                </Row>
+              }
+              items={tabList}
+            />
+          </Row>
         </Space>
-
-    </>)
+      </>
+    )
 }
