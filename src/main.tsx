@@ -7,7 +7,6 @@ import './index.scss'
 import { store } from './store'
 import 'chart.js/auto';
 import { Chart, Colors } from "chart.js"
-import autocolors from "chartjs-plugin-autocolors"
 
 const validateMessages = {
   required: "${label} is required!",
