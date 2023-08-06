@@ -6,6 +6,8 @@ import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom
 import { useAppSelector } from "../store"
 import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
 import { ChartData } from "chart.js"
+import dayjs from "dayjs"
+import { monthToNumber } from "../shared/utils/Const"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
@@ -66,18 +68,22 @@ export const Dashboard = () => {
   }
 
   const admission: ChartData<"line", number[], string> = {
-    labels: admissionMonthly && Object.keys(admissionMonthly).reverse(),
+    labels: admissionMonthly && Object.keys(admissionMonthly),
     datasets: [
       {
         label: "Admission",
-        data: (admissionMonthly && Object.values(admissionMonthly).reverse()) ?? [],
+        data: (admissionMonthly && Object.values(admissionMonthly)) ?? [],
       },
     ],
   }
 
-  const expenseLabel = [
+  const monthArray: string[] = [
     ...new Set(expenseMonthly && Object.values(expenseMonthly).flatMap((innerRecord) => Object.keys(innerRecord))),
   ]
+
+  const expenseLabel: string[] = monthArray.sort(
+    (a, b) => monthToNumber[a.toUpperCase()] - monthToNumber[b.toUpperCase()]
+  )
 
   const expense = {
     labels: expenseLabel,
@@ -102,7 +108,22 @@ export const Dashboard = () => {
           <Bar options={graphOption("Expense")} data={expense} />
         </Col>
         <Col>
-          <Line options={graphOption("Admission")} data={admission} />
+          <Line
+            options={{
+              ...graphOption("Admission"),
+              ...{
+                scales: {
+                  y: {
+                    suggestedMin: 0, // Start y-axis from 0
+                    ticks: {
+                      stepSize: 3,
+                    },
+                  },
+                },
+              },
+            }}
+            data={admission}
+          />
         </Col>
       </Row>
       <Row></Row>
