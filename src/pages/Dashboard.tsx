@@ -1,13 +1,12 @@
-import { Card, Col, Divider, Row, Space } from "antd"
+import { Card, Col, Row, Space } from "antd"
+import { ChartData } from "chart.js"
+import { Bar, Line, Pie } from "react-chartjs-2"
 import { StaffReport } from "../shared/component/reports/StaffReport"
 import { StudentReport } from "../shared/component/reports/Student"
-import { Bar, Line, Pie } from "react-chartjs-2"
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api"
-import { useAppSelector } from "../store"
 import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
-import { ChartData } from "chart.js"
-import dayjs from "dayjs"
 import { monthToNumber } from "../shared/utils/Const"
+import { useAppSelector } from "../store"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
@@ -126,7 +125,6 @@ export const Dashboard = () => {
           />
         </Col>
       </Row>
-      <Row></Row>
       <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
         <Col xs={{ span: 24 }} lg={{ span: 12 }}>
           <Card>
