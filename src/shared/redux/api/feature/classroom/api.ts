@@ -1,7 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { baseQueryWithRetry } from "../../../../../configs/BaseApi";
 import { IClassDetails } from "../../../../interface/IClassDetails";
-import { IBasicDetails } from "../../../../interface/IBasicDetails";
 import { IClassList } from "/src/shared/interface/IClassList";
 import { IPromote } from "/src/shared/interface/IPromote";
 
@@ -12,7 +11,7 @@ export const classroomApi = createApi({
     baseQuery: baseQueryWithRetry("classroom"),
     endpoints: (builder) => ({
         fetchAllClassroom: builder.query<IClassList[], number>({
-            query: (sessionId) => `all?sessionId=${sessionId ? sessionId:0}`,
+            query: (sessionId) => `all?sessionId=${sessionId}`,
             providesTags: ['Classroom']
         }),
         fetchClassroomId: builder.query<number, {std: string, sessionId : number} | undefined>({

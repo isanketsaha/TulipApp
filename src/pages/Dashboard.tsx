@@ -10,9 +10,10 @@ import { useAppSelector } from "../store"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
-  const { data: classList } = useFetchAllClassroomQuery(selectedSession.value)
+  const { data: classList } = useFetchAllClassroomQuery(selectedSession.value, { skip: !selectedSession.value })
   const { data: admissionMonthly } = useAdmissionByMonthQuery()
   const { data: expenseMonthly } = useExpenseReportQuery()
+
   const graphOption = (title: string, aspectRatio = 1) => {
     return {
       indexAxis: "x" as const,
