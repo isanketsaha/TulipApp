@@ -1,11 +1,11 @@
-import { ConfigProvider } from 'antd'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { Provider } from 'react-redux'
-import App from './App'
-import './index.scss'
-import { store } from './store'
-import 'chart.js/auto';
+import { ConfigProvider, FloatButton } from "antd"
+import React from "react"
+import ReactDOM from "react-dom/client"
+import { Provider } from "react-redux"
+import App from "./App"
+import "./index.scss"
+import { store } from "./store"
+import "chart.js/auto"
 import { Chart, Colors } from "chart.js"
 
 const validateMessages = {
@@ -16,25 +16,26 @@ const validateMessages = {
   },
 }
 Chart.register(Colors)
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ConfigProvider form={{validateMessages}}
+    <ConfigProvider
+      form={{ validateMessages }}
       theme={{
-        components:{
+        components: {
           Switch: {
-            colorPrimary: 'green'
-          }
+            colorPrimary: "green",
+          },
         },
         token: {
-          colorPrimary: '#800000',
+          colorPrimary: "#800000",
           fontSize: 15,
-
         },
       }}
     >
       <Provider store={store}>
-        <App/>
+        <App />
+        <FloatButton.BackTop />
       </Provider>
     </ConfigProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
