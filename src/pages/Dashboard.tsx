@@ -14,7 +14,7 @@ export const Dashboard = () => {
   const { data: admissionMonthly } = useAdmissionByMonthQuery()
   const { data: expenseMonthly } = useExpenseReportQuery()
 
-  const graphOption = (title: string, aspectRatio = 1) => {
+  const graphOption = (title: string, aspectRatio = 1, intersect = false) => {
     return {
       indexAxis: "x" as const,
       aspectRatio,
@@ -28,7 +28,7 @@ export const Dashboard = () => {
       },
       interaction: {
         mode: "index" as const,
-        intersect: true,
+        intersect,
       },
       responsive: true,
       plugins: {
@@ -102,7 +102,7 @@ export const Dashboard = () => {
     <Space direction="vertical" size="middle" style={{ display: "flex" }}>
       <Row justify={"space-between"}>
         <Col>
-          <Pie data={chartData} options={graphOption("Student")} />
+          <Pie data={chartData} options={graphOption("Student", 1, false)} />
         </Col>
         <Col>
           <Bar options={graphOption("Expense")} data={expense} />
