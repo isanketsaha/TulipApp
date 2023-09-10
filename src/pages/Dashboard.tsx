@@ -28,7 +28,7 @@ export const Dashboard = () => {
       },
       interaction: {
         mode: "index" as const,
-        intersect: false,
+        intersect: true,
       },
       responsive: true,
       plugins: {
