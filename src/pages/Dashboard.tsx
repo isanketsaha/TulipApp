@@ -102,7 +102,7 @@ export const Dashboard = () => {
     <Space direction="vertical" size="middle" style={{ display: "flex" }}>
       <Row justify={"space-between"}>
         <Col>
-          <Pie data={chartData} options={graphOption("Student", 1, false)} />
+          <Pie data={chartData} options={graphOption("Student", 1, true)} />
         </Col>
         <Col>
           <Bar options={graphOption("Expense")} data={expense} />
