@@ -138,7 +138,7 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
                           },
                         ]}
                       >
-                        <Input maxLength={12} style={{ width: "100%" }} />
+                        <Input maxLength={14} style={{ width: "100%" }} />
                       </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -163,7 +163,7 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
                           }),
                         ]}
                       >
-                        <Input maxLength={12} style={{ width: "100%" }} />
+                        <Input maxLength={14} style={{ width: "100%" }} />
                       </Form.Item>
                     </Col>
                   </Row>
