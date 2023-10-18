@@ -3,6 +3,7 @@ import { MinusCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { useFetchAllfeesCatalogQuery } from "../../redux/api/feature/catalog/api";
+import { FeesRuleType } from "../../utils/FeesRuleType"
 
 
 interface IFeesPros {
@@ -159,105 +160,133 @@ export const Fees = ({ form, classId, calculate, duesAmount, calculatePriceBreak
     }
     const filteredOptions = feesCatalog?.filter((catalog) => !selectedFees.includes(catalog.id));
 
-    return (<>
+    return (
+      <>
         <Form.List name="feeItem">
-            {(fields, { add, remove }, { errors }) => (
-                <>
-                    {fields.map(({ key, name, ...restField }, index) => (
-                        <Space direction="vertical" key={key} style={{ width: '100%' }}>
+          {(fields, { add, remove }, { errors }) => (
+            <>
+              {fields.map(({ key, name, ...restField }, index) => (
+                <Space direction="vertical" key={key} style={{ width: "100%" }}>
+                  <div key={key}>
+                    <Row justify={"space-between"}>
+                      <Col span={1}>{name + 1}.</Col>
+                      <Col span={6}>
+                        <Form.Item name={[name, "feesTitle"]} rules={[{ required: true }]}>
+                          <Select
+                            placeholder="Select Fees"
+                            notFoundContent={null}
+                            onSelect={(e) => onSelectFees(e, name)}
+                            options={filteredOptions?.map((d) => ({
+                              value: d.id,
+                              label: (
+                                <>
+                                  <Row>{d.name}</Row>
+                                  <Text type="secondary">{d.description}</Text>
+                                </>
+                              ),
+                            }))}
+                          ></Select>
+                        </Form.Item>
+                      </Col>
+                      <Col hidden={true}>
+                        <Form.Item name={[name, "feesId"]}>
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                      <Col hidden={true}>
+                        <Form.Item name={[name, "rule"]}>
+                          <Input />
+                        </Form.Item>
+                      </Col>
 
-                            <div key={key}>
-                                <Row justify={"space-between"}>
-                                    <Col span={1}>
-                                        {name + 1}.
-                                    </Col>
-                                    <Col span={6}>
-                                        <Form.Item
-                                            name={[name, "feesTitle"]}
-                                            rules={[{ required: true }]}
-                                        >
-                                            <Select placeholder="Select Fees" notFoundContent={null}
-                                                onSelect={(e) => onSelectFees(e, name)} options={filteredOptions?.map((d) => ({
-                                                    value: d.id,
-                                                    label: <>
-                                                        <Row>
-                                                            {d.name}
-                                                        </Row>
-                                                        <Text type="secondary">
-                                                            {d.description}
-                                                        </Text>
-                                                    </>,
-                                                }))}>
-                                            </Select>
-                                        </Form.Item>
-                                    </Col>
-                                    <Col hidden={true}>
-                                        <Form.Item
-                                            name={[name, "feesId"]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col hidden={true}>
-                                        <Form.Item
-                                            name={[name, "rule"]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={4} >
-                                        <Form.Item
-                                            name={[name, "from"]}
-                                            rules={[{ required: true }]}
-                                        >
-                                            <DatePicker format="MMM-YYYY" placeholder="From Date" onSelect={(value) => onMonthSelection(value, name, "from")} picker="month" />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={4} >
-                                        <Form.Item
-                                            name={[name, "to"]}
-                                            rules={[{ required: true }]}
-                                        >
-                                            <DatePicker format="MMM-YYYY" picker="month" placeholder="To Date" onSelect={(value) => onMonthSelection(value, name, "to")} disabledDate={(value) => disableDate(value, name)} />
-                                        </Form.Item>
-                                    </Col>
+                      <Col span={4}>
+                        <Form.Item noStyle shouldUpdate={(prevValues, curValues) => prevValues.from !== curValues.from}>
+                          {({ getFieldValue }) => {
+                            return (
+                              getFieldValue(["feeItem", name, "rule"]) === FeesRuleType.Monthly && (
+                                <Form.Item name={[name, "from"]} rules={[{ required: true }]}>
+                                  <DatePicker
+                                    format="MMM-YYYY"
+                                    placeholder="From Date"
+                                    onSelect={(value) => onMonthSelection(value, name, "from")}
+                                    picker="month"
+                                  />
+                                </Form.Item>
+                              )
+                            )
+                          }}
+                        </Form.Item>
+                      </Col>
+                      <Col span={4}>
+                        <Form.Item noStyle shouldUpdate={(prevValues, curValues) => prevValues.from !== curValues.from}>
+                          {({ getFieldValue }) => {
+                            return (
+                              getFieldValue(["feeItem", name, "rule"]) === FeesRuleType.Monthly && (
+                                <Form.Item name={[name, "to"]} rules={[{ required: true }]}>
+                                  <DatePicker
+                                    format="MMM-YYYY"
+                                    picker="month"
+                                    placeholder="To Date"
+                                    onSelect={(value) => onMonthSelection(value, name, "to")}
+                                    disabledDate={(value) => disableDate(value, name)}
+                                  />
+                                </Form.Item>
+                              )
+                            )
+                          }}
+                        </Form.Item>
+                      </Col>
 
-                                    <Col span={3} >
-                                        <Form.Item
-                                            name={[name, "unitPrice"]}
-                                            rules={[{ required: true }]}>
-                                            <InputNumber min={1} max={10000} controls={false} bordered={false} disabled={true} style={{ width: '100%' }} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={3} >
-                                        <Form.Item
-                                            name={[name, "amount"]}
-                                            rules={[{ required: true }]}
-                                        >
-                                            <InputNumber bordered={false} controls={false} placeholder="Amount" disabled={true} style={{ width: '100%' }} />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={2} >
-                                        <Space>
-                                            {fields.length > 1 ? <Button type="link" onClick={() => {
-                                                filterListConstruct(name);
-                                                remove(name);
-                                                calculateTotal();
-
-                                            }} icon={<MinusCircleTwoTone style={{ fontSize: '3vh' }} />} /> : null}
-                                            <Button type="link" onClick={() => add()} icon={<PlusCircleTwoTone style={{ fontSize: '3vh' }} />} />
-                                        </Space>
-                                    </Col>
-                                </Row>
-
-                            </div>
-
+                      <Col span={3}>
+                        <Form.Item name={[name, "unitPrice"]} rules={[{ required: true }]}>
+                          <InputNumber
+                            min={1}
+                            max={10000}
+                            placeholder="Unit Price"
+                            controls={false}
+                            disabled={true}
+                            style={{ width: "100%" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={3}>
+                        <Form.Item name={[name, "amount"]} rules={[{ required: true }]}>
+                          <InputNumber
+                            controls={false}
+                            placeholder="Amount"
+                            disabled={true}
+                            style={{ width: "100%" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={2}>
+                        <Space>
+                          {fields.length > 1 ? (
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                filterListConstruct(name)
+                                remove(name)
+                                calculateTotal()
+                              }}
+                              icon={<MinusCircleTwoTone style={{ fontSize: "3vh" }} />}
+                            />
+                          ) : null}
+                          <Button
+                            type="link"
+                            onClick={() => add()}
+                            icon={<PlusCircleTwoTone style={{ fontSize: "3vh" }} />}
+                          />
                         </Space>
-                    ))}
-                </>
-            )}
-
+                      </Col>
+                    </Row>
+                  </div>
+                </Space>
+              ))}
+            </>
+          )}
         </Form.List>
-    </>)
+      </>
+    )
 
 }
