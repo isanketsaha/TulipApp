@@ -8,15 +8,11 @@ import { FinanceReport } from "../shared/component/reports/FinanceReport"
 import { Projections } from "../shared/component/reports/Projections"
 import { Stock } from "../shared/component/reports/Stock"
 import { useFetchTransactionReportQuery } from "../shared/redux/api/feature/account/api"
-import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api"
 import { useTransactionDownloadMutation } from "../shared/redux/api/feature/exports/api"
-import { useAppSelector } from "../store"
 
 export const Accounts = () => {
   const { RangePicker } = DatePicker
   const [transactionDownload] = useTransactionDownloadMutation()
-  const { selectedSession } = useAppSelector((state) => state.commonData)
-  const { data: classList } = useFetchAllClassroomQuery(selectedSession.value)
   const [selectedTransactionMonth, setSelectedTransactionMonth] = useState<string[]>([])
   const [selectedRange, setSelectedRange] = useState<Dayjs[]>([
     dayjs(new Date()).startOf("month").add(-3, "month").startOf("month"),
@@ -44,10 +40,9 @@ export const Accounts = () => {
     ],
   }
 
-  const graphOption = (title: string, aspectRatio: number) => {
+  const graphOption = (title: string) => {
     return {
       indexAxis: "x" as const,
-      aspectRatio,
       filler: {
         propagate: false, // To disable the default behavior of filling under the line
       },
@@ -80,33 +75,6 @@ export const Accounts = () => {
     }
   }
 
-  const chartData = {
-    labels: classList?.map((item) => item.std),
-    datasets: [
-      {
-        label: "Student Strength",
-        data: classList?.map((item) => item.studentStrength),
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.3)",
-          "rgba(54, 162, 235, 0.3)",
-          "rgba(255, 206, 86, 0.3)",
-          "rgba(75, 192, 192, 0.3)",
-          "rgba(153, 102, 255, 0.3)",
-          "rgba(255, 159, 64, 0.3)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  }
-
   const tabList: TabsProps["items"] = [
     {
       key: "1",
@@ -118,11 +86,6 @@ export const Accounts = () => {
       label: "Audit",
       children: <Audit />,
     },
-    {
-      key: "3",
-      label: "",
-      children: <Stock />,
-    },
   ]
   const disabledDate = (current: Dayjs) => {
     return current && current > dayjs().endOf("day") // Disable future dates
@@ -131,14 +94,15 @@ export const Accounts = () => {
   return (
     <>
       <Space direction="vertical" style={{ width: "100%" }} size={"large"}>
-        <Row justify={"space-around"}>
-          <Bar options={graphOption("Monthly Transaction", 5)} data={transactionData} />
-        </Row>
-        <Row justify={"space-around"}>
-          <Col span={10}>
+        <Row justify={"space-between"} align={"bottom"}>
+          <Col span={11}>
             <Projections />
           </Col>
+          <Col span={11}>
+            <Bar options={graphOption("Monthly Transaction")} data={transactionData} />
+          </Col>
         </Row>
+
         <Row>
           <Tabs
             style={{ width: "100%" }}
