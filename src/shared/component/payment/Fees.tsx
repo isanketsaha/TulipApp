@@ -242,8 +242,8 @@ export const Fees = ({ form, classId, calculate, duesAmount, calculatePriceBreak
                           <InputNumber
                             min={1}
                             max={10000}
+                            placeholder="Unit Price"
                             controls={false}
-                            bordered={false}
                             disabled={true}
                             style={{ width: "100%" }}
                           />
@@ -252,7 +252,6 @@ export const Fees = ({ form, classId, calculate, duesAmount, calculatePriceBreak
                       <Col span={3}>
                         <Form.Item name={[name, "amount"]} rules={[{ required: true }]}>
                           <InputNumber
-                            bordered={false}
                             controls={false}
                             placeholder="Amount"
                             disabled={true}
