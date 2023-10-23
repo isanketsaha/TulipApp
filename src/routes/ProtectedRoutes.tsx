@@ -5,9 +5,5 @@ import { useAppSelector } from "../store";
 
 export const ProtectedRoutes: FC = ({ ...rest }) => {
   const { user } = useAppSelector(state => state.userAuth);
-  return user ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  return user ? <Outlet /> : <Navigate to="/login" replace />
 }

@@ -10,23 +10,25 @@ import { EmployeePage } from "../pages/Employee"
 import { Office } from "../pages/Office"
 import { Payment } from "../pages/Payment"
 import { PurchaseSummary } from "../pages/PurchaseSummary"
+import { ResetCredential } from "../pages/ResetCredential"
 import { StudentPage } from "../pages/Students"
 import { ViewDetails } from "../pages/ViewDetails"
 import { Onboarding } from "../shared/component/onboarding/Onboarding"
 import { DuePayment } from "../shared/component/payment/DuesPayment"
 import { Role } from "../shared/utils/Role"
-import { RootState, store } from "../store"
 import { AuthRotes } from "./AuthRoters"
 import { ProtectedRoutes } from "./ProtectedRoutes"
 import { RouteDecider } from "./RouteDecider"
-
-const { userAuth } = store.getState()
 
 export const AppRouter = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedRoutes />,
     children: [
+      {
+        path: "/reset",
+        element: <ResetCredential />,
+      },
       {
         errorElement: <Error404 />,
         element: <Home />,

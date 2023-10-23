@@ -1,13 +1,11 @@
 import { Affix, Layout, theme } from "antd"
 import { Content } from "antd/es/layout/layout"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useMediaQuery } from "react-responsive"
 import { Outlet, useNavigate } from "react-router-dom"
 import { AppFooter } from "../shared/component/Footer"
 import { AppHeader } from "../shared/component/Header"
 import { SideNav } from "../shared/component/SideNav"
-import { useAppSelector } from "../store"
-import { Role } from "../shared/utils/Role"
 
 export const Home = () => {
   let navigate = useNavigate()
@@ -17,13 +15,6 @@ export const Home = () => {
   } = theme.useToken()
 
   let [collapsed, setCollapsed] = useState<boolean>(false)
-  let { user } = useAppSelector((app) => app.userAuth)
-
-  //   useEffect(() => {
-  //     if (user?.authority == Role.STAFF) {
-  //       navigate(`/office`)
-  //     }
-  //   }, [])
 
   return (
     <Layout>
@@ -32,12 +23,10 @@ export const Home = () => {
       </Affix>
       <Layout hasSider>
         <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
-        <Layout style={{ marginLeft: !collapsed ? "16vw" : "5vw" }}>
+        <Layout style={{ marginLeft: isMobile ? 100 : 250, minHeight: "100vh", marginTop: 80, paddingRight: 10 }}>
           <Content
             style={{
-              margin: isMobile ? "12vh 3vh" : "10vh 3vh",
               overflow: "initial",
-              minHeight: "90vh",
             }}
           >
             <Outlet />

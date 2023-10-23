@@ -16,6 +16,7 @@ import { reportApi } from './shared/redux/api/feature/report/api';
 import { auditApi } from './shared/redux/api/feature/audit/api';
 import { accountApi } from './shared/redux/api/feature/account/api';
 import { visualizeApi } from './shared/redux/api/feature/vizualize/api';
+import { profileApi } from "./shared/redux/api/feature/profile/api"
 
 export const store = configureStore({
   reducer: {
@@ -25,21 +26,35 @@ export const store = configureStore({
     [onboardingApi.reducerPath]: onboardingApi.reducer,
     [studentApi.reducerPath]: studentApi.reducer,
     [classroomApi.reducerPath]: classroomApi.reducer,
-    [catalogApi.reducerPath] : catalogApi.reducer,
-    [paymentApi.reducerPath] : paymentApi.reducer,
-    [reportApi.reducerPath] : reportApi.reducer,
-    [auditApi.reducerPath] : auditApi.reducer,
-    [accountApi.reducerPath] : accountApi.reducer,
-    [visualizeApi.reducerPath]  : visualizeApi.reducer ,
+    [catalogApi.reducerPath]: catalogApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
+    [reportApi.reducerPath]: reportApi.reducer,
+    [auditApi.reducerPath]: auditApi.reducer,
+    [accountApi.reducerPath]: accountApi.reducer,
+    [visualizeApi.reducerPath]: visualizeApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
     userAuth: userAuthReducer,
     globalState: GlobalAppSlice,
     commonData: CommonSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(loginApi.middleware, GlobalListener, employeeApi.middleware, visualizeApi.middleware,
-       onboardingApi.middleware, commonApi.middleware, studentApi.middleware, classroomApi.middleware, catalogApi.middleware,
-       paymentApi.middleware, reportApi.middleware, auditApi.middleware, accountApi.middleware),
-});
+    getDefaultMiddleware().concat(
+      loginApi.middleware,
+      GlobalListener,
+      employeeApi.middleware,
+      visualizeApi.middleware,
+      onboardingApi.middleware,
+      commonApi.middleware,
+      studentApi.middleware,
+      classroomApi.middleware,
+      catalogApi.middleware,
+      paymentApi.middleware,
+      reportApi.middleware,
+      auditApi.middleware,
+      accountApi.middleware,
+      profileApi.middleware
+    ),
+})
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

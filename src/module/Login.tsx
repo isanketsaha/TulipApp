@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../store"
 export const Login = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   let navigate = useNavigate()
-  const userAuth = useAppSelector((state) => state.userAuth)
+  const { user } = useAppSelector((state) => state.userAuth)
   const dispatch = useAppDispatch()
   const [loginUser, { data, isSuccess, isError, error }] = useLoginUserMutation()
 
@@ -28,10 +28,12 @@ export const Login = () => {
   }
 
   useEffect(() => {
-    if (userAuth.user != null) {
+    if (user && user.resetCredential) {
+      navigate("/reset", { replace: true })
+    } else if (user) {
       navigate("/", { replace: true })
     }
-  }, [userAuth.user])
+  }, [user])
 
   return (
     <>

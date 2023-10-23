@@ -5,5 +5,6 @@ export interface UserAuth {
     userId: string | null,
     idToken: string | null,
     expiry: number,
+    resetCredential: boolean
     authority: Role,
 }

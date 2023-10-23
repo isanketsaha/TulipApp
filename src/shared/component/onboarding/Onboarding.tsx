@@ -1,4 +1,4 @@
-import { Button, Col, Form, Modal, Row, Steps, Upload, notification } from "antd"
+import { Button, Col, Form, Input, Modal, Row, Steps, Upload, notification } from "antd"
 import Title from "antd/es/typography/Title"
 import dayjs from "dayjs"
 import { useState } from "react"
@@ -16,6 +16,8 @@ import { AddDependent } from "./Dependent"
 import { uploadProps } from "/src/configs/UploadConfig"
 import { useAppSelector } from "/src/store"
 import { UploadFiles } from "../UploadFiles"
+import { useForm } from "antd/es/form/Form"
+import { useCheckUserIdExistMutation } from "../../redux/api/feature/profile/api"
 
 export const Onboarding = () => {
   let navigate = useNavigate()
@@ -141,27 +143,38 @@ export const Onboarding = () => {
   }
 
   const onSubmit = () => {
-    form.validateFields().then((values) => {
-      const formValues = form.getFieldsValue(true)
-      const interview = formValues["interview"] ? formValues["interview"][0] : null
-      const bank = formValues["bank"] ? formValues["bank"][0] : null
-      const credential = formValues["credential"] ? formValues["credential"][0] : null
-      if (interview != null) {
-        var interviewDetails = {
-          ...interview,
-          doj: interview.doj?.format("YYYY-MM-DD"),
-          interviewDate: interview.interviewDate?.format("YYYY-MM-DD"),
-        }
-      }
-      const data = {
-        ...formValues,
-        dob: formValues["dob"].format("YYYY-MM-DD"),
-        interview: interviewDetails,
-        bank,
-        credential,
-      }
-      setConfirmData(data)
-      setConfirmEnrollment(true)
+    setTimeout(() => {
+      form
+        .validateFields()
+        .then(() => {
+          const formValues = form.getFieldsValue(true)
+          const interview = formValues["interview"] ? formValues["interview"][0] : null
+          const bank = formValues["bank"] ? formValues["bank"][0] : null
+          const credential = formValues["credential"] ? formValues["credential"][0] : null
+          if (interview != null) {
+            var interviewDetails = {
+              ...interview,
+              doj: interview.doj?.format("YYYY-MM-DD"),
+              interviewDate: interview.interviewDate?.format("YYYY-MM-DD"),
+            }
+          }
+          const data = {
+            ...formValues,
+            dob: formValues["dob"].format("YYYY-MM-DD"),
+            interview: interviewDetails,
+            bank,
+            credential,
+          }
+          setConfirmData(data)
+          setConfirmEnrollment(true)
+        })
+        .catch(async (e) => {
+          // validation failed, call some validation function
+          if (e.errorFields) {
+            // form has errorFields
+            console.log(e)
+          }
+        })
     })
   }
 
@@ -204,18 +217,14 @@ export const Onboarding = () => {
 
   return (
     <>
-      {state?.type == "student" ? (
-        <Row style={{ margin: " 0 10vmin" }} justify={"space-between"} align={"middle"}>
-          <Col>
-            <Title level={3}>Student Admission</Title>
-          </Col>
-          <Col>
-            <UploadFiles form={form} listType={"picture-card"} showUploadList={false} name="profilePhoto" />
-          </Col>
-        </Row>
-      ) : (
-        <Title level={3}>Onboarding Employee</Title>
-      )}
+      <Row style={{ margin: " 0 5vmin" }} justify={"space-between"} align={"middle"}>
+        <Col>
+          <Title level={3}>{state?.type == "student" ? "Student Admission" : "Onboarding Employee"}</Title>
+        </Col>
+        <Col>
+          <UploadFiles form={form} listType={"picture-card"} showUploadList={false} name="profilePhoto" />
+        </Col>
+      </Row>
 
       <div>
         <Steps type="navigation" size="default" current={currentStep} items={stepOptions} />
@@ -229,7 +238,7 @@ export const Onboarding = () => {
             layout="horizontal"
             labelAlign="left"
             size={"large"}
-            onValuesChange={handleFormChange}
+            //onValuesChange={handleFormChange}
             autoComplete={"off"}
             scrollToFirstError
             initialValues={editFlow ? formatStudentDetails(studentData) : { type: state?.type }}

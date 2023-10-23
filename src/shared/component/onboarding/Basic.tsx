@@ -6,24 +6,26 @@ import {
   DatePicker,
   Divider,
   Form,
-  FormInstance,
   FormProps,
   Input,
   InputNumber,
   Row,
   Select,
-  Space,
+  Switch,
   Upload,
 } from "antd"
 import type { Dayjs } from "dayjs"
 import { FC } from "react"
 import { useLocation } from "react-router-dom"
 import { useAppSelector } from "../../../store"
-import { allowedFieldType, uploadProps } from "/src/configs/UploadConfig"
 import { UploadFiles } from "../UploadFiles"
+import { allowedFieldType, uploadProps } from "/src/configs/UploadConfig"
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons"
 
 export const AddBasic: FC<FormProps> = (formProps) => {
   const { state } = useLocation()
+  const { form } = formProps
+  const transportAvail = Form.useWatch("transportServiceFlag", form)
   const selectList = useAppSelector((state) => state.commonData)
   const disableDate = (currentDate: Dayjs) => {
     return currentDate.isAfter(new Date())
@@ -163,40 +165,28 @@ export const AddBasic: FC<FormProps> = (formProps) => {
       {state.type == "student" && (
         <Row gutter={[40, 40]}>
           <Col span={8}>
-            <Form.Item name="transportService" label="Transport Service" rules={[{ required: true }]}>
-              <Select
-                showSearch
-                options={[
-                  { value: true, label: "Yes" },
-                  { value: false, label: "No" },
-                ]}
-              />
-            </Form.Item>
-
-            {/* <Form.Item label="Address">
-              <Space.Compact>
-                <Form.Item
-                  name={["address", "province"]}
-                  noStyle
-                  rules={[{ required: true, message: "Province is required" }]}
-                >
-                  <Form.Item
-                    name={["address", "street"]}
-                    noStyle
-                    rules={[{ required: true, message: "Street is required" }]}
-                  >
-                    <Checkbox/>
+            <Form.Item name="transportService" label="Transport" style={{ width: "100%" }}>
+              <Row style={{ width: "100%" }} justify={"space-between"}>
+                <span>
+                  <Form.Item name="transportServiceFlag" valuePropName="checked" rules={[{ required: true }]}>
+                    <Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
                   </Form.Item>
-                  <Select
-                    placeholder="Select province"
-                    options={[
-                      { value: true, label: "Yes" },
-                      { value: false, label: "No" },
-                    ]}
-                  />
-                </Form.Item>
-              </Space.Compact>
-            </Form.Item> */}
+                </span>
+                <span style={{ width: "75%" }}>
+                  <Form.Item name="transportServiceValue">
+                    <Select
+                      disabled={!transportAvail}
+                      showSearch
+                      allowClear
+                      options={[
+                        { value: true, label: "Yes" },
+                        { value: false, label: "No" },
+                      ]}
+                    />
+                  </Form.Item>
+                </span>
+              </Row>
+            </Form.Item>
           </Col>
         </Row>
       )}
