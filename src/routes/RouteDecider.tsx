@@ -1,9 +1,7 @@
 import { useEffect } from "react"
-import { Dashboard } from "../pages/Dashboard"
-import { Office } from "../pages/Office"
+import { useNavigate } from "react-router-dom"
 import { Role } from "../shared/utils/Role"
 import { useAppSelector } from "../store"
-import { useNavigate } from "react-router-dom"
 
 export const RouteDecider = () => {
   const navigate = useNavigate()

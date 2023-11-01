@@ -69,10 +69,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
           <Divider style={{ marginTop: "-2vh" }} dashed>
             {" "}
             <h3>
-              <Avatar
-                size={120}
-                src="https://assets.boystown.org/hosp_peds_images/kids-tips_schoolMisbehavior-Hispanic_Boy.jpg"
-              ></Avatar>
+              <Avatar size={120} icon={<UserOutlined />} src={studentData.profilePicture}></Avatar>
               <div style={{ marginLeft: "5vmin" }}>
                 {studentData?.name} <Button icon={<EditOutlined />} type="text" onClick={showEditConfirm}></Button>
               </div>

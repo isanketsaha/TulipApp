@@ -11,7 +11,7 @@ import {
   LogoutOutlined,
   FundFilled,
   UserOutlined,
-  PlusSquareOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../store"
@@ -85,18 +85,8 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
             icon: <FundFilled />,
           },
           {
-            label: "Create",
-            icon: <PlusSquareOutlined />,
-            children: [
-              {
-                label: "Session",
-                icon: <FundFilled />,
-              },
-              {
-                label: "Product",
-                icon: <FundFilled />,
-              },
-            ],
+            label: "Data",
+            icon: <DatabaseOutlined />,
           },
         ]
       : []),
@@ -121,9 +111,16 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
     const key = String(index + 1)
     return {
       key: `${key}`,
-      label: <Link to={`/${item.label}`.toLowerCase()}> {item.label} </Link>,
+      label: item.children ? item.label : <Link to={`/${item.label}`.toLowerCase()}> {item.label} </Link>,
       icon: item.icon,
-      children: item.children,
+      children: item.children?.map((item, index) => {
+        const key = String(index + 1)
+        return {
+          key: `${key}`,
+          label: <Link to={`/${item.label}`.toLowerCase()}> {item.label} </Link>,
+          icon: item.icon,
+        }
+      }),
     }
   })
 

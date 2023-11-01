@@ -106,7 +106,6 @@ export const Onboarding = () => {
         panCard: user.panCard,
         birthCertificate: user.birthCertificate,
         aadhaarCard: user.aadhaarCard,
-        eveningClass: user.eveningClass,
         dependent: user.dependent.map((item: IDependent) => {
           return {
             ...item,
@@ -222,7 +221,7 @@ export const Onboarding = () => {
           <Title level={3}>{state?.type == "student" ? "Student Admission" : "Onboarding Employee"}</Title>
         </Col>
         <Col>
-          <UploadFiles form={form} listType={"picture-card"} showUploadList={false} name="profilePhoto" />
+          <UploadFiles form={form} listType={"picture-card"} showUploadList={false} name="profilePicture" />
         </Col>
       </Row>
 

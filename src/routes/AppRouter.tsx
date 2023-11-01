@@ -19,6 +19,7 @@ import { Role } from "../shared/utils/Role"
 import { AuthRotes } from "./AuthRoters"
 import { ProtectedRoutes } from "./ProtectedRoutes"
 import { RouteDecider } from "./RouteDecider"
+import { Data } from "../pages/Data"
 
 export const AppRouter = createBrowserRouter([
   {
@@ -106,6 +107,14 @@ export const AppRouter = createBrowserRouter([
             element: (
               <AuthRotes roles={[Role.ADMIN, Role.PRINCIPAL, Role.STAFF]}>
                 <Onboarding />
+              </AuthRotes>
+            ),
+          },
+          {
+            path: "data",
+            element: (
+              <AuthRotes roles={[Role.ADMIN]}>
+                <Data />
               </AuthRotes>
             ),
           },
