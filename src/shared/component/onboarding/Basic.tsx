@@ -164,16 +164,16 @@ export const AddBasic: FC<FormProps> = (formProps) => {
       </Row>
       {state.type == "student" && (
         <Row gutter={[40, 40]}>
-          <Col span={8}>
+          {/* <Col span={8}>
             <Form.Item name="transportService" label="Transport" style={{ width: "100%" }}>
               <Row style={{ width: "100%" }} justify={"space-between"}>
                 <span>
-                  <Form.Item name="transportServiceFlag" valuePropName="checked" rules={[{ required: true }]}>
+                  <Form.Item name="transportServiceFlag" valuePropName="checked">
                     <Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
                   </Form.Item>
                 </span>
                 <span style={{ width: "75%" }}>
-                  <Form.Item name="transportServiceValue">
+                  <Form.Item name="transportServiceValue" dependencies={["session", "transportAvail"]}>
                     <Select
                       disabled={!transportAvail}
                       showSearch
@@ -187,6 +187,20 @@ export const AddBasic: FC<FormProps> = (formProps) => {
                 </span>
               </Row>
             </Form.Item>
+          </Col> */}
+          <Col span={8}>
+            <Form.Item
+              name="aadhaar"
+              label="Aadhaar"
+              rules={[
+                {
+                  pattern: new RegExp("^[0-9]*$"),
+                  message: "No Alphabets Allowed",
+                },
+              ]}
+            >
+              <Input maxLength={12} style={{ width: "100%" }} />
+            </Form.Item>
           </Col>
         </Row>
       )}
@@ -197,13 +211,9 @@ export const AddBasic: FC<FormProps> = (formProps) => {
         </Col>
         <Col span={12}>
           {state.type == "student" ? (
-            <UploadFiles listType={"text"} showUploadList={false} name="birthCirtificate" label="Birth Certificate" />
+            <UploadFiles listType={"text"} showUploadList={false} name="birthCertificate" label="Birth Certificate" />
           ) : (
-            <Form.Item name={"panCard"} valuePropName="fileList" getValueFromEvent={normFile} label="Pan Card">
-              <Upload {...uploadProps()} listType="text" name="documents" accept={allowedFieldType} maxCount={1}>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </Form.Item>
+            <UploadFiles listType={"text"} showUploadList={false} name="panCard" label="Pan Card" />
           )}
         </Col>
       </Row>

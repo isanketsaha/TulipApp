@@ -13,13 +13,15 @@ export interface IUserDetails {
   experience: string
   gender: string
   locked: boolean
+  aadhaar: string
   name: string
   sessionId: number
   phoneNumber: string
   qualification: string
   religion: string
   authority: string
-  profilePicture: string
+  profilePictureUrl: string
+  profilePicture: any
   previousSchool: string
   eveningClass: boolean
   whatsappAvailable: boolean

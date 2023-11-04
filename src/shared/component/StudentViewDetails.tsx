@@ -25,6 +25,7 @@ import { Role } from "../utils/Role"
 import { WhatsAppOutlined, EditOutlined, UserOutlined } from "@ant-design/icons"
 import { useMediaQuery } from "react-responsive"
 import { uploadProps } from "/src/configs/UploadConfig"
+import { MdOutlinePayments } from "react-icons/md"
 
 interface IStudentViewProps {
   studentId: string
@@ -67,18 +68,25 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
       {studentData && (
         <>
           <Divider style={{ marginTop: "-2vh" }} dashed>
-            {" "}
             <h3>
-              <Avatar size={120} icon={<UserOutlined />} src={studentData.profilePicture}></Avatar>
-              <div style={{ marginLeft: "5vmin" }}>
-                {studentData?.name} <Button icon={<EditOutlined />} type="text" onClick={showEditConfirm}></Button>
+              <Avatar size={120} icon={<UserOutlined />} src={studentData.profilePictureUrl}></Avatar>
+              <div>
+                {studentData?.name} <Button icon={<EditOutlined />} type="text" onClick={showEditConfirm}></Button>{" "}
+                <div>
+                  {isMobile ? null : (
+                    <Link to={`/payment/${studentData?.id}/${selectedSession()?.id}`}>
+                      <Button type="link" icon={<MdOutlinePayments />}>
+                        Payment
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               </div>
             </h3>
           </Divider>
           <Space direction="vertical" style={{ width: "100%" }} size={"small"}>
             <Descriptions bordered>
               <Descriptions.Item label="Student ID"> {studentData?.id}</Descriptions.Item>
-              <Descriptions.Item label="Name">{studentData?.name}</Descriptions.Item>
               <Descriptions.Item label="Gender">{studentData?.gender}</Descriptions.Item>
               <Descriptions.Item label="Date Of Birth">
                 {dayjs(studentData?.dob).format("DD-MM-YYYY")}
@@ -118,6 +126,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
               </Descriptions.Item>
               <Descriptions.Item label="Classroom">{selectedSession()?.std}</Descriptions.Item>
               <Descriptions.Item label="Class Teacher">{selectedSession()?.headTeacher}</Descriptions.Item>
+              <Descriptions.Item label="Aadhaar">{studentData?.aadhaar}</Descriptions.Item>
               <Descriptions.Item label="Evening Class">
                 {
                   <Badge
@@ -126,11 +135,6 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                   />
                 }
               </Descriptions.Item>
-              {/* <Descriptions.Item label="Session"> {studentData?.classDetails.length > 1 && !(studentData?.classDetails.length == sessionIndex + 1) &&
-                                <Button onClick={() => setSessionIndex(sessionIndex + 1)} type="link" icon={<CaretLeftOutlined />} />}
-                                {studentData?.classDetails[sessionIndex]?.session} {studentData?.classDetails.length > 1
-                                    && !(sessionIndex == 0) &&
-                                    <Button onClick={() => setSessionIndex(sessionIndex - 1)} type="link" icon={<CaretRightOutlined />} />}</Descriptions.Item> */}
               <Descriptions.Item label="Session">
                 {studentData?.classDetails.length > 1 ? (
                   <Select
@@ -149,18 +153,15 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                   studentData?.classDetails[0]?.session
                 )}{" "}
               </Descriptions.Item>
-              {isMobile ? null : (
-                <Descriptions.Item>
-                  <Link to={`/payment/${studentData?.id}/${selectedSession()?.id}`}>
-                    <Button type="primary">Payment</Button>
-                  </Link>
-                </Descriptions.Item>
-              )}
-              <Descriptions.Item label="Birth Certificate">
-                {<Upload {...uploadProps()} fileList={studentData.birthCertificate} listType="text"></Upload>}
-              </Descriptions.Item>
-              <Descriptions.Item label="Aadhaar Card">
-                {<Upload {...uploadProps()} fileList={studentData.aadhaarCard} listType="text"></Upload>}
+
+              <Descriptions.Item label="Uploads">
+                {
+                  <Upload
+                    {...uploadProps()}
+                    fileList={[...studentData.birthCertificate, ...studentData.aadhaarCard]}
+                    listType="text"
+                  ></Upload>
+                }
               </Descriptions.Item>
             </Descriptions>
 

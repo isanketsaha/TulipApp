@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Steps, Upload, notification } from "antd"
+import { Button, Col, Form, Modal, Row, Steps, notification } from "antd"
 import Title from "antd/es/typography/Title"
 import dayjs from "dayjs"
 import { useState } from "react"
@@ -8,16 +8,13 @@ import { IUserDetails } from "../../interface/IUserDetails"
 import { useFetchClassroomIdQuery } from "../../redux/api/feature/classroom/api"
 import { useOnboardUserMutation } from "../../redux/api/feature/onboarding/api"
 import { useEditStudentDetailsMutation, useSearchStudentQuery } from "../../redux/api/feature/student/api"
+import { UploadFiles } from "../UploadFiles"
 import { ExployeeConfirm } from "../confirmationModal/EmployeeConfirmation"
 import { StudentConfirm } from "../confirmationModal/StudentConfirmation"
 import { AddAdditional } from "./Additional"
 import { AddBasic } from "./Basic"
 import { AddDependent } from "./Dependent"
-import { uploadProps } from "/src/configs/UploadConfig"
 import { useAppSelector } from "/src/store"
-import { UploadFiles } from "../UploadFiles"
-import { useForm } from "antd/es/form/Form"
-import { useCheckUserIdExistMutation } from "../../redux/api/feature/profile/api"
 
 export const Onboarding = () => {
   let navigate = useNavigate()
@@ -31,7 +28,7 @@ export const Onboarding = () => {
   const { data } = useFetchClassroomIdQuery(studentPaymentDetails, { skip: !studentPaymentDetails })
   const { id: userId } = useParams()
   const { state, pathname } = useLocation()
-  const { bloodGroupList, sessionList } = useAppSelector((state) => state.commonData)
+  const { bloodGroupList } = useAppSelector((state) => state.commonData)
 
   const editFlow = pathname.split("/").includes("edit")
 
@@ -91,6 +88,7 @@ export const Onboarding = () => {
     if (user) {
       return {
         name: user.name,
+        profilePicture: user.profilePicture,
         id: user.id,
         contact: +user.phoneNumber,
         qualification: user.qualification,
@@ -104,6 +102,7 @@ export const Onboarding = () => {
         std: user.classDetails[0].std,
         session: user.classDetails[0].sessionId,
         panCard: user.panCard,
+        aadhaar: user.aadhaar,
         birthCertificate: user.birthCertificate,
         aadhaarCard: user.aadhaarCard,
         dependent: user.dependent.map((item: IDependent) => {
@@ -237,7 +236,7 @@ export const Onboarding = () => {
             layout="horizontal"
             labelAlign="left"
             size={"large"}
-            //onValuesChange={handleFormChange}
+            onValuesChange={handleFormChange}
             autoComplete={"off"}
             scrollToFirstError
             initialValues={editFlow ? formatStudentDetails(studentData) : { type: state?.type }}

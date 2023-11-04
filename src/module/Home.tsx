@@ -23,7 +23,7 @@ export const Home = () => {
       </Affix>
       <Layout hasSider>
         <SideNav collapsed={collapsed} setCollapsed={setCollapsed} />
-        <Layout style={{ marginLeft: isMobile ? 100 : 250, minHeight: "100vh", marginTop: 80, paddingRight: 10 }}>
+        <Layout style={{ marginLeft: isMobile ? 100 : 260, minHeight: "100vh", marginTop: 80, paddingRight: 10 }}>
           <Content
             style={{
               overflow: "initial",

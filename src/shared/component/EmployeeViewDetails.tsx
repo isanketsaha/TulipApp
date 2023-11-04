@@ -10,11 +10,13 @@ import {
 } from "../redux/api/feature/employee/api"
 import { Role } from "../utils/Role"
 import { useAppSelector } from "/src/store"
+import { useNavigate } from "react-router-dom"
 
 interface IEmployeeProps {
   employeeId: string
 }
 export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
+  let navigate = useNavigate()
   const { user } = useAppSelector((state) => state.userAuth)
   const allowerRoles: Role[] = [Role.ADMIN, Role.PRINCIPAL]
   const [forgotPassword] = useLazyForgotPasswordQuery()
@@ -71,10 +73,12 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                         </>
                       ),
                       onOk() {
-                        terminateEmployee(employeeData.id).then(
-                          ({ isSuccess }) =>
-                            isSuccess && message.info("<b>{employeeData?.name}</b> has been terminated.")
-                        )
+                        terminateEmployee(employeeData.id).then(({ isSuccess }) => {
+                          if (isSuccess) {
+                            message.info(`${employeeData?.name} has been terminated.`)
+                            navigate("/staffs")
+                          }
+                        })
                       },
                     })
                   }}
