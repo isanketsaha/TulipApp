@@ -1,23 +1,28 @@
-import { Avatar, Badge, Menu, MenuProps, Modal, Typography, theme } from "antd";
-import Sider from "antd/es/layout/Sider";
-import React, { useEffect, useState } from "react";
 import {
-  HomeOutlined,
-  SnippetsFilled,
   ExclamationCircleFilled,
   EyeFilled,
-  IdcardFilled,
   FolderOpenFilled,
-  LogoutOutlined,
   FundFilled,
+  HomeOutlined,
+  IdcardFilled,
+  LogoutOutlined,
+  SnippetsFilled,
   UserOutlined,
-  DatabaseOutlined,
 } from "@ant-design/icons"
+import { PiChalkboardTeacher, PiStudentBold } from "react-icons/pi"
+import { ImOffice } from "react-icons/im"
+import { Avatar, Menu, MenuProps, Modal, Typography, theme } from "antd"
+import Sider from "antd/es/layout/Sider"
+import React, { useEffect, useState } from "react"
+import { BsDatabaseFillGear } from "react-icons/bs"
+import { useMediaQuery } from "react-responsive"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../store"
 import { logout } from "../redux/slices/UserAuthSlice"
 import { Role } from "../utils/Role"
-import { useMediaQuery } from "react-responsive"
+import { MdDashboardCustomize, MdOutlineAccountTree } from "react-icons/md"
+import { SiGoogleclassroom } from "react-icons/si"
+
 interface nav {
   label: string
   link?: string
@@ -60,33 +65,33 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
   const navigatons: nav[] = [
     {
       label: "Home",
-      icon: <HomeOutlined />,
+      icon: <MdDashboardCustomize />,
     },
     {
       label: "Office",
-      icon: <SnippetsFilled />,
+      icon: <ImOffice />,
     },
     {
       label: "Students",
-      icon: <IdcardFilled />,
+      icon: <PiStudentBold />,
     },
     {
       label: "Staffs",
-      icon: <EyeFilled />,
+      icon: <PiChalkboardTeacher />,
     },
     {
       label: "Classroom",
-      icon: <FolderOpenFilled />,
+      icon: <SiGoogleclassroom />,
     },
     ...(user?.authority && [Role.ADMIN].includes(user?.authority)
       ? [
           {
             label: "Accounts",
-            icon: <FundFilled />,
+            icon: <MdOutlineAccountTree />,
           },
           {
             label: "Data",
-            icon: <DatabaseOutlined />,
+            icon: <BsDatabaseFillGear />,
           },
         ]
       : []),

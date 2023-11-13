@@ -17,10 +17,12 @@ import { auditApi } from './shared/redux/api/feature/audit/api';
 import { accountApi } from './shared/redux/api/feature/account/api';
 import { visualizeApi } from './shared/redux/api/feature/vizualize/api';
 import { profileApi } from "./shared/redux/api/feature/profile/api"
+import { dataeApi } from "./shared/redux/api/feature/data/api"
 
 export const store = configureStore({
   reducer: {
     [loginApi.reducerPath]: loginApi.reducer,
+    [dataeApi.reducerPath]: dataeApi.reducer,
     [employeeApi.reducerPath]: employeeApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
     [onboardingApi.reducerPath]: onboardingApi.reducer,
@@ -52,7 +54,8 @@ export const store = configureStore({
       reportApi.middleware,
       auditApi.middleware,
       accountApi.middleware,
-      profileApi.middleware
+      profileApi.middleware,
+      dataeApi.middleware
     ),
 })
 

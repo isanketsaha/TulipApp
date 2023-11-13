@@ -148,7 +148,7 @@ export const ClassroomDetails = ({ session, stdList }: IClassDetailsProsp) => {
           <Card style={{ width: "100%" }}>
             <Descriptions bordered>
               <Descriptions.Item label="Class Strength">{classDetails?.students.length}</Descriptions.Item>
-              <Descriptions.Item label="Session">{classDetails?.session}</Descriptions.Item>
+              <Descriptions.Item label="Class Teacher">{classDetails?.headTeacher}</Descriptions.Item>
               {!isTabletOrMobile && (
                 <Descriptions.Item>
                   {
@@ -235,7 +235,7 @@ export const ClassroomDetails = ({ session, stdList }: IClassDetailsProsp) => {
                           <Col md={{ span: 1 }} xs={{ span: 0 }}>
                             <Space>
                               <Checkbox value={item.id} />
-                              {index + 1}.
+                              {index + 1}
                             </Space>
                           </Col>
                           <Col md={{ span: 4 }}>{item.name}</Col>

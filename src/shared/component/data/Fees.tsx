@@ -1,18 +1,5 @@
 import { MinusCircleTwoTone, PlusCircleTwoTone } from "@ant-design/icons"
-import {
-  Button,
-  Col,
-  Collapse,
-  Divider,
-  Form,
-  FormProps,
-  Input,
-  Row,
-  Select,
-  SelectProps,
-  Space,
-  Typography,
-} from "antd"
+import { Button, Col, Divider, Form, FormProps, Input, Row, Select, SelectProps, Space, Typography } from "antd"
 import { StoreValue } from "antd/es/form/interface"
 import { FC } from "react"
 import { IFeesCatalog } from "../../interface/IFeesCatalog"
@@ -26,15 +13,11 @@ export const Fees: FC<FormProps & SelectProps & { fees?: Record<string, IFeesCat
     return (
       fees && (
         <Form.List
-          name={["fees", name]}
+          name={["feesList", name]}
           initialValue={fees[name].map((item) => {
             return {
               label: item.name,
-              price: item.amount.toLocaleString("en-IN", {
-                maximumFractionDigits: 2,
-                style: "currency",
-                currency: "INR",
-              }),
+              price: item.amount,
               rule: item.applicableRule,
             }
           })}
@@ -45,6 +28,11 @@ export const Fees: FC<FormProps & SelectProps & { fees?: Record<string, IFeesCat
                 <Row justify={"space-around"}>
                   <Col span={1} style={{ marginTop: 3 }}>
                     {name + 1}.
+                  </Col>
+                  <Col span={0} hidden={true}>
+                    <Form.Item name={[name, "std"]}>
+                      <Input value={parent} />
+                    </Form.Item>
                   </Col>
                   <Col span={5}>
                     <Form.Item name={[name, "label"]}>
@@ -64,11 +52,6 @@ export const Fees: FC<FormProps & SelectProps & { fees?: Record<string, IFeesCat
                           return { value: item.toUpperCase(), label: item.toUpperCase() }
                         })}
                       />
-                    </Form.Item>
-                  </Col>
-                  <Col span={5}>
-                    <Form.Item name={[name, "description"]}>
-                      <Input placeholder="Description" />
                     </Form.Item>
                   </Col>
                   <Col span={2}>

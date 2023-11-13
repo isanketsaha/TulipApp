@@ -2,6 +2,7 @@ import { EditOutlined, FileDoneOutlined, IssuesCloseOutlined, UserOutlined, What
 import { Avatar, Badge, Button, Descriptions, Divider, Row, Space, Switch, Tooltip, message } from "antd"
 import modal from "antd/es/modal"
 import dayjs from "dayjs"
+import { useNavigate } from "react-router-dom"
 import {
   useLazyForgotPasswordQuery,
   useLazyGenerateJoiningLetterQuery,
@@ -10,7 +11,6 @@ import {
 } from "../redux/api/feature/employee/api"
 import { Role } from "../utils/Role"
 import { useAppSelector } from "/src/store"
-import { useNavigate } from "react-router-dom"
 
 interface IEmployeeProps {
   employeeId: string

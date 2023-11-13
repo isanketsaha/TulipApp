@@ -1,5 +1,5 @@
 import { MinusCircleTwoTone, PlusCircleTwoTone, RetweetOutlined } from "@ant-design/icons"
-import { Alert, Button, Col, DatePicker, Form, Input, Row, Select, Space, Steps, Typography } from "antd"
+import { Alert, Button, Col, DatePicker, Form, Input, Row, Select, Space, Steps, Typography, message } from "antd"
 import { useForm } from "antd/es/form/Form"
 import { StoreValue } from "antd/es/form/interface"
 import { SelectProps } from "antd/es/select"
@@ -11,6 +11,10 @@ import { useFeesByRuleMutation, useLazyFetchAllClassroomQuery } from "../../redu
 import { useLazyFetchAllActiveEmployeeQuery } from "../../redux/api/feature/employee/api"
 import { Role } from "../../utils/Role"
 import { Fees } from "./Fees"
+import { useFetchCurrentSessionQuery } from "../../redux/api/feature/common/api"
+import dayjs, { Dayjs } from "dayjs"
+import { useAddSessionMutation } from "../../redux/api/feature/data/api"
+import { useNavigate } from "react-router-dom"
 
 export const Session: FC<SelectProps> = (props) => {
   const { value } = props
@@ -19,13 +23,33 @@ export const Session: FC<SelectProps> = (props) => {
   const [error, setError] = useState<boolean>(false)
   const [form] = useForm()
   const [feesByRule] = useFeesByRuleMutation()
+  const [addSession] = useAddSessionMutation()
   const [fees, setFees] = useState<Record<string, IFeesCatalog[]>>()
   const [teacher, setTeacher] = useState<IBasicDetails[]>([])
+  const { data: currectSession } = useFetchCurrentSessionQuery()
 
   const [fetchActiveEmployee] = useLazyFetchAllActiveEmployeeQuery()
-
+  const navigate = useNavigate()
   const next = () => {
     form.validateFields().then((value) => (form.getFieldValue("stdList") ? setCurrent(current + 1) : setError(true)))
+  }
+
+  const submit = () => {
+    form.validateFields().then((value) => {
+      let data = form.getFieldsValue(true)
+      data = {
+        ...data,
+        startDate: data.startDate.format("YYYY-MM-DD"),
+        endDate: data.endDate.format("YYYY-MM-DD"),
+      }
+      addSession(data).then((res: any) => {
+        if (res?.data) {
+          message.info("Session created succesfully.")
+          navigate("/data")
+          form.resetFields()
+        }
+      })
+    })
   }
 
   const getFees = () => {
@@ -69,7 +93,10 @@ export const Session: FC<SelectProps> = (props) => {
                           </Form.Item>
                         </Col>
                         <Col>
-                          <Form.Item name={[name, "classTeacher"]} rules={[{ required: true }]}>
+                          <Form.Item
+                            name={[name, "classTeacher"]}
+                            rules={[{ required: true, message: "Class Teacher is Manditory" }]}
+                          >
                             <Select
                               placeholder="Class Teacher"
                               options={teacher.map((item) => {
@@ -141,51 +168,61 @@ export const Session: FC<SelectProps> = (props) => {
           afterClose={() => setError(false)}
         />
       )}
-      <Form form={form}>
-        <Row justify={"space-around"}>
-          <Form.Item label="Session" name={"label"} rules={[{ required: true }]}>
-            <Input disabled />
-          </Form.Item>
-          <Form.Item label="Start Date" name={"startDate"} rules={[{ required: true }]}>
-            <DatePicker format={"DD/MMM/YYYY"} onChange={() => form.setFieldValue("label", sessionVal())} />
-          </Form.Item>
-          <Form.Item label="End Date" name={"endDate"} rules={[{ required: true }]}>
-            <DatePicker format={"DD/MMM/YYYY"} onChange={() => form.setFieldValue("label", sessionVal())} />
-          </Form.Item>
-          <Form.Item>
-            {current == 0 && (
-              <Button type="link" icon={<RetweetOutlined />} onClick={fetchClasses}>
-                Copy Classes
-              </Button>
-            )}
-            {current == 1 && (
-              <Button type="link" icon={<RetweetOutlined />} onClick={getFees}>
-                Copy Fees
-              </Button>
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              {current > 0 && (
-                <Button type="default" onClick={prev}>
-                  Back
+      {currectSession && (
+        <Form form={form} initialValues={{ startDate: dayjs(currectSession?.toDate).add(1, "day") }}>
+          <Row justify={"space-around"}>
+            <Form.Item label="Session" name={"label"} rules={[{ required: true }]}>
+              <Input disabled />
+            </Form.Item>
+            <Form.Item label="Start Date" name={"startDate"} rules={[{ required: true }]}>
+              <DatePicker
+                format={"DD/MMM/YYYY"}
+                onChange={() => form.setFieldValue("label", sessionVal())}
+                disabledDate={(currentDate) => currentDate.isBefore(dayjs(currectSession?.toDate).add(1, "D"))}
+              />
+            </Form.Item>
+            <Form.Item label="End Date" name={"endDate"} rules={[{ required: true }]}>
+              <DatePicker
+                format={"DD/MMM/YYYY"}
+                onChange={() => form.setFieldValue("label", sessionVal())}
+                disabledDate={(currentDate) => currentDate.isBefore(dayjs(currectSession?.toDate).add(10, "M"))}
+              />
+            </Form.Item>
+            <Form.Item>
+              {current == 0 && (
+                <Button type="link" icon={<RetweetOutlined />} onClick={fetchClasses}>
+                  Copy Classes
                 </Button>
               )}
-              {current < steps.length - 1 && (
-                <Button type="default" onClick={next}>
-                  Next
+              {current == 1 && (
+                <Button type="link" icon={<RetweetOutlined />} onClick={getFees}>
+                  Copy Fees
                 </Button>
               )}
-              {current === steps.length - 1 && (
-                <Button type="default" onClick={() => console.log(form.getFieldsValue())}>
-                  Submit
-                </Button>
-              )}
-            </Space>
-          </Form.Item>
-        </Row>
-        {steps[current].content}
-      </Form>
+            </Form.Item>
+            <Form.Item>
+              <Space>
+                {current > 0 && (
+                  <Button type="default" onClick={prev}>
+                    Back
+                  </Button>
+                )}
+                {current < steps.length - 1 && (
+                  <Button type="default" onClick={next}>
+                    Next
+                  </Button>
+                )}
+                {current === steps.length - 1 && (
+                  <Button type="default" onClick={submit}>
+                    Submit
+                  </Button>
+                )}
+              </Space>
+            </Form.Item>
+          </Row>
+          {steps[current].content}
+        </Form>
+      )}
     </Space>
   )
 }

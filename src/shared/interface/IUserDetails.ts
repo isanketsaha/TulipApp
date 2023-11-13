@@ -1,7 +1,9 @@
-import { IBank } from "./IBank";
-import { IClassDetails } from "./IClassDetails";
-import { IDependent } from "./IDependent";
-import { IInterview } from "./Interview";
+import { UploadFile } from "antd"
+import { IBank } from "./IBank"
+import { IClassDetails } from "./IClassDetails"
+import { IDependent } from "./IDependent"
+import { ITransportCatalog } from "./ITransportCatalog"
+import { IInterview } from "./Interview"
 
 export interface IUserDetails {
   id: number
@@ -29,7 +31,8 @@ export interface IUserDetails {
   dependent: IDependent[]
   bank: IBank
   interview: IInterview
-  aadhaarCard: any
-  panCard: any
-  birthCertificate: any
+  aadhaarCard: UploadFile[]
+  panCard: UploadFile[]
+  birthCertificate: UploadFile[]
+  transports: ITransportCatalog
 }

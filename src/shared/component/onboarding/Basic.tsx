@@ -1,31 +1,18 @@
-import { UploadOutlined, WhatsAppOutlined } from "@ant-design/icons"
-import {
-  Button,
-  Checkbox,
-  Col,
-  DatePicker,
-  Divider,
-  Form,
-  FormProps,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  Switch,
-  Upload,
-} from "antd"
+import { WhatsAppOutlined } from "@ant-design/icons"
+import { Checkbox, Col, DatePicker, Divider, Form, FormProps, Input, InputNumber, Row, Select } from "antd"
 import type { Dayjs } from "dayjs"
 import { FC } from "react"
+import { BiSolidBusSchool } from "react-icons/bi"
 import { useLocation } from "react-router-dom"
 import { useAppSelector } from "../../../store"
 import { UploadFiles } from "../UploadFiles"
-import { allowedFieldType, uploadProps } from "/src/configs/UploadConfig"
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons"
+import { useFetchAllTransportCatalogQuery } from "../../redux/api/feature/catalog/api"
 
 export const AddBasic: FC<FormProps> = (formProps) => {
   const { state } = useLocation()
   const { form } = formProps
   const transportAvail = Form.useWatch("transportServiceFlag", form)
+  const session = Form.useWatch("session", form)
   const selectList = useAppSelector((state) => state.commonData)
   const disableDate = (currentDate: Dayjs) => {
     return currentDate.isAfter(new Date())
@@ -44,12 +31,6 @@ export const AddBasic: FC<FormProps> = (formProps) => {
       <Checkbox>
         <WhatsAppOutlined />
       </Checkbox>
-    </Form.Item>
-  )
-
-  const prefixEveningClass = (
-    <Form.Item name="eveningClass" valuePropName="checked" noStyle>
-      <Checkbox>Evening </Checkbox>
     </Form.Item>
   )
 
@@ -89,7 +70,15 @@ export const AddBasic: FC<FormProps> = (formProps) => {
         </Col>
         <Col span={12}>
           <Form.Item name="address" label="Address" rules={[{ required: true }]}>
-            <Input />
+            <Input
+              addonBefore={
+                <Form.Item name="transportServiceFlag" valuePropName="checked" noStyle>
+                  <Checkbox disabled={state.type != "student"}>
+                    <BiSolidBusSchool />
+                  </Checkbox>
+                </Form.Item>
+              }
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -164,30 +153,6 @@ export const AddBasic: FC<FormProps> = (formProps) => {
       </Row>
       {state.type == "student" && (
         <Row gutter={[40, 40]}>
-          {/* <Col span={8}>
-            <Form.Item name="transportService" label="Transport" style={{ width: "100%" }}>
-              <Row style={{ width: "100%" }} justify={"space-between"}>
-                <span>
-                  <Form.Item name="transportServiceFlag" valuePropName="checked">
-                    <Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
-                  </Form.Item>
-                </span>
-                <span style={{ width: "75%" }}>
-                  <Form.Item name="transportServiceValue" dependencies={["session", "transportAvail"]}>
-                    <Select
-                      disabled={!transportAvail}
-                      showSearch
-                      allowClear
-                      options={[
-                        { value: true, label: "Yes" },
-                        { value: false, label: "No" },
-                      ]}
-                    />
-                  </Form.Item>
-                </span>
-              </Row>
-            </Form.Item>
-          </Col> */}
           <Col span={8}>
             <Form.Item
               name="aadhaar"
@@ -204,6 +169,7 @@ export const AddBasic: FC<FormProps> = (formProps) => {
           </Col>
         </Row>
       )}
+
       <Divider>Document Upload</Divider>
       <Row align={"middle"} justify={"end"}>
         <Col span={12}>

@@ -5,11 +5,11 @@ import { useFetchAllProductCatalogQuery } from "../../redux/api/feature/catalog/
 import { useEffect, useState } from "react";
 
 interface IPurchaseProps {
-    form: FormInstance,
-    classId: string,
-    calculate: boolean,
-    duesAmount: number,
-    calculatePriceBreakDown: (subTotal: number, dueAmount: number) => void
+  form: FormInstance
+  classId: number
+  calculate: boolean
+  duesAmount: number
+  calculatePriceBreakDown: (subTotal: number, dueAmount: number) => void
 }
 
 

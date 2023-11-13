@@ -10,7 +10,7 @@ export interface IBasicDetails {
   address: string
   std: string
   pendingFees: number
-  classId: string
+  classId: number
   annualPaidFees: string[]
   classTeacher: string
 }

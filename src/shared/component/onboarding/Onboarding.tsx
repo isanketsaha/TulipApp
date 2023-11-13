@@ -220,7 +220,9 @@ export const Onboarding = () => {
           <Title level={3}>{state?.type == "student" ? "Student Admission" : "Onboarding Employee"}</Title>
         </Col>
         <Col>
-          <UploadFiles form={form} listType={"picture-card"} showUploadList={false} name="profilePicture" />
+          <Form form={form}>
+            <UploadFiles listType={"picture-card"} showUploadList={false} name="profilePicture" />
+          </Form>
         </Col>
       </Row>
 

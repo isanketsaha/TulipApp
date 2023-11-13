@@ -11,9 +11,17 @@ import {
   Upload,
   Select,
   Avatar,
+  Col,
+  DatePicker,
+  Form,
+  message,
 } from "antd"
 import dayjs from "dayjs"
-import { useDeactivateStudentMutation, useSearchStudentQuery } from "../redux/api/feature/student/api"
+import {
+  useAddTransportMutation,
+  useDeactivateStudentMutation,
+  useSearchStudentQuery,
+} from "../redux/api/feature/student/api"
 import { FeesCalender } from "./FeesCalender"
 import { Link, useNavigate } from "react-router-dom"
 import { TransactionHistory } from "./TransactionHistory"
@@ -26,18 +34,27 @@ import { WhatsAppOutlined, EditOutlined, UserOutlined } from "@ant-design/icons"
 import { useMediaQuery } from "react-responsive"
 import { uploadProps } from "/src/configs/UploadConfig"
 import { MdOutlinePayments } from "react-icons/md"
+import { TbStatusChange } from "react-icons/tb"
+import modal from "antd/es/modal"
+import { IoMdAddCircle } from "react-icons/io"
+import { useFetchAllTransportCatalogQuery } from "../redux/api/feature/catalog/api"
+import { ITransportCatalog } from "../interface/ITransportCatalog"
+import { useForm } from "antd/es/form/Form"
+import { BiBus } from "react-icons/bi"
 
 interface IStudentViewProps {
   studentId: string
 }
 
 export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
+  const [transportForm] = useForm()
   const { confirm } = Modal
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const { user } = useAppSelector((state) => state.userAuth)
   const [sessionId, setSessionId] = useState<number>()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const [addTransport] = useAddTransportMutation()
   const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" })
   const [deactivateStudent] = useDeactivateStudentMutation()
   useEffect(() => {
@@ -62,6 +79,53 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
   const selectedSession = () => {
     return studentData?.classDetails.find((item) => item.sessionId == sessionId)
   }
+
+  const { data: transportCatalog } = useFetchAllTransportCatalogQuery(selectedSession()?.sessionId, {
+    skip: !selectedSession(),
+  })
+
+  const addTransportService = () => {
+    transportForm.validateFields().then(() => {
+      const transport = { ...transportForm.getFieldsValue(true), studentId: studentData?.id }
+      addTransport(transport).then((res) => message.success("Success"))
+    })
+  }
+
+  const addTransportLayout = (
+    <Form form={transportForm}>
+      <Row align={"middle"} justify={"space-around"}>
+        <Col span={10}>
+          <Form.Item name={"locationId"} label={"Pickup Location"} rules={[{ required: true }]}>
+            <Select
+              allowClear
+              options={transportCatalog?.map((item: ITransportCatalog) => {
+                return {
+                  label: (
+                    <Row justify={"space-between"}>
+                      <Col>{item.location} </Col>
+                      <Col style={{ color: "green" }}>
+                        {item.amount.toLocaleString("en-IN", {
+                          maximumFractionDigits: 2,
+                          style: "currency",
+                          currency: "INR",
+                        })}
+                      </Col>
+                    </Row>
+                  ),
+                  value: item.id,
+                }
+              })}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={10}>
+          <Form.Item name={"startDate"} label={"Start Date"} rules={[{ required: true }]}>
+            <DatePicker />
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
+  )
 
   return (
     <>
@@ -127,14 +191,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
               <Descriptions.Item label="Classroom">{selectedSession()?.std}</Descriptions.Item>
               <Descriptions.Item label="Class Teacher">{selectedSession()?.headTeacher}</Descriptions.Item>
               <Descriptions.Item label="Aadhaar">{studentData?.aadhaar}</Descriptions.Item>
-              <Descriptions.Item label="Evening Class">
-                {
-                  <Badge
-                    status={studentData?.eveningClass ? "success" : "error"}
-                    text={studentData?.eveningClass ? "Opted" : "Not-Opted"}
-                  />
-                }
-              </Descriptions.Item>
+
               <Descriptions.Item label="Session">
                 {studentData?.classDetails.length > 1 ? (
                   <Select
@@ -153,18 +210,37 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                   studentData?.classDetails[0]?.session
                 )}{" "}
               </Descriptions.Item>
-
-              <Descriptions.Item label="Uploads">
-                {
-                  <Upload
-                    {...uploadProps()}
-                    fileList={[...studentData.birthCertificate, ...studentData.aadhaarCard]}
-                    listType="text"
-                  ></Upload>
-                }
+              <Descriptions.Item label="Transport Service">
+                <Switch
+                  style={{ marginRight: "2vmin" }}
+                  checkedChildren={<BiBus />}
+                  unCheckedChildren={<BiBus />}
+                  defaultChecked={studentData?.transports != null}
+                  onChange={async (checked) =>
+                    checked
+                      ? modal.info({
+                          title: "Transport Service",
+                          width: 800,
+                          onOk: addTransportService,
+                          content: addTransportLayout,
+                        })
+                      : modal.info({
+                          title: "Transport Service",
+                          width: 500,
+                          onOk: addTransportService,
+                          content: "Are you sure to discontinue the transport ?",
+                        })
+                  }
+                  disabled={![Role.PRINCIPAL, Role.ADMIN, Role.STAFF].includes(user!.authority)}
+                />
+                {studentData?.transports?.location.toUpperCase()}
               </Descriptions.Item>
             </Descriptions>
-
+            <Upload
+              {...uploadProps()}
+              fileList={[...studentData.birthCertificate, ...studentData.aadhaarCard]}
+              listType="text"
+            ></Upload>
             <Divider>
               {" "}
               <h3>Guardian Details</h3>
@@ -200,7 +276,11 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
             </Space>
 
             {studentData?.id && selectedSession() && (
-              <FeesCalender studentId={studentData?.id} classId={selectedSession()?.id} />
+              <FeesCalender
+                studentId={studentData?.id}
+                classId={selectedSession()?.id}
+                transportService={studentData?.transports != null}
+              />
             )}
             {studentData?.id && <TransactionHistory studentId={studentData?.id} />}
           </Space>

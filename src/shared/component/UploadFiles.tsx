@@ -1,12 +1,15 @@
-import { LoadingOutlined, UploadOutlined } from "@ant-design/icons"
+import { InboxOutlined, LoadingOutlined, UploadOutlined } from "@ant-design/icons"
 import { Button, Form, FormItemProps, FormProps, Upload, UploadProps, message } from "antd"
 import { RcFile } from "antd/es/upload"
-import { FC, useState } from "react"
+import { FC, ReactNode, useState } from "react"
 import { Role } from "../utils/Role"
 import { useAppSelector } from "/src/store"
+import Dragger from "antd/es/upload/Dragger"
 
-export const UploadFiles: FC<FormProps & FormItemProps & UploadProps> = (props) => {
-  const { form, name, listType, maxCount = 1, label } = props
+export const UploadFiles: FC<
+  FormItemProps & UploadProps & { draggable?: Boolean | undefined; childElement?: ReactNode | undefined }
+> = (props) => {
+  const { name, listType, maxCount = 1, label, draggable, childElement } = props
   const userAuth = useAppSelector((state) => state.userAuth)
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string>()
@@ -105,14 +108,13 @@ export const UploadFiles: FC<FormProps & FormItemProps & UploadProps> = (props) 
     </div>
   )
 
-  return form ? (
-    <Form form={form}>
-      <Form.Item name={name} valuePropName="fileList" getValueFromEvent={normFile} label={label}>
-        <Upload {...uploadProps()} listType={listType} name="documents" accept={allowedFieldType} maxCount={maxCount}>
-          {listType === "picture-card" ? uploadButton : <Button icon={<UploadOutlined />}>Click to Upload</Button>}
-        </Upload>
-      </Form.Item>
-    </Form>
+  return draggable ? (
+    <Dragger {...uploadProps()} name="documents" accept={".xlsx"} maxCount={maxCount}>
+      <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+      </p>
+      {childElement}
+    </Dragger>
   ) : (
     <Form.Item name={name} valuePropName="fileList" getValueFromEvent={normFile} label={label}>
       <Upload {...uploadProps()} listType={listType} name="documents" accept={allowedFieldType} maxCount={maxCount}>
