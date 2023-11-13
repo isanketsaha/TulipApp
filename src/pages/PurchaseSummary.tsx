@@ -60,57 +60,61 @@ export const PurchaseSummary = () => {
             message.info('Updated order succesfully.'))
     }
     const feesColumns = [
-        {
-            title: 'Fees Name',
-            dataIndex: 'feesTitle',
-            key: 'feesTitle',
-
+      {
+        title: "Fees Name",
+        dataIndex: "feesTitle",
+        key: "feesTitle",
+        render: (item: string) => item.toUpperCase(),
+        width: "25%",
+      },
+      {
+        title: "Month",
+        dataIndex: "month",
+        key: "month",
+      },
+      {
+        title: "Fees Type",
+        dataIndex: "applicableRule",
+        key: "applicableRule",
+        responsive: ["md"],
+      },
+      {
+        title: " Unit Price",
+        dataIndex: "unitPrice",
+        key: "unitPrice",
+        responsive: ["md"],
+        render: (item: number) => {
+          return item.toLocaleString("en-IN", {
+            maximumFractionDigits: 2,
+            style: "currency",
+            currency: "INR",
+          })
         },
-        {
-            title: 'Month',
-            dataIndex: 'month',
-            key: 'month',
-        }, {
-            title: 'Fees Type',
-            dataIndex: 'applicableRule',
-            key: 'applicableRule',
-            responsive: ['md']
-        }, {
-            title: ' Unit Price',
-            dataIndex: 'unitPrice',
-            key: 'unitPrice',
-            responsive: ['md'],
-            render: (item: number) => {
-                return item.toLocaleString('en-IN', {
-                    maximumFractionDigits: 2,
-                    style: 'currency',
-                    currency: 'INR'
-                })
-            }
+      },
+      {
+        title: "Amount",
+        dataIndex: "amount",
+        key: "amount",
+        render: (item: number) => {
+          return item.toLocaleString("en-IN", {
+            maximumFractionDigits: 2,
+            style: "currency",
+            currency: "INR",
+          })
         },
-        {
-            title: 'Amount',
-            dataIndex: 'amount',
-            key: 'amount',
-            render: (item: number) => {
-                return item.toLocaleString('en-IN', {
-                    maximumFractionDigits: 2,
-                    style: 'currency',
-                    currency: 'INR'
-                })
-            }
-        }, {
-            title: 'Action',
-            key: 'action',
-            responsive: ['md'],
-            hidden: user?.authority && !deleteAllowedRole.includes(user?.authority),
-            render: (_: any, record: any) => (
-                <Space size="middle">
-                    <a onClick={() => showDeleteConfirm(true, record.feesTitle, record.itemId, 'FEES')}>Delete</a>
-                </Space>
-            ),
-        }
-    ].filter(item => !item.hidden);
+      },
+      {
+        title: "Action",
+        key: "action",
+        responsive: ["md"],
+        hidden: user?.authority && !deleteAllowedRole.includes(user?.authority),
+        render: (_: any, record: any) => (
+          <Space size="middle">
+            <a onClick={() => showDeleteConfirm(true, record.feesTitle, record.itemId, "FEES")}>Delete</a>
+          </Space>
+        ),
+      },
+    ].filter((item) => !item.hidden)
 
 
     const purchaseColumns = [
