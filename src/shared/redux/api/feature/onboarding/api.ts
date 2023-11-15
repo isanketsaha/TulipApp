@@ -9,11 +9,11 @@ export const onboardingApi = createApi({
     endpoints: (builder) => ({
         onboardUser: builder.mutation<any, number>({
             query: (onboardingVm: any) => {
-                return ({
-                    url: '/',
-                    method: 'POST',
-                    body: onboardingVm
-                });
+                return {
+                  url: "",
+                  method: "POST",
+                  body: onboardingVm,
+                }
             },
             invalidatesTags:['Student','Employee', 'AdmissionReport', 'StaffReport'],
         }),

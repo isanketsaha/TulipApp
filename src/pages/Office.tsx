@@ -1,17 +1,15 @@
-import { Button, Card, Col, DatePicker, Form, Modal, Row, message } from "antd"
-import { useState } from "react"
-import { Space } from "antd"
-import { TransactionReport } from "../shared/component/reports/TransactionReports"
-import { StudentReport } from "../shared/component/reports/Student"
-import { StaffReport } from "../shared/component/reports/StaffReport"
-import { Stock } from "../shared/component/reports/Stock"
-import { AddExpense } from "../shared/component/AddExpense"
+import { Button, Card, Col, DatePicker, Modal, Row, Space } from "antd"
 import dayjs, { Dayjs } from "dayjs"
+import { useState } from "react"
 import { useMediaQuery } from "react-responsive"
-import { useAppSelector } from "../store"
-import { Role } from "../shared/utils/Role"
 import { useNavigate } from "react-router-dom"
+import { AddExpense } from "../shared/component/AddExpense"
 import { Dues } from "../shared/component/reports/Dues"
+import { Stock } from "../shared/component/reports/Stock"
+import { TransactionReport } from "../shared/component/reports/TransactionReports"
+import { useAllDuesQuery } from "../shared/redux/api/feature/payment/api"
+import { Role } from "../shared/utils/Role"
+import { useAppSelector } from "../store"
 
 export const Office = () => {
   const { user } = useAppSelector((app) => app.userAuth)
@@ -20,6 +18,7 @@ export const Office = () => {
   const [isExpenseModelOpen, setIsExpenseModelOpen] = useState(false)
   const dateFormat = "DD-MMM-YYYY"
   let navigate = useNavigate()
+  const { data } = useAllDuesQuery()
 
   const disableDate = (currentDate: Dayjs) => {
     return user?.authority == Role.ADMIN
@@ -57,11 +56,13 @@ export const Office = () => {
               <Stock />
             </Col>
           </Row>
-          <Row>
-            <Col xs={{ span: 24 }}>
-              <Dues />
-            </Col>
-          </Row>
+          {data && data?.length > 0 && (
+            <Row>
+              <Col xs={{ span: 24 }}>
+                <Dues data={data} />
+              </Col>
+            </Row>
+          )}
         </Space>
 
         <Modal

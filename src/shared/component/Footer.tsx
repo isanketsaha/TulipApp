@@ -16,7 +16,5 @@ export const AppFooter = () => {
 
     const { data: allClassList } = useFetchAllClassQuery();
     useFetchAvailablePaymentOptionsQuery();
-    return (
-        <Footer style={{ textAlign: 'center' }}>Tulip School Estabilished on ©2018</Footer>
-    );
+    return <Footer style={{ textAlign: "center" }}>Tulip School Estabilished on ©2018</Footer>
 }

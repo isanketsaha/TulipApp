@@ -77,7 +77,14 @@ export const Payment = () => {
 
   const submit = (value: any) => {
     console.log(value)
-    const feesLineItem: { feesId: any; unitPrice: number; amount: number; month?: string; feesTitle: string }[] = []
+    const feesLineItem: {
+      feesId: any
+      unitPrice: number
+      amount: number
+      month?: string
+      feesTitle: string
+      type: string
+    }[] = []
     value.feeItem
       ? value.feeItem.map((item: any) => {
           if (item.rule != FeesRuleType.Yearly) {
@@ -85,6 +92,7 @@ export const Payment = () => {
           } else {
             feesLineItem.push({
               feesId: item.feesId,
+              type: item.type,
               feesTitle: item.feesTitle,
               unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
               amount: Number(item.amount.replace(/[^0-9-]+/g, "")) / 100,
@@ -125,6 +133,7 @@ export const Payment = () => {
       return {
         feesId: item.feesId,
         feesTitle: item.feesTitle,
+        type: item.type,
         unitPrice: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
         amount: Number(item.unitPrice.replace(/[^0-9-]+/g, "")) / 100,
         month: value.format("MMM/YYYY"),
@@ -188,6 +197,7 @@ export const Payment = () => {
                     <Fees
                       form={form}
                       classId={studentDetails?.classId}
+                      studentId={studentDetails?.id}
                       duesAmount={dueAmount}
                       calculate={paymentTypeValue == "FEES"}
                       calculatePriceBreakDown={calculatePriceBreakDown}
@@ -196,7 +206,7 @@ export const Payment = () => {
                   {paymentTypeValue == "PURCHASE" && studentDetails && (
                     <Purchase
                       form={form}
-                      classId={studentDetails?.classId}
+                      classId={studentDetails?.classId!}
                       duesAmount={dueAmount}
                       calculate={paymentTypeValue == "PURCHASE"}
                       calculatePriceBreakDown={calculatePriceBreakDown}
@@ -284,12 +294,7 @@ export const Payment = () => {
                     </Col>
                     <Col span={3}>
                       <Form.Item name={"dueOpted"}>
-                        <Switch
-                          checkedChildren="Dues"
-                          unCheckedChildren="No Dues"
-                          defaultChecked={false}
-                          onChange={addDue}
-                        />
+                        <Switch checkedChildren="Dues" unCheckedChildren="No Dues" checked={false} onChange={addDue} />
                       </Form.Item>
                     </Col>
                     <Col span={6}>

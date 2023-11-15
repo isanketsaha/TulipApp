@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const EmployeeBasicDetails = () => {
 
-    const { data } = useFetchAllActiveEmployeeQuery();
+    const { data } = useFetchAllActiveEmployeeQuery()
 
     return (
         <>

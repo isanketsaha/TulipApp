@@ -1,4 +1,4 @@
-import { Card, Col, Row, Space } from "antd"
+import { Button, Card, Col, Row, Space, Statistic } from "antd"
 import { ChartData } from "chart.js"
 import { Bar, Line, Pie } from "react-chartjs-2"
 import { StaffReport } from "../shared/component/reports/StaffReport"
@@ -7,6 +7,8 @@ import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom
 import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
 import { monthToNumber } from "../shared/utils/Const"
 import { useAppSelector } from "../store"
+import { ArrowUpOutlined } from "@ant-design/icons"
+import { TransportReport } from "../shared/component/reports/TransportReport"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
@@ -100,41 +102,49 @@ export const Dashboard = () => {
 
   return (
     <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-      <Row justify={"space-between"}>
-        <Col>
-          <Pie data={chartData} options={graphOption("Student", 1, true)} />
-        </Col>
-        <Col>
-          <Bar options={graphOption("Expense")} data={expense} />
-        </Col>
-        <Col>
-          <Line
-            options={{
-              ...graphOption("Admission"),
-              ...{
-                scales: {
-                  y: {
-                    suggestedMin: 0, // Start y-axis from 0
-                    ticks: {
-                      stepSize: 3,
+      <Card>
+        <Row justify={"space-between"}>
+          <Col>
+            <Pie data={chartData} options={graphOption("Student", 1, true)} />
+          </Col>
+          <Col>
+            <Bar options={graphOption("Expense")} data={expense} />
+          </Col>
+          <Col>
+            <Line
+              options={{
+                ...graphOption("Admission"),
+                ...{
+                  scales: {
+                    y: {
+                      suggestedMin: 0, // Start y-axis from 0
+                      ticks: {
+                        stepSize: 3,
+                      },
                     },
                   },
                 },
-              },
-            }}
-            data={admission}
-          />
-        </Col>
-      </Row>
+              }}
+              data={admission}
+            />
+          </Col>
+        </Row>
+      </Card>
+
       <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
-        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <Card>
             <StudentReport />
           </Card>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <Card>
             <StaffReport />
+          </Card>
+        </Col>
+        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+          <Card>
+            <TransportReport />
           </Card>
         </Col>
       </Row>

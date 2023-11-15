@@ -21,11 +21,11 @@ export const paymentApi = createApi({
         payment: builder.mutation<number, IPay>({
             invalidatesTags: (result) => result ? [{ type: 'Payment', id: result }] : ['Payment'],
             query: (pay) => {
-                return ({
-                    url: '/',
-                    method: 'POST',
-                    body: pay
-                });
+                return {
+                  url: "",
+                  method: "POST",
+                  body: pay,
+                }
             },
 
         }),

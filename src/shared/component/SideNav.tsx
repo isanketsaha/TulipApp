@@ -1,21 +1,28 @@
-import { Avatar, Badge, Menu, MenuProps, Modal, Typography, theme } from "antd";
-import Sider from "antd/es/layout/Sider";
-import React, { useEffect, useState } from "react";
 import {
-  HomeOutlined,
-  SnippetsFilled,
   ExclamationCircleFilled,
   EyeFilled,
-  IdcardFilled,
   FolderOpenFilled,
-  LogoutOutlined,
   FundFilled,
+  HomeOutlined,
+  IdcardFilled,
+  LogoutOutlined,
+  SnippetsFilled,
   UserOutlined,
 } from "@ant-design/icons"
+import { PiChalkboardTeacher, PiStudentBold } from "react-icons/pi"
+import { ImOffice } from "react-icons/im"
+import { Avatar, Menu, MenuProps, Modal, Typography, theme } from "antd"
+import Sider from "antd/es/layout/Sider"
+import React, { useEffect, useState } from "react"
+import { BsDatabaseFillGear } from "react-icons/bs"
+import { useMediaQuery } from "react-responsive"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../store"
 import { logout } from "../redux/slices/UserAuthSlice"
 import { Role } from "../utils/Role"
+import { MdDashboardCustomize, MdOutlineAccountTree } from "react-icons/md"
+import { SiGoogleclassroom } from "react-icons/si"
+
 interface nav {
   label: string
   link?: string
@@ -29,6 +36,7 @@ interface ISliderProps {
 }
 export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
   const { confirm } = Modal
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const { Text } = Typography
   let { pathname } = useLocation()
   const { user } = useAppSelector((state) => state.userAuth)
@@ -57,29 +65,33 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
   const navigatons: nav[] = [
     {
       label: "Home",
-      icon: <HomeOutlined />,
+      icon: <MdDashboardCustomize />,
     },
     {
       label: "Office",
-      icon: <SnippetsFilled />,
+      icon: <ImOffice />,
     },
     {
       label: "Students",
-      icon: <IdcardFilled />,
+      icon: <PiStudentBold />,
     },
     {
       label: "Staffs",
-      icon: <EyeFilled />,
+      icon: <PiChalkboardTeacher />,
     },
     {
       label: "Classroom",
-      icon: <FolderOpenFilled />,
+      icon: <SiGoogleclassroom />,
     },
     ...(user?.authority && [Role.ADMIN].includes(user?.authority)
       ? [
           {
             label: "Accounts",
-            icon: <FundFilled />,
+            icon: <MdOutlineAccountTree />,
+          },
+          {
+            label: "Data",
+            icon: <BsDatabaseFillGear />,
           },
         ]
       : []),
@@ -104,8 +116,16 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
     const key = String(index + 1)
     return {
       key: `${key}`,
-      label: <Link to={`/${item.label}`.toLowerCase()}> {item.label} </Link>,
+      label: item.children ? item.label : <Link to={`/${item.label}`.toLowerCase()}> {item.label} </Link>,
       icon: item.icon,
+      children: item.children?.map((item, index) => {
+        const key = String(index + 1)
+        return {
+          key: `${key}`,
+          label: <Link to={`/${item.label}`.toLowerCase()}> {item.label} </Link>,
+          icon: item.icon,
+        }
+      }),
     }
   })
 
@@ -125,22 +145,19 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
   return (
     <Sider
       width={250}
-      collapsible
-      collapsed={collapsed}
       breakpoint="lg"
-      onCollapse={(value) => setCollapsed(value)}
       style={{
         background: colorBgContainer,
+        paddingTop: "15vh",
         overflow: "auto",
-        height: "100vh",
+        minHeight: "100vh",
         position: "fixed",
         left: 0,
         top: 0,
         bottom: 0,
-        paddingTop: "15vh",
       }}
     >
-      <div hidden={collapsed && user != null} style={{ textAlign: "center", marginBottom: "3vh" }}>
+      <div hidden={isMobile && user != null} style={{ textAlign: "center", marginBottom: "3vh" }}>
         <Avatar style={{ backgroundColor: "#f56a00", verticalAlign: "middle" }} size={150} icon={<UserOutlined />} />
         <div style={{ marginTop: "2vh" }}>
           <Text strong>{user?.userName}</Text>
@@ -149,7 +166,7 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
         </div>
       </div>
 
-      <Menu mode="vertical" style={{ borderRight: 0 }} selectedKeys={[String(path)]} items={options} />
+      <Menu mode="inline" style={{ borderRight: 0 }} selectedKeys={[String(path)]} items={options} />
     </Sider>
   )
 }
