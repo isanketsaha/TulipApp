@@ -40,7 +40,7 @@ export const employeeApi = createApi({
           method: "GET",
           responseHandler: async (response) =>
             response.status == 200
-              ? window.open(window.URL.createObjectURL(await response.blob()), "_blank")
+              ? response.text().then((val) => window.open(val, "_blank"))
               : message.error("Error Occurred , Status " + response.status),
           cache: "no-cache",
         }

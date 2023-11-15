@@ -251,197 +251,224 @@ export const PurchaseSummary = () => {
         </Table.Summary.Row>);
     }
 
-    return (<>
-        {paySummary ?
-            <Space direction="vertical" style={{ width: '100%' }} size="large">
-                <Divider>Payment Summary</Divider>
-                <Card key={item?.id}>
-                    {paySummary?.payType != 'EXPENSE' && <><BasicDetails data={item ?? {} as IBasicDetails} key={item?.id} />
-                        <Divider></Divider>
-                    </>
-                    }
+    return (
+      <>
+        {paySummary ? (
+          <Space direction="vertical" style={{ width: "100%" }} size="large">
+            <Divider>Payment Summary</Divider>
+            <Card key={item?.id}>
+              {paySummary?.payType != "EXPENSE" && (
+                <>
+                  <BasicDetails data={item ?? ({} as IBasicDetails)} key={item?.id} />
+                  <Divider></Divider>
+                </>
+              )}
 
-                    <Descriptions>
-                        <Descriptions.Item span={1} label="Transaction Id">
-                            {user?.authority && [Role.ADMIN].includes(user?.authority) ? <Space style={{ marginTop: '-5px' }} size={"large"} >
-                                {paySummary?.paymentId}
-                                <Button type="text" icon={<DeleteTwoTone twoToneColor="red" />} onClick={() =>
-                                    showDeleteConfirm(false, '', paySummary?.paymentId, '')}> DELETE </Button>
-                            </Space> : paySummary?.paymentId}
-                        </Descriptions.Item>
-                        <Descriptions.Item span={1} label="Date Time"> {dayjs(paySummary?.paymentDateTime).format('dddd, MMMM D, YYYY h:mm A')}</Descriptions.Item>
+              <Descriptions>
+                <Descriptions.Item span={1} label="Transaction Id">
+                  {user?.authority && [Role.ADMIN].includes(user?.authority) ? (
+                    <Space style={{ marginTop: "-5px" }} size={"large"}>
+                      {paySummary?.paymentId}
+                      <Button
+                        type="text"
+                        icon={<DeleteTwoTone twoToneColor="red" />}
+                        onClick={() => showDeleteConfirm(false, "", paySummary?.paymentId, "")}
+                      >
+                        {" "}
+                        DELETE{" "}
+                      </Button>
+                    </Space>
+                  ) : (
+                    paySummary?.paymentId
+                  )}
+                </Descriptions.Item>
+                <Descriptions.Item span={1} label="Date Time">
+                  {" "}
+                  {dayjs(paySummary?.paymentDateTime).format("dddd, MMMM D, YYYY h:mm A")}
+                </Descriptions.Item>
 
-                        <Descriptions.Item span={1} label="Purchase Type"> <Space style={{ marginTop: '-5px' }}> <Tag color={"purple"}>
-                            {paySummary?.payType}
-                        </Tag> {paySummary?.payType && printReceiptAvailable.includes(paySummary?.payType)
-                            && <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>Reciept</Button>}</Space></Descriptions.Item>
-                    </Descriptions>
+                <Descriptions.Item span={1} label="Purchase Type">
+                  {" "}
+                  <Space style={{ marginTop: "-5px" }}>
+                    {" "}
+                    <Tag color={"purple"}>{paySummary?.payType}</Tag>{" "}
+                    {paySummary?.payType && printReceiptAvailable.includes(paySummary?.payType) && (
+                      <Button type="text" onClick={() => id && printReceipt(id)} icon={<PrinterOutlined />}>
+                        Reciept
+                      </Button>
+                    )}
+                  </Space>
+                </Descriptions.Item>
+              </Descriptions>
 
-                    {paySummary.docs?.length > 0 &&
+              {paySummary.docs?.length > 0 && (
+                <Upload className="row" {...uploadProps()} fileList={paySummary.docs} listType="text" />
+              )}
+            </Card>
+            {paySummary?.payType == "FEES" && (
+              <Table<IFeesItemSummary>
+                columns={feesColumns as ColumnsType<IFeesItemSummary>}
+                dataSource={paySummary?.feesItem}
+                pagination={{
+                  pageSize: 10,
+                  hideOnSinglePage: true,
+                  showTotal(total, range) {
+                    return `${range[0]}-${range[1]} of ${total} items`
+                  },
+                }}
+                scroll={{ y: 340 }}
+                summary={() => (
+                  <Table.Summary fixed={"bottom"}>
+                    {paySummary?.dueOpted && dueDetailsRow(paySummary)}
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell colSpan={2} index={1}>
+                        Recieved by : <Tag color="purple">{paySummary?.createdBy}</Tag>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell colSpan={2} index={1}>
+                        Pay Mode :{" "}
+                        <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
+                          {paySummary?.paymentMode}
+                        </Tag>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={10}>
+                        <Text mark>
+                          {paySummary?.total.toLocaleString("en-IN", {
+                            maximumFractionDigits: 2,
+                            style: "currency",
+                            currency: "INR",
+                          })}
+                        </Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                )}
+                sticky
+              />
+            )}
 
-                        <Upload className="upload-row" {...uploadProps()}
-                            fileList={paySummary.docs}
-                            listType="text" />}
+            {paySummary?.payType == "PURCHASE" && (
+              <Table<IPurchaseItemSummary>
+                columns={purchaseColumns as ColumnsType<IPurchaseItemSummary>}
+                dataSource={paySummary?.purchaseItems}
+                pagination={{
+                  pageSize: 10,
+                  hideOnSinglePage: true,
+                  showTotal(total, range) {
+                    return `${range[0]}-${range[1]} of ${total} items`
+                  },
+                }}
+                scroll={{ y: 340 }}
+                summary={() => (
+                  <Table.Summary fixed={"bottom"}>
+                    {paySummary?.dueOpted && dueDetailsRow(paySummary)}
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell colSpan={2} index={1}>
+                        Recieved by : <Tag color="purple">{paySummary?.createdBy}</Tag>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell colSpan={2} index={1}>
+                        Pay Mode :{" "}
+                        <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
+                          {paySummary?.paymentMode}
+                        </Tag>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={10}>
+                        <Text mark>
+                          {paySummary?.total.toLocaleString("en-IN", {
+                            maximumFractionDigits: 2,
+                            style: "currency",
+                            currency: "INR",
+                          })}
+                        </Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                )}
+                sticky
+              />
+            )}
+
+            {paySummary?.payType == "EXPENSE" && (
+              <Table
+                columns={expenseColumns}
+                dataSource={paySummary?.expenseItems}
+                pagination={{
+                  pageSize: 10,
+                  hideOnSinglePage: true,
+                  showTotal(total, range) {
+                    return `${range[0]}-${range[1]} of ${total} items`
+                  },
+                }}
+                scroll={{ y: 340 }}
+                summary={() => (
+                  <Table.Summary fixed={"bottom"}>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell colSpan={1} index={1}>
+                        Pay Mode :{" "}
+                        <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
+                          {paySummary?.paymentMode}
+                        </Tag>
+                      </Table.Summary.Cell>
+
+                      <Table.Summary.Cell colSpan={1} index={1}>
+                        Paid by : <Tag color="purple">{paySummary?.createdBy}</Tag>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell colSpan={1} index={1}>
+                        {paySummary?.comments ? <Tag color="default">{paySummary?.comments}</Tag> : ""}
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell colSpan={1} index={1}>
+                        Recieved By :
+                        <Tag color="blue" style={{ marginLeft: "1vmin" }}>
+                          {paySummary.expenseItems[0].receivedBy}
+                        </Tag>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={1}>
+                        <Text mark>
+                          {paySummary?.total.toLocaleString("en-IN", {
+                            maximumFractionDigits: 2,
+                            style: "currency",
+                            currency: "INR",
+                          })}
+                        </Text>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                )}
+                sticky
+              />
+            )}
+
+            {paySummary.dueOpted && (
+              <>
+                <Divider>Due Payments</Divider>
+                <Card>
+                  <List
+                    bordered
+                    dataSource={paySummary.dues.duesPayment}
+                    renderItem={(item, index) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          description={
+                            <Row justify={"space-around"}>
+                              <Col span={6}>{dayjs(item.createdDate).format("DD/MM/YYYY")}</Col>
+
+                              <Col span={6}>
+                                <Tag>{item.paymentMode}</Tag>
+                              </Col>
+                              <Col span={6}>Fine - {item.penalty}</Col>
+                              <Col span={6}>Amount - {item.amount}</Col>
+                            </Row>
+                          }
+                        ></List.Item.Meta>
+                      </List.Item>
+                    )}
+                  />
                 </Card>
-                {paySummary?.payType == 'FEES' && <Table<IFeesItemSummary> columns={feesColumns as ColumnsType<IFeesItemSummary>}
-                    dataSource={paySummary?.feesItem}
-                    pagination={{
-                        pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
-                            return `${range[0]}-${range[1]} of ${total} items`
-                        }
-                    }} scroll={{ y: 340 }}
-                    summary={() => (
-                        <Table.Summary fixed={'bottom'} >
-                            {paySummary?.dueOpted && dueDetailsRow(paySummary)}
-                            <Table.Summary.Row >
-
-                                <Table.Summary.Cell colSpan={2} index={1}>
-                                    Recieved by :  <Tag color="purple">
-                                        {paySummary?.createdBy}
-                                    </Tag>
-                                </Table.Summary.Cell>
-                                <Table.Summary.Cell colSpan={2} index={1}>
-                                    Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
-                                        {paySummary?.paymentMode}
-                                    </Tag>
-                                </Table.Summary.Cell>
-                                <Table.Summary.Cell index={10}>
-                                    <Text mark>
-                                        {paySummary?.total.toLocaleString('en-IN', {
-                                            maximumFractionDigits: 2,
-                                            style: 'currency',
-                                            currency: 'INR'
-                                        })}
-                                    </Text>
-                                </Table.Summary.Cell>
-                            </Table.Summary.Row>
-                        </Table.Summary>
-                    )}
-                    sticky
-                />
-                }
-
-                {(paySummary?.payType == 'PURCHASE') && <Table<IPurchaseItemSummary> columns={purchaseColumns as ColumnsType<IPurchaseItemSummary>}
-                    dataSource={paySummary?.purchaseItems}
-                    pagination={{
-                        pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
-                            return `${range[0]}-${range[1]} of ${total} items`
-                        }
-                    }} scroll={{ y: 340 }}
-                    summary={() => (
-                        <Table.Summary fixed={'bottom'} >
-                            {paySummary?.dueOpted && dueDetailsRow(paySummary)}
-                            <Table.Summary.Row >
-                                <Table.Summary.Cell colSpan={2} index={1}>
-                                    Recieved by :  <Tag color="purple">
-                                        {paySummary?.createdBy}
-                                    </Tag>
-                                </Table.Summary.Cell>
-                                <Table.Summary.Cell colSpan={2} index={1}>
-                                    Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
-                                        {paySummary?.paymentMode}
-                                    </Tag>
-                                </Table.Summary.Cell>
-                                <Table.Summary.Cell index={10}>
-                                    <Text mark>
-                                        {paySummary?.total.toLocaleString('en-IN', {
-                                            maximumFractionDigits: 2,
-                                            style: 'currency',
-                                            currency: 'INR'
-                                        })}
-                                    </Text>
-                                </Table.Summary.Cell>
-                            </Table.Summary.Row>
-                        </Table.Summary>
-                    )}
-                    sticky
-                />
-                }
-
-                {
-                    paySummary?.payType == 'EXPENSE' && <Table columns={expenseColumns}
-                        dataSource={paySummary?.expenseItems}
-                        pagination={{
-                            pageSize: 10, hideOnSinglePage: true, showTotal(total, range) {
-                                return `${range[0]}-${range[1]} of ${total} items`
-                            }
-                        }} scroll={{ y: 340 }}
-                        summary={() => (
-                            <Table.Summary fixed={'bottom'} >
-                                <Table.Summary.Row >
-                                    <Table.Summary.Cell colSpan={1} index={1}>
-                                        Pay Mode :  <Tag color={paySummary?.paymentMode == "CASH" ? "green" : "cyan"}>
-                                            {paySummary?.paymentMode}
-                                        </Tag>
-                                    </Table.Summary.Cell>
-
-                                    <Table.Summary.Cell colSpan={1} index={1}>
-                                        Paid by :  <Tag color="purple">
-                                            {paySummary?.createdBy}
-                                        </Tag>
-                                    </Table.Summary.Cell>
-                                    <Table.Summary.Cell colSpan={1} index={1}>
-                                        {paySummary?.comments ? <Tag color="default">
-                                            {paySummary?.comments}
-                                        </Tag> : ""}
-                                    </Table.Summary.Cell>
-                                    <Table.Summary.Cell colSpan={1} index={1}>
-                                        Recieved By :
-                                        <Tag color="blue" style={{ marginLeft: '1vmin' }}>
-                                            {paySummary.expenseItems[0].receivedBy}
-                                        </Tag>
-                                    </Table.Summary.Cell>
-                                    <Table.Summary.Cell index={1}>
-                                        <Text mark>
-                                            {paySummary?.total.toLocaleString('en-IN', {
-                                                maximumFractionDigits: 2,
-                                                style: 'currency',
-                                                currency: 'INR'
-                                            })}
-                                        </Text>
-                                    </Table.Summary.Cell>
-                                </Table.Summary.Row>
-                            </Table.Summary>
-                        )}
-                        sticky
-                    />
-                }
-
-                {paySummary.dueOpted && <>
-                    <Divider>Due Payments</Divider>
-                    <Card>
-                    <List
-                        bordered
-                        dataSource={paySummary.dues.duesPayment}
-                        renderItem={(item, index) => (
-                            <List.Item>
-                                <List.Item.Meta description={
-                                    <Row justify={"space-around"}>
-                                        <Col span={6}>
-                                            {dayjs(item.createdDate).format('DD/MM/YYYY')}
-                                        </Col>
-
-                                        <Col span={6}>
-                                            <Tag>
-                                            {item.paymentMode}
-                                            </Tag>
-                                        </Col>
-                                        <Col span={6}>
-                                            Fine - {item.penalty}
-                                        </Col>
-                                        <Col span={6}>
-                                            Amount - {item.amount}
-                                        </Col>
-                                    </Row>}></List.Item.Meta>
-
-                            </List.Item>
-                        )}
-                    />
-                    </Card>
-                </>}
-            </Space> :
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"No Transaction found."} />
-        }
-
-    </>);
+              </>
+            )}
+          </Space>
+        ) : (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={"No Transaction found."} />
+        )}
+      </>
+    )
 }

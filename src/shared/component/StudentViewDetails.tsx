@@ -237,6 +237,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
               </Descriptions.Item>
             </Descriptions>
             <Upload
+              className="row"
               {...uploadProps()}
               fileList={[...studentData.birthCertificate, ...studentData.aadhaarCard]}
               listType="text"

@@ -2,17 +2,12 @@ import { WhatsAppOutlined } from "@ant-design/icons"
 import { Checkbox, Col, DatePicker, Divider, Form, FormProps, Input, InputNumber, Row, Select } from "antd"
 import type { Dayjs } from "dayjs"
 import { FC } from "react"
-import { BiSolidBusSchool } from "react-icons/bi"
 import { useLocation } from "react-router-dom"
 import { useAppSelector } from "../../../store"
 import { UploadFiles } from "../UploadFiles"
-import { useFetchAllTransportCatalogQuery } from "../../redux/api/feature/catalog/api"
 
 export const AddBasic: FC<FormProps> = (formProps) => {
   const { state } = useLocation()
-  const { form } = formProps
-  const transportAvail = Form.useWatch("transportServiceFlag", form)
-  const session = Form.useWatch("session", form)
   const selectList = useAppSelector((state) => state.commonData)
   const disableDate = (currentDate: Dayjs) => {
     return currentDate.isAfter(new Date())
@@ -70,15 +65,7 @@ export const AddBasic: FC<FormProps> = (formProps) => {
         </Col>
         <Col span={12}>
           <Form.Item name="address" label="Address" rules={[{ required: true }]}>
-            <Input
-              addonBefore={
-                <Form.Item name="transportServiceFlag" valuePropName="checked" noStyle>
-                  <Checkbox disabled={state.type != "student"}>
-                    <BiSolidBusSchool />
-                  </Checkbox>
-                </Form.Item>
-              }
-            />
+            <Input />
           </Form.Item>
         </Col>
       </Row>

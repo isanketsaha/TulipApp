@@ -7,7 +7,7 @@ import { Dayjs } from "dayjs"
 
 export const studentApi = createApi({
   reducerPath: "studentApi",
-  tagTypes: ["Student", "Classroom"],
+  tagTypes: ["Student", "Classroom", "TransportReport"],
   baseQuery: baseQueryWithRetry("student"),
   endpoints: (builder) => ({
     fetchAllStudent: builder.query<IPageResponse<IBasicDetails>, number>({
@@ -29,7 +29,7 @@ export const studentApi = createApi({
           body,
         }
       },
-      invalidatesTags: (result) => (result ? [{ type: "Student", id: result }] : ["Student"]),
+      invalidatesTags: ["TransportReport"],
     }),
     basicSearchById: builder.query<IBasicDetails, string>({
       query: (id) => `/basicSearch?id=${id}`,

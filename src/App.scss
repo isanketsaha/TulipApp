@@ -17,8 +17,9 @@
   }
 }
 
-.upload-row {
-  .ant-upload-list-text{
+.row {
+  .ant-upload-list-text {
     display: flex;
+    justify-content: space-between;
   }
 }

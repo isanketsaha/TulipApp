@@ -1,7 +1,7 @@
 import { EditOutlined, FileDoneOutlined, IssuesCloseOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons"
 import { Avatar, Badge, Button, Descriptions, Divider, Row, Space, Switch, Tooltip, message } from "antd"
 import modal from "antd/es/modal"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { useNavigate } from "react-router-dom"
 import {
   useLazyForgotPasswordQuery,
@@ -29,10 +29,17 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
       <>
         <Divider orientation="center" plain>
           <h3>
-            <Avatar size={100} icon={<UserOutlined />} src={employeeData?.profilePicture}></Avatar>
-
+            <Avatar size={120} icon={<UserOutlined />} src={employeeData.profilePictureUrl}></Avatar>
             <div>
-              {user?.authority && [Role.PRINCIPAL, Role.ADMIN].includes(user?.authority) ? (
+              {employeeData?.name}{" "}
+              {false && (
+                <Tooltip title="Edit Details">
+                  <Button icon={<EditOutlined />} type="link" />
+                </Tooltip>
+              )}
+              {user?.authority &&
+              [Role.PRINCIPAL, Role.ADMIN].includes(user?.authority) &&
+              dayjs(employeeData.createdDate)?.isSame(dayjs(new Date()), "month") ? (
                 <Tooltip title="Download Joining Letter">
                   {" "}
                   <Button
@@ -42,10 +49,6 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                   />
                 </Tooltip>
               ) : null}
-              {employeeData?.name}{" "}
-              <Tooltip title="Edit Details">
-                <Button icon={<EditOutlined />} type="link" />
-              </Tooltip>
             </div>
           </h3>
         </Divider>
@@ -54,9 +57,11 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
           <Descriptions.Item label="Employee ID"> {employeeData?.id}</Descriptions.Item>
           <Descriptions.Item label="Gender">{employeeData?.gender}</Descriptions.Item>
           <Descriptions.Item label="Date Of Birth">{dayjs(employeeData?.dob).format("DD-MM-YYYY")}</Descriptions.Item>
+
           <Descriptions.Item label="Joined On" span={1}>
-            {employeeData?.interview.doj ? dayjs(employeeData?.interview.doj).format("DD-MM-YYYY") : "N/A"}
+            {employeeData?.interview?.doj ? dayjs(employeeData?.interview.doj!).format("DD-MM-YYYY") : "N/A"}
           </Descriptions.Item>
+
           <Descriptions.Item label="Active" span={1}>
             {user?.authority && [Role.PRINCIPAL, Role.ADMIN].includes(user?.authority) ? (
               <Row justify={"space-between"}>
@@ -180,7 +185,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                 {dayjs(employeeData?.interview?.interviewDate).format("DD-MM-YYYY")}
               </Descriptions.Item>
               <Descriptions.Item label="Joined On">
-                {dayjs(employeeData?.interview?.doj).format("DD-MM-YYYY")}
+                {employeeData?.interview?.doj && dayjs(employeeData?.interview?.doj).format("DD-MM-YYYY")}
               </Descriptions.Item>
               <Descriptions.Item label="Salary">{employeeData?.interview?.salary}</Descriptions.Item>
               <Descriptions.Item label="Comments">{employeeData?.interview?.comments}</Descriptions.Item>
