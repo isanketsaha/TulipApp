@@ -1,5 +1,12 @@
-import { EditOutlined, FileDoneOutlined, IssuesCloseOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons"
-import { Avatar, Badge, Button, Descriptions, Divider, Row, Space, Switch, Tooltip, message } from "antd"
+import {
+  EditOutlined,
+  ExclamationCircleFilled,
+  FileDoneOutlined,
+  IssuesCloseOutlined,
+  UserOutlined,
+  WhatsAppOutlined,
+} from "@ant-design/icons"
+import { Avatar, Badge, Button, Descriptions, Divider, Modal, Row, Space, Switch, Tooltip, Upload, message } from "antd"
 import modal from "antd/es/modal"
 import dayjs, { Dayjs } from "dayjs"
 import { useNavigate } from "react-router-dom"
@@ -11,12 +18,14 @@ import {
 } from "../redux/api/feature/employee/api"
 import { Role } from "../utils/Role"
 import { useAppSelector } from "/src/store"
+import { uploadProps } from "/src/configs/UploadConfig"
 
 interface IEmployeeProps {
   employeeId: string
 }
 export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
   let navigate = useNavigate()
+  const { confirm } = Modal
   const { user } = useAppSelector((state) => state.userAuth)
   const allowerRoles: Role[] = [Role.ADMIN, Role.PRINCIPAL]
   const [forgotPassword] = useLazyForgotPasswordQuery()
@@ -24,6 +33,21 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
   const [terminateEmployee] = useLazyTerminateEmployeeQuery()
   const { data: employeeData } = useSearchEmployeeByIdQuery(employeeId, { skip: employeeId == "" })
 
+  const showEditConfirm = () => {
+    confirm({
+      title: `Are you sure to edit details of ${employeeData?.name}  ?`,
+      icon: <ExclamationCircleFilled />,
+      okText: "Yes",
+      centered: true,
+      okType: "danger",
+      cancelText: "No",
+      width: 600,
+      autoFocusButton: "cancel",
+      onOk() {
+        setTimeout(() => navigate(`/edit/${employeeData?.id}`, { replace: true, state: { type: "employee" } }), 300)
+      },
+    })
+  }
   return (
     <>
       {employeeData && (
@@ -33,11 +57,6 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
               <Avatar size={120} icon={<UserOutlined />} src={employeeData.profilePictureUrl}></Avatar>
               <div>
                 {employeeData?.name}{" "}
-                {false && (
-                  <Tooltip title="Edit Details">
-                    <Button icon={<EditOutlined />} type="link" />
-                  </Tooltip>
-                )}
                 {user?.authority &&
                 [Role.PRINCIPAL, Role.ADMIN].includes(user?.authority) &&
                 dayjs(employeeData.createdDate)?.isSame(dayjs(new Date()), "month") ? (
@@ -50,6 +69,14 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                     />
                   </Tooltip>
                 ) : null}
+              </div>
+              <div>
+                {
+                  <Button icon={<EditOutlined />} type="link" disabled onClick={showEditConfirm}>
+                    {" "}
+                    Edit
+                  </Button>
+                }
               </div>
             </h3>
           </Divider>
@@ -138,6 +165,12 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
               </Space>
             </Descriptions.Item>
           </Descriptions>
+          <Upload
+            className="row"
+            {...uploadProps()}
+            fileList={[...employeeData.panCard, ...employeeData.aadhaarCard]}
+            listType="text"
+          ></Upload>
 
           <Divider orientation="left" plain>
             {" "}

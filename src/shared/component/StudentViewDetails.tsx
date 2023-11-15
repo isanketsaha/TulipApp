@@ -135,14 +135,21 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
             <h3>
               <Avatar size={120} icon={<UserOutlined />} src={studentData.profilePictureUrl}></Avatar>
               <div>
-                {studentData?.name} <Button icon={<EditOutlined />} type="text" onClick={showEditConfirm}></Button>{" "}
+                {studentData?.name}{" "}
                 <div>
                   {isMobile ? null : (
-                    <Link to={`/payment/${studentData?.id}/${selectedSession()?.id}`}>
-                      <Button type="link" icon={<MdOutlinePayments />}>
-                        Payment
+                    <>
+                      <Button icon={<EditOutlined />} type="link" onClick={showEditConfirm}>
+                        {" "}
+                        Edit
                       </Button>
-                    </Link>
+                      <Divider type="vertical" />
+                      <Link to={`/payment/${studentData?.id}/${selectedSession()?.id}`}>
+                        <Button type="link" icon={<MdOutlinePayments />}>
+                          Payment
+                        </Button>{" "}
+                      </Link>
+                    </>
                   )}
                 </div>
               </div>
