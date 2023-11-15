@@ -32,7 +32,9 @@ export const Onboarding = () => {
 
   const editFlow = pathname.split("/").includes("edit")
 
-  const { data: studentData, isSuccess: loadedData } = useSearchStudentQuery(userId, { skip: !editFlow })
+  const { data: studentData, isSuccess: loadedData } = useSearchStudentQuery(userId, {
+    skip: !(editFlow && state?.type == "student"),
+  })
 
   const [changedFields, setChangedFields] = useState<any>({ id: userId })
 

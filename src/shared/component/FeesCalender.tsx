@@ -85,7 +85,16 @@ export const FeesCalender = ({ studentId, classId, transportService }: IFeesGrap
             <Card>
               {months.map((_) => {
                 return (
-                  <Card.Grid style={gridStyle(_) as React.CSSProperties} key={_}>
+                  <Card.Grid
+                    style={
+                      {
+                        width: "8.33%",
+                        textAlign: "center",
+                        background: "lightyellow",
+                      } as React.CSSProperties
+                    }
+                    key={_}
+                  >
                     {_}
                   </Card.Grid>
                 )
