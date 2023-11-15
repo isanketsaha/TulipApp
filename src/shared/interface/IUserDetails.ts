@@ -4,6 +4,7 @@ import { IClassDetails } from "./IClassDetails"
 import { IDependent } from "./IDependent"
 import { ITransportCatalog } from "./ITransportCatalog"
 import { IInterview } from "./Interview"
+import { Dayjs } from "dayjs"
 
 export interface IUserDetails {
   id: number
@@ -35,4 +36,5 @@ export interface IUserDetails {
   panCard: UploadFile[]
   birthCertificate: UploadFile[]
   transports: ITransportCatalog
+  createdDate: Dayjs
 }
