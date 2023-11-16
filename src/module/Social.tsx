@@ -4,7 +4,7 @@ import logo from "../assets/logo.png"
 import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router-dom"
 import { FacebookOutlined, InstagramOutlined } from "@ant-design/icons"
-
+import { AiFillGoogleCircle } from "react-icons/ai"
 export const Social = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   let navigate = useNavigate()
@@ -36,14 +36,11 @@ export const Social = () => {
       </Row>
       <div style={{ marginTop: "5vw" }}>
         <Row justify="center" align={"middle"} style={{ fontFamily: "EB Garamond", textAlign: "center" }}>
-          Welcome to Tulip English School, where young minds flourish and dreams take flight!
-          <br />
-          <br />
           Stay connected with us for exciting updates, student achievements, and heartwarming stories. <br />
-          Join our educational journey!{" "}
+          Join our educational journey!
         </Row>
-        <div style={{ marginTop: "8vmin" }}>
-          <Row justify="center" style={{ margin: "2vmin" }}>
+        <Row justify="space-around" style={{ marginTop: "5vw" }}>
+          <Space direction="vertical" size={"large"}>
             <Button
               icon={<FacebookOutlined />}
               size="large"
@@ -53,8 +50,7 @@ export const Social = () => {
               {" "}
               Facebook
             </Button>
-          </Row>
-          <Row justify="center" gutter={[16, 48]}>
+
             <Button
               icon={<InstagramOutlined />}
               size="large"
@@ -64,8 +60,18 @@ export const Social = () => {
               {" "}
               Instagram
             </Button>
-          </Row>
-        </div>
+
+            <Button
+              icon={<AiFillGoogleCircle />}
+              size="large"
+              href="https://g.page/r/Cd992PkElC2IEBM/review"
+              target="_blank"
+            >
+              {" "}
+              Google Review
+            </Button>
+          </Space>
+        </Row>
       </div>
     </>
   )
