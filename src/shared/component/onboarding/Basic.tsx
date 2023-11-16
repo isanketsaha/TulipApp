@@ -8,7 +8,9 @@ import { UploadFiles } from "../UploadFiles"
 
 export const AddBasic: FC<FormProps> = (formProps) => {
   const { state } = useLocation()
-  const selectList = useAppSelector((state) => state.commonData)
+  const { classList, sessionList, selectedSession, bloodGroupList, genderList, religionList } = useAppSelector(
+    (state) => state.commonData
+  )
   const disableDate = (currentDate: Dayjs) => {
     return currentDate.isAfter(new Date())
   }
@@ -73,12 +75,12 @@ export const AddBasic: FC<FormProps> = (formProps) => {
         <Row gutter={[40, 40]}>
           <Col span={8}>
             <Form.Item name="std" label="Class" rules={[{ required: true }]}>
-              <Select options={selectList.classList} />
+              <Select options={classList} />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item name="session" label="Session" rules={[{ required: true }]}>
-              <Select options={selectList.sessionList} />
+              <Select options={sessionList?.filter((item) => Number(item.value) >= selectedSession?.value)} />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -123,18 +125,18 @@ export const AddBasic: FC<FormProps> = (formProps) => {
       <Row gutter={[40, 40]}>
         <Col span={8}>
           <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
-            <Select options={selectList.genderList} />
+            <Select options={genderList} />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item name="bloodGroup" label="Blood Group" rules={[{ required: true }]}>
-            <Select options={selectList.bloodGroupList} />
+            <Select options={bloodGroupList} />
           </Form.Item>
         </Col>
 
         <Col span={8}>
           <Form.Item name="religion" label="Religion">
-            <Select options={selectList.religionList} />
+            <Select options={religionList} />
           </Form.Item>
         </Col>
       </Row>
