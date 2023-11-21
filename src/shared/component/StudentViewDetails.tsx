@@ -20,6 +20,7 @@ import dayjs from "dayjs"
 import {
   useAddTransportMutation,
   useDeactivateStudentMutation,
+  useLazyDiscontinueTransportQuery,
   useSearchStudentQuery,
 } from "../redux/api/feature/student/api"
 import { FeesCalender } from "./FeesCalender"
@@ -54,6 +55,7 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
   const [sessionId, setSessionId] = useState<number>()
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const [discountinue] = useLazyDiscontinueTransportQuery()
   const [addTransport] = useAddTransportMutation()
   const { data: studentData, isFetching } = useSearchStudentQuery(studentId, { skip: studentId == "" })
   const [deactivateStudent] = useDeactivateStudentMutation()
@@ -234,7 +236,10 @@ export const StudentViewDetails = ({ studentId }: IStudentViewProps) => {
                       : modal.info({
                           title: "Transport Service",
                           width: 500,
-                          onOk: addTransportService,
+                          onOk: () =>
+                            discountinue({ studentId: studentData.id, locationId: studentData?.transports?.id }).then(
+                              (res) => res.isSuccess && message.info("Transport Service discontinued")
+                            ),
                           content: "Are you sure to discontinue the transport ?",
                         })
                   }
