@@ -1,21 +1,21 @@
-import { Button, Card, Col, Row, Space, Statistic } from "antd"
+import { Card, Col, Row, Space } from "antd"
 import { ChartData } from "chart.js"
-import { Bar, Line, Pie } from "react-chartjs-2"
+import { Bar, Doughnut, Line, Pie } from "react-chartjs-2"
 import { StaffReport } from "../shared/component/reports/StaffReport"
 import { StudentReport } from "../shared/component/reports/Student"
+import { TransportReport } from "../shared/component/reports/TransportReport"
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api"
+import { useFetchTransportReportQuery } from "../shared/redux/api/feature/report/api"
 import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
 import { monthToNumber } from "../shared/utils/Const"
 import { useAppSelector } from "../store"
-import { ArrowUpOutlined } from "@ant-design/icons"
-import { TransportReport } from "../shared/component/reports/TransportReport"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
   const { data: classList } = useFetchAllClassroomQuery(selectedSession.value, { skip: !selectedSession.value })
   const { data: admissionMonthly } = useAdmissionByMonthQuery()
   const { data: expenseMonthly } = useExpenseReportQuery()
-
+  const { data: transport } = useFetchTransportReportQuery()
   const graphOption = (title: string, aspectRatio = 1, intersect = false) => {
     return {
       indexAxis: "x" as const,
@@ -69,6 +69,16 @@ export const Dashboard = () => {
     ],
   }
 
+  const tansportData: ChartData<"doughnut", number[], string> = {
+    labels: transport && Object.keys(transport!),
+    datasets: [
+      {
+        data: transport ? Object.values(transport!) : [],
+        borderWidth: 1,
+      },
+    ],
+  }
+
   const admission: ChartData<"line", number[], string> = {
     labels: admissionMonthly && Object.keys(admissionMonthly),
     datasets: [
@@ -105,10 +115,26 @@ export const Dashboard = () => {
       <Card>
         <Row justify={"space-between"}>
           <Col>
-            <Pie data={chartData} options={graphOption("Student", 1, true)} />
+            {classList && (
+              <Pie
+                data={chartData}
+                options={graphOption(
+                  "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
+                  1,
+                  true
+                )}
+              />
+            )}
           </Col>
           <Col>
-            <Bar options={graphOption("Expense")} data={expense} />
+            {transport && (
+              <Doughnut
+                options={graphOption(
+                  "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0)
+                )}
+                data={tansportData}
+              />
+            )}
           </Col>
           <Col>
             <Line
@@ -129,24 +155,27 @@ export const Dashboard = () => {
             />
           </Col>
         </Row>
+        <Row justify={"space-around"}>
+          <Bar options={graphOption("Expense", 4)} data={expense} />
+        </Row>
       </Card>
 
       <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
           <Card>
             <StudentReport />
           </Card>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
           <Card>
             <StaffReport />
           </Card>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }}>
+        {/* <Col xs={{ span: 24 }} lg={{ span: 8 }}>
           <Card>
             <TransportReport />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
     </Space>
   )

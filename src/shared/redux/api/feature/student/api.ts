@@ -31,6 +31,10 @@ export const studentApi = createApi({
       },
       invalidatesTags: ["TransportReport"],
     }),
+    discontinueTransport: builder.query<void, { studentId: number; locationId: number }>({
+      query: (payload) => `/transport/discontinue?id=${payload.studentId}&locationId=${payload.locationId}`,
+      providesTags: (result) => ["TransportReport"],
+    }),
     basicSearchById: builder.query<IBasicDetails, string>({
       query: (id) => `/basicSearch?id=${id}`,
       providesTags: (result) => (result ? [{ type: "Student", id: result.id }] : ["Student"]),
@@ -65,4 +69,5 @@ export const {
   useBasicSearchByIdAndClassQuery,
   useDeactivateStudentMutation,
   useEditStudentDetailsMutation,
+  useLazyDiscontinueTransportQuery,
 } = studentApi
