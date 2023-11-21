@@ -113,51 +113,55 @@ export const Dashboard = () => {
   return (
     <Space direction="vertical" size="middle" style={{ display: "flex" }}>
       <Card>
-        <Row justify={"space-between"}>
-          <Col>
-            {classList && (
-              <Pie
-                data={chartData}
-                options={graphOption(
-                  "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
-                  1,
-                  true
-                )}
-              />
-            )}
-          </Col>
-          <Col>
-            {transport && (
-              <Doughnut
-                options={graphOption(
-                  "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0)
-                )}
-                data={tansportData}
-              />
-            )}
-          </Col>
-          <Col>
-            <Line
-              options={{
-                ...graphOption("Admission"),
-                ...{
-                  scales: {
-                    y: {
-                      suggestedMin: 0, // Start y-axis from 0
-                      ticks: {
-                        stepSize: 3,
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+          <Row justify={"space-between"}>
+            <Col>
+              {classList && (
+                <Pie
+                  data={chartData}
+                  options={graphOption(
+                    "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
+                    1,
+                    true
+                  )}
+                />
+              )}
+            </Col>
+            <Col>
+              {transport && (
+                <Doughnut
+                  options={graphOption(
+                    "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0),
+                    1,
+                    true
+                  )}
+                  data={tansportData}
+                />
+              )}
+            </Col>
+            <Col>
+              <Line
+                options={{
+                  ...graphOption("Admission"),
+                  ...{
+                    scales: {
+                      y: {
+                        suggestedMin: 0, // Start y-axis from 0
+                        ticks: {
+                          stepSize: 3,
+                        },
                       },
                     },
                   },
-                },
-              }}
-              data={admission}
-            />
-          </Col>
-        </Row>
-        <Row justify={"space-around"}>
-          <Bar options={graphOption("Expense", 4)} data={expense} />
-        </Row>
+                }}
+                data={admission}
+              />
+            </Col>
+          </Row>
+          <Row justify={"space-around"}>
+            <Bar options={graphOption("Expense", 4)} data={expense} />
+          </Row>
+        </Space>
       </Card>
 
       <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
