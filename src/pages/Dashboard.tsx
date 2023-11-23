@@ -3,12 +3,13 @@ import { ChartData } from "chart.js"
 import { Bar, Doughnut, Line, Pie } from "react-chartjs-2"
 import { StaffReport } from "../shared/component/reports/StaffReport"
 import { StudentReport } from "../shared/component/reports/Student"
-import { TransportReport } from "../shared/component/reports/TransportReport"
+import { CollectionReport } from "../shared/component/reports/CollectionReport"
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api"
-import { useFetchTransportReportQuery } from "../shared/redux/api/feature/report/api"
+import { useFetchSalesReportQuery, useFetchTransportReportQuery } from "../shared/redux/api/feature/report/api"
 import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
 import { monthToNumber } from "../shared/utils/Const"
 import { useAppSelector } from "../store"
+import dayjs from "dayjs"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
@@ -16,6 +17,7 @@ export const Dashboard = () => {
   const { data: admissionMonthly } = useAdmissionByMonthQuery()
   const { data: expenseMonthly } = useExpenseReportQuery()
   const { data: transport } = useFetchTransportReportQuery()
+  const { data: sales } = useFetchSalesReportQuery(dayjs(new Date()).format("DD/MM/YYYY"))
   const graphOption = (title: string, aspectRatio = 1, intersect = false) => {
     return {
       indexAxis: "x" as const,
@@ -79,6 +81,20 @@ export const Dashboard = () => {
     ],
   }
 
+  const salesData: ChartData<"doughnut", number[], string> = {
+    labels:
+      sales &&
+      Object.entries(sales).flatMap(([category, subCategories]) =>
+        Object.keys(subCategories).map((subCategory) => `${category} - ${subCategory}`)
+      ),
+    datasets: [
+      {
+        data: sales ? Object.values(sales!).flatMap((subCategories) => Object.values(subCategories)) : [],
+        borderWidth: 1,
+      },
+    ],
+  }
+
   const admission: ChartData<"line", number[], string> = {
     labels: admissionMonthly && Object.keys(admissionMonthly),
     datasets: [
@@ -111,76 +127,97 @@ export const Dashboard = () => {
   }
 
   return (
-    <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-      <Card>
+    <Row justify={"space-between"}>
+      <Col span={24}>
         <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-          <Row justify={"space-between"}>
-            <Col>
-              {classList && (
-                <Pie
-                  data={chartData}
-                  options={graphOption(
-                    "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
-                    1,
-                    true
+          <Card>
+            <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+              <Row justify={"space-between"}>
+                <Col lg={{ span: 6 }}>
+                  {classList && (
+                    <Pie
+                      data={chartData}
+                      options={graphOption(
+                        "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
+                        1,
+                        true
+                      )}
+                    />
                   )}
-                />
-              )}
-            </Col>
-            <Col>
-              {transport && (
-                <Doughnut
-                  options={graphOption(
-                    "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0),
-                    1,
-                    true
+                </Col>
+                <Col lg={{ span: 6 }}>
+                  {classList && (
+                    <Doughnut
+                      data={salesData}
+                      options={graphOption(
+                        "Sales - " +
+                          Object.values(sales!).reduce(
+                            (outerAcc, innerRecord) =>
+                              outerAcc + Object.values(innerRecord).reduce((innerAcc, number) => innerAcc + number, 0),
+                            0
+                          ),
+                        1,
+                        true
+                      )}
+                    />
                   )}
-                  data={tansportData}
-                />
-              )}
-            </Col>
-            <Col>
-              <Line
-                options={{
-                  ...graphOption("Admission"),
-                  ...{
-                    scales: {
-                      y: {
-                        suggestedMin: 0, // Start y-axis from 0
-                        ticks: {
-                          stepSize: 3,
+                </Col>
+                <Col lg={{ span: 6 }}>
+                  {transport && (
+                    <Doughnut
+                      options={graphOption(
+                        "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0),
+                        1,
+                        true
+                      )}
+                      data={tansportData}
+                    />
+                  )}
+                </Col>
+                <Col lg={{ span: 6 }}>
+                  {admissionMonthly && (
+                    <Line
+                      options={{
+                        ...graphOption(
+                          "Admission - " +
+                            Object.values(admissionMonthly!)?.reduce((partialSum, a) => partialSum + a, 0)
+                        ),
+                        ...{
+                          scales: {
+                            y: {
+                              suggestedMin: 0, // Start y-axis from 0
+                              ticks: {
+                                stepSize: 3,
+                              },
+                            },
+                          },
                         },
-                      },
-                    },
-                  },
-                }}
-                data={admission}
-              />
+                      }}
+                      data={admission}
+                    />
+                  )}
+                </Col>
+              </Row>
+              <Row justify={"space-around"}>
+                <Bar options={graphOption("Expense", 4)} data={expense} />
+              </Row>
+            </Space>
+          </Card>
+
+          <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Card>
+                <StudentReport />
+              </Card>
             </Col>
-          </Row>
-          <Row justify={"space-around"}>
-            <Bar options={graphOption("Expense", 4)} data={expense} />
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Card>
+                <StaffReport />
+              </Card>
+            </Col>
           </Row>
         </Space>
-      </Card>
-
-      <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
-        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-          <Card>
-            <StudentReport />
-          </Card>
-        </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-          <Card>
-            <StaffReport />
-          </Card>
-        </Col>
-        {/* <Col xs={{ span: 24 }} lg={{ span: 8 }}>
-          <Card>
-            <TransportReport />
-          </Card>
-        </Col> */}
-      </Row>
-    </Space>
+      </Col>
+    </Row>
   )
 }

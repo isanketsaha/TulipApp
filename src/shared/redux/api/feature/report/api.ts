@@ -13,7 +13,7 @@ import { IPageRequest } from "/src/shared/interface/IPageRequest";
 export const reportApi = createApi({
   reducerPath: "reportApi",
   baseQuery: baseQueryWithRetry("report"),
-  tagTypes: ["Payment", "AdmissionReport", "StaffReport", "InventoryReport", "TransportReport"],
+  tagTypes: ["Payment", "AdmissionReport", "StaffReport", "InventoryReport", "TransportReport", "Payment"],
   endpoints: (builder) => ({
     fetchTransactionHistory: builder.query<IPayDetailsSummary[], string>({
       query: (item) => `/transaction/${item}`,
@@ -35,6 +35,10 @@ export const reportApi = createApi({
       query: () => "/transport",
       providesTags: ["TransportReport"],
     }),
+    fetchSalesReport: builder.query<Record<string, Record<string, number>>, string>({
+      query: (date) => "/sales?date=" + date,
+      providesTags: ["Payment"],
+    }),
   }),
 })
 
@@ -44,4 +48,5 @@ export const {
   useFetchStaffReportQuery,
   useFetchInventoryReportQuery,
   useFetchTransportReportQuery,
+  useFetchSalesReportQuery,
 } = reportApi
