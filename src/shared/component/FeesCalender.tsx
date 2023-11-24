@@ -28,23 +28,25 @@ export const FeesCalender = ({ studentId, classId, transportService }: IFeesGrap
 
   const annualFees = feesCatalog?.filter((item) => item.applicableRule == FeesRuleType.Yearly)
 
-  const gridStyle = (item: string) => {
+  const gridStyle = (item: string, transport = false) => {
     return {
       width: "8.33%",
       textAlign: "center",
-      background: determineColor(item),
+      background: determineColor(item, transport),
     }
   }
 
   const annualGridStyle = (item: number) => {
     return {
       textAlign: "center",
-      background: determineColor(item),
+      background: determineColor(item, false),
     }
   }
 
-  const determineColor = (month: string | number) => {
-    if (data?.paidMonths?.includes(String(month)) || data?.annualFeesPaid?.includes(+month)) {
+  const determineColor = (month: string | number, transport: boolean) => {
+    if (!transport && (data?.paidMonths?.includes(String(month)) || data?.annualFeesPaid?.includes(+month))) {
+      return "lightgreen" //light green
+    } else if (transport && data?.transportMonths?.includes(String(month))) {
       return "lightgreen" //light green
     } else {
       return "lightyellow"
@@ -59,46 +61,40 @@ export const FeesCalender = ({ studentId, classId, transportService }: IFeesGrap
       </Divider>
       <Space direction="vertical" style={{ width: "100%" }}>
         <Card>
-          {annualFees?.map((_) => {
-            return (
-              <Card.Grid style={annualGridStyle(_.id) as React.CSSProperties} key={_.id}>
-                {_.name}
-              </Card.Grid>
-            )
-          })}
+          {data &&
+            annualFees?.map((_) => {
+              return (
+                <Card.Grid style={annualGridStyle(_.id) as React.CSSProperties} key={_.id}>
+                  {_.name}
+                </Card.Grid>
+              )
+            })}
         </Card>
+        ;
         <Card>
-          {months.map((_) => {
-            return (
-              <Card.Grid style={gridStyle(_) as React.CSSProperties} key={_}>
-                {_}
-              </Card.Grid>
-            )
-          })}
+          {data &&
+            months.map((_) => {
+              return (
+                <Card.Grid style={gridStyle(_) as React.CSSProperties} key={_ + "monthly"}>
+                  {_}
+                </Card.Grid>
+              )
+            })}
         </Card>
         {transportService && (
           <>
             <Divider>
-              {" "}
               <h3>Transport Fees </h3>
             </Divider>
             <Card>
-              {months.map((_) => {
-                return (
-                  <Card.Grid
-                    style={
-                      {
-                        width: "8.33%",
-                        textAlign: "center",
-                        background: "lightyellow",
-                      } as React.CSSProperties
-                    }
-                    key={_}
-                  >
-                    {_}
-                  </Card.Grid>
-                )
-              })}
+              {data &&
+                months.map((_) => {
+                  return (
+                    <Card.Grid style={gridStyle(_, true) as React.CSSProperties} key={_ + "transport"}>
+                      {_}
+                    </Card.Grid>
+                  )
+                })}
             </Card>
           </>
         )}

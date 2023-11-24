@@ -43,9 +43,11 @@ export const paymentApi = createApi({
             providesTags: ['Payment'],
             transformResponse: (response: IPayGraph) => {
                 const months = response?.paidMonths.map(month => month.split("/")[0]);
+                const transport = response?.transportMonths.map((month) => month.split("/")[0])
                 return {
-                    ...response,
-                    paidMonths: months,
+                  ...response,
+                  paidMonths: months,
+                  transportMonths: transport,
                 }
             }
         }),
