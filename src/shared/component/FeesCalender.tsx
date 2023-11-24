@@ -81,7 +81,7 @@ export const FeesCalender = ({ studentId, classId, transportService }: IFeesGrap
               )
             })}
         </Card>
-        {transportService && (
+        {(transportService || (data?.transportMonths && data?.transportMonths!.length > 0)) && (
           <>
             <Divider>
               <h3>Transport Fees </h3>
