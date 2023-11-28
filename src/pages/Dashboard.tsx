@@ -146,7 +146,7 @@ export const Dashboard = () => {
                   )}
                 </Col>
                 <Col lg={{ span: 6 }}>
-                  {classList && (
+                  {sales && (
                     <Doughnut
                       data={salesData}
                       options={graphOption(
