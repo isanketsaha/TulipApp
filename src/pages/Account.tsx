@@ -1,19 +1,24 @@
 import { DownloadOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Row, Space, Tabs, TabsProps } from "antd"
+import { Button, Card, Col, DatePicker, Modal, Row, Space, Tabs, TabsProps } from "antd"
 import dayjs, { Dayjs } from "dayjs"
 import { useState } from "react"
 import { Bar } from "react-chartjs-2"
+import { DataUpload } from "../shared/component/data/DataUpload"
 import { Audit } from "../shared/component/reports/Audit"
 import { FinanceReport } from "../shared/component/reports/FinanceReport"
 import { Projections } from "../shared/component/reports/Projections"
-import { Stock } from "../shared/component/reports/Stock"
 import { useFetchTransactionReportQuery } from "../shared/redux/api/feature/account/api"
 import { useTransactionDownloadMutation } from "../shared/redux/api/feature/exports/api"
+import { IoMdAddCircleOutline } from "react-icons/io"
+import { Session } from "../shared/component/data/Session"
+import { useAppSelector } from "../store"
 
 export const Accounts = () => {
   const { RangePicker } = DatePicker
   const [transactionDownload] = useTransactionDownloadMutation()
   const [selectedTransactionMonth, setSelectedTransactionMonth] = useState<string[]>([])
+  const [addSession, setAddSession] = useState<boolean>(false)
+  const { sessionList, selectedSession } = useAppSelector((app) => app.commonData)
   const [selectedRange, setSelectedRange] = useState<Dayjs[]>([
     dayjs(new Date()).startOf("month").add(-3, "month").startOf("month"),
     dayjs(new Date()),
@@ -83,6 +88,11 @@ export const Accounts = () => {
     },
     {
       key: "2",
+      label: "Data Upload",
+      children: <DataUpload />,
+    },
+    {
+      key: "3",
       label: "Audit",
       children: <Audit />,
     },
@@ -103,41 +113,44 @@ export const Accounts = () => {
           </Col>
         </Row>
 
-        <Row>
+        <Card>
           <Tabs
             style={{ width: "100%" }}
             size="large"
             defaultActiveKey="1"
             tabBarExtraContent={
-              <Row justify={"space-evenly"}>
-                <Col>
-                  <Button
-                    disabled={selectedTransactionMonth.length == 0}
-                    onClick={() => transactionDownload(selectedTransactionMonth)}
-                    icon={<DownloadOutlined />}
-                  >
-                    Export To Excel
-                  </Button>
-                </Col>
+              <Space>
+                <Button type="link" onClick={() => setAddSession(true)}>
+                  Add Session
+                </Button>
 
-                <Col>
-                  {" "}
-                  <RangePicker
-                    picker="month"
-                    disabledDate={disabledDate}
-                    allowClear={false}
-                    onCalendarChange={(val: null | (Dayjs | null)[]) =>
-                      val && setSelectedRange(val.filter(Boolean) as Dayjs[])
-                    }
-                    format={"MMM-YYYY"}
-                    defaultValue={[selectedRange[0], selectedRange[1]]}
-                  />{" "}
-                </Col>
-              </Row>
+                <Button
+                  type="link"
+                  disabled={selectedTransactionMonth.length == 0}
+                  onClick={() => transactionDownload(selectedTransactionMonth)}
+                  icon={<DownloadOutlined />}
+                >
+                  Export To Excel
+                </Button>
+
+                <RangePicker
+                  picker="month"
+                  disabledDate={disabledDate}
+                  allowClear={false}
+                  onCalendarChange={(val: null | (Dayjs | null)[]) =>
+                    val && setSelectedRange(val.filter(Boolean) as Dayjs[])
+                  }
+                  format={"MMM-YYYY"}
+                  defaultValue={[selectedRange[0], selectedRange[1]]}
+                />
+              </Space>
             }
             items={tabList}
           />
-        </Row>
+        </Card>
+        <Modal open={addSession} title="Add Session" width={1100} footer={[]} onCancel={() => setAddSession(false)}>
+          <Session value={sessionList.filter((item) => item.value === selectedSession.value)} />
+        </Modal>
       </Space>
     </>
   )

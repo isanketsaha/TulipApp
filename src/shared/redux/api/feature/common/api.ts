@@ -93,6 +93,9 @@ export const commonApi = createApi({
         } catch (error) {}
       },
     }),
+    fetchUploadOptions: builder.query<DefaultOptionType[], void>({
+      query: () => "/uploadOptions",
+    }),
     fetchExpenseCategoryOptions: builder.query<DefaultOptionType[], void>({
       query: () => "/expenseCategory",
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
@@ -117,6 +120,7 @@ export const {
   useFetchAvailablePaymentOptionsQuery,
   useFetchExpenseCategoryOptionsQuery,
   useFetchCurrentSessionQuery,
+  useFetchUploadOptionsQuery,
 } = commonApi
 
 

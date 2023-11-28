@@ -7,16 +7,18 @@ import { useAppSelector } from "/src/store"
 import Dragger from "antd/es/upload/Dragger"
 
 export const UploadFiles: FC<
-  FormItemProps & UploadProps & { draggable?: Boolean | undefined; childElement?: ReactNode | undefined }
-> = (props) => {
-  const { name, listType, maxCount = 1, label, draggable, childElement } = props
+  FormItemProps &
+    UploadProps & {
+      draggable?: Boolean | undefined
+      childElement?: ReactNode | undefined
+      allowedFieldType?: string
+    }
+> = ({ name, listType, maxCount = 1, label, draggable, childElement, allowedFieldType = ".jpg,.pdf,.png" }) => {
   const userAuth = useAppSelector((state) => state.userAuth)
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string>()
 
   const baseUrl = import.meta.env.VITE_BASE_API_URL
-
-  const allowedFieldType = ".jpg,.pdf,.png"
 
   const uploadProps = () => {
     return {
@@ -109,7 +111,7 @@ export const UploadFiles: FC<
   )
 
   return draggable ? (
-    <Dragger {...uploadProps()} name="documents" accept={".xlsx"} maxCount={maxCount}>
+    <Dragger {...uploadProps()} name="documents" accept={allowedFieldType} maxCount={maxCount}>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>

@@ -3,16 +3,15 @@ import { useEffect, useState } from "react"
 import { Session } from "../shared/component/data/Session"
 import { useAppSelector } from "../store"
 import modal from "antd/es/modal"
-import { Products } from "../shared/component/data/Product"
 
 export const Data = () => {
   const { sessionList, selectedSession } = useAppSelector((app) => app.commonData)
   const [session, setSession] = useState<String>()
   const contentListNoTitle: Record<string, React.ReactNode> = {
-    product: <Products />,
+    product: <></>,
     Transport: <></>,
   }
-  const [tab, setTab] = useState<string>("session")
+  const [tab, setTab] = useState<string>("product")
   const [addSession, setAddSession] = useState<boolean>(false)
 
   useEffect(() => {
@@ -24,6 +23,7 @@ export const Data = () => {
       <Card
         style={{ width: "100%", minHeight: "80%" }}
         onTabChange={setTab}
+        defaultActiveTabKey="product"
         tabBarExtraContent={
           <Space>
             <Button type="link" onClick={() => setAddSession(true)}>
