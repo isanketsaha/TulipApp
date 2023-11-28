@@ -191,12 +191,12 @@ export const Session: FC<SelectProps> = (props) => {
             <Form.Item>
               {current == 0 && (
                 <Button type="link" icon={<RetweetOutlined />} onClick={fetchClasses}>
-                  Copy Classes
+                  Copy Current Classes
                 </Button>
               )}
               {current == 1 && (
                 <Button type="link" icon={<RetweetOutlined />} onClick={getFees}>
-                  Copy Fees
+                  Copy Current Fees
                 </Button>
               )}
             </Form.Item>

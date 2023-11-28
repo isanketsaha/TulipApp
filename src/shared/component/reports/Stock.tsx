@@ -71,7 +71,7 @@ export const Stock = () => {
 
   const columns = [
     {
-      title: "Product Title",
+      title: "Title",
       dataIndex: ["product", "itemName"],
       key: "product",
       filterSearch: true,

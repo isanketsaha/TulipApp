@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Modal, Row, Space } from "antd"
+import { Avatar, Button, Card, Col, DatePicker, List, Modal, Row, Space, Typography } from "antd"
 import dayjs, { Dayjs } from "dayjs"
 import { useState } from "react"
 import { useMediaQuery } from "react-responsive"
@@ -10,15 +10,22 @@ import { TransactionReport } from "../shared/component/reports/TransactionReport
 import { useAllDuesQuery } from "../shared/redux/api/feature/payment/api"
 import { Role } from "../shared/utils/Role"
 import { useAppSelector } from "../store"
+import { useFetchAllTransportCatalogQuery } from "../shared/redux/api/feature/catalog/api"
+import { ITransportCatalog } from "../shared/interface/ITransportCatalog"
+import VirtualList from "rc-virtual-list"
 
 export const Office = () => {
   const { user } = useAppSelector((app) => app.userAuth)
+  const { selectedSession } = useAppSelector((app) => app.commonData)
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const [transactionDate, setTransactionDate] = useState<Dayjs>(dayjs(new Date()).startOf("date"))
   const [isExpenseModelOpen, setIsExpenseModelOpen] = useState(false)
   const dateFormat = "DD-MMM-YYYY"
   let navigate = useNavigate()
   const { data } = useAllDuesQuery()
+  const { data: transport, isLoading } = useFetchAllTransportCatalogQuery(selectedSession.value, {
+    skip: !selectedSession.value,
+  })
 
   const disableDate = (currentDate: Dayjs) => {
     return user?.authority == Role.ADMIN
@@ -51,9 +58,25 @@ export const Office = () => {
               </Card>
             </Col>
           </Row>
-          <Row>
-            <Col span={24}>
+          <Row justify={"space-between"}>
+            <Col span={17}>
               <Stock />
+            </Col>
+            <Col span={6}>
+              <Card loading={isLoading} bordered={false} title="Transport Fees">
+                {transport && (
+                  <List>
+                    <VirtualList data={transport} height={300} itemKey="transportCatalog">
+                      {(item: ITransportCatalog) => (
+                        <List.Item key={item.id} style={{ borderBlockEnd: 0 }}>
+                          <List.Item.Meta title={item.location} />
+                          <div>{item.amount}</div>
+                        </List.Item>
+                      )}
+                    </VirtualList>
+                  </List>
+                )}
+              </Card>
             </Col>
           </Row>
           {data && data?.length > 0 && (

@@ -20,7 +20,7 @@ export const GlobalListener: Middleware = (api: MiddlewareAPI) => (next) => (act
     api.dispatch(decreaseApiRequestCount())
 
     if (action.payload) {
-      if (action.payload?.data) {
+      if (action.payload?.data && Object.keys(action.payload?.data).length > 0) {
         openNotification({
           status: action.payload.data.title
             ? action.payload.data.title
