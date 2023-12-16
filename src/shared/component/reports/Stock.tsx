@@ -184,7 +184,7 @@ export const Stock = () => {
           <Table<IStockReport>
             title={() => (
               <Row justify="end" align={"middle"}>
-                <Button shape="round" icon={<DownloadOutlined />} onClick={() => exportStock()}>
+                <Button type="link" icon={<DownloadOutlined />} onClick={() => exportStock()}>
                   Export to Excel
                 </Button>
               </Row>
