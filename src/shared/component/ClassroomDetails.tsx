@@ -205,9 +205,8 @@ export const ClassroomDetails = ({ session, stdList }: IClassDetailsProsp) => {
                 header={
                   selectedId.length > 0 && (
                     <Row justify="space-between" align={"middle"}>
-                      <Col></Col>
+                      <Col />
                       <Col>
-                        {" "}
                         <Text strong mark>
                           {selectedId.length} Student Selected
                         </Text>
@@ -215,7 +214,7 @@ export const ClassroomDetails = ({ session, stdList }: IClassDetailsProsp) => {
                       <Col>
                         {" "}
                         <Button
-                          shape="round"
+                          type="link"
                           icon={<DownloadOutlined />}
                           onClick={() => classDetails?.id && exportStudent(classDetails?.id)}
                         >

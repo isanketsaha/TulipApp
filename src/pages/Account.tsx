@@ -1,5 +1,5 @@
 import { DownloadOutlined } from "@ant-design/icons"
-import { Button, Card, Col, DatePicker, Modal, Row, Space, Tabs, TabsProps } from "antd"
+import { Button, Card, Col, DatePicker, Divider, Modal, Row, Space, Tabs, TabsProps } from "antd"
 import dayjs, { Dayjs } from "dayjs"
 import { useState } from "react"
 import { Bar } from "react-chartjs-2"
@@ -123,7 +123,7 @@ export const Accounts = () => {
                 <Button type="link" onClick={() => setAddSession(true)}>
                   Add Session
                 </Button>
-
+                <Divider type="vertical" />
                 <Button
                   type="link"
                   disabled={selectedTransactionMonth.length == 0}

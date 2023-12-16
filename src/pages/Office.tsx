@@ -26,7 +26,7 @@ export const Office = () => {
   const { data: transport, isLoading } = useFetchAllTransportCatalogQuery(selectedSession.value, {
     skip: !selectedSession.value,
   })
-
+  const { Text } = Typography
   const disableDate = (currentDate: Dayjs) => {
     return user?.authority == Role.ADMIN
       ? currentDate.isAfter(new Date()) || currentDate.isBefore(dayjs().add(-60, "days"))
@@ -67,10 +67,17 @@ export const Office = () => {
                 {transport && (
                   <List>
                     <VirtualList data={transport} height={300} itemKey="transportCatalog">
-                      {(item: ITransportCatalog) => (
+                      {(item: ITransportCatalog, index) => (
                         <List.Item key={item.id} style={{ borderBlockEnd: 0 }}>
+                          <div style={{ marginRight: "2vmin" }}>{index + 1}.</div>
                           <List.Item.Meta title={item.location} />
-                          <div>{item.amount}</div>
+                          <Text type="success">
+                            {item.amount.toLocaleString("en-IN", {
+                              maximumFractionDigits: 1,
+                              style: "currency",
+                              currency: "INR",
+                            })}
+                          </Text>
                         </List.Item>
                       )}
                     </VirtualList>
