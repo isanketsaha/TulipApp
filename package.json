@@ -11,7 +11,6 @@
   "dependencies": {
     "@ant-design/icons": "5.2.6",
     "@reduxjs/toolkit": "1.9.1",
-    "@vercel/speed-insights": "^1.0.2",
     "antd": "5.10.1",
     "chart.js": "4.2.1",
     "dayjs": "1.11.7",
