@@ -5,20 +5,17 @@ import { IAudit } from "/src/shared/interface/IAudit";
 
 
 export const auditApi = createApi({
-    reducerPath: 'auditApi',
-    baseQuery: baseQueryWithRetry("audit"),
-    tagTypes:['Audit'],
-    endpoints: (builder) => ({
-        fetchAudit: builder.query<IPageResponse<IAudit>, number>({
-            query: (item) => `?page=${item}`,
-            providesTags: ['Audit']
-        }),
-        updateResolved: builder.mutation<void, number>({
-            query: (item) => `/resolved?id=${item}`,
-            invalidatesTags: ['Audit']
-
-        })
-    })
-});
+  reducerPath: "auditApi",
+  baseQuery: baseQueryWithRetry("audit"),
+  tagTypes: ["Audit"],
+  endpoints: (builder) => ({
+    fetchAudit: builder.query<IPageResponse<IAudit>, number>({
+      query: (item) => `?page=${item}`,
+    }),
+    updateResolved: builder.mutation<void, number>({
+      query: (item) => `/resolved?id=${item}`,
+    }),
+  }),
+})
 
 export const {useFetchAuditQuery, useUpdateResolvedMutation} = auditApi;

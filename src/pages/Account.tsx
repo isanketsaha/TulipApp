@@ -88,7 +88,7 @@ export const Accounts = () => {
     },
     {
       key: "2",
-      label: "Data Upload",
+      label: "Upload",
       children: <DataUpload />,
     },
     {
