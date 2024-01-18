@@ -14,7 +14,7 @@ interface ITransactionProps {
 export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
 
     const [totalCollection, setTotalCollection] = useState(0);
-    const { data: transactionReport } = useFetchTransactionHistoryQuery(transactionDate.toDate().toString());
+    const { data: transactionReport } = useFetchTransactionHistoryQuery(transactionDate.format("YYYY-MM-DD"))
     const [transaction, setTransactions] = useState<IPayDetailsSummary[]>(transactionReport ?? []);
     useEffect(() => {
         if (transactionReport) {

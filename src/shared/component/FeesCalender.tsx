@@ -70,7 +70,7 @@ export const FeesCalender = ({ studentId, classId, transportService }: IFeesGrap
               )
             })}
         </Card>
-        ;
+
         <Card>
           {data &&
             months.map((_) => {

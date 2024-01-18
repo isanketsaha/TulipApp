@@ -10,6 +10,7 @@ import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux
 import { monthToNumber } from "../shared/utils/Const"
 import { useAppSelector } from "../store"
 import dayjs from "dayjs"
+import { AcademicCalender } from "../shared/component/AcademicCalender"
 
 export const Dashboard = () => {
   const { selectedSession } = useAppSelector((state) => state.commonData)
@@ -96,7 +97,11 @@ export const Dashboard = () => {
   }
 
   const admission: ChartData<"line", number[], string> = {
-    labels: admissionMonthly && Object.keys(admissionMonthly),
+    labels:
+      admissionMonthly &&
+      Object.keys(admissionMonthly)
+        .map((item) => new Date(`${item} 1, 2000`))
+        .map((label) => label.toLocaleString("en-US", { month: "short" })),
     datasets: [
       {
         label: "Admission",
@@ -130,79 +135,88 @@ export const Dashboard = () => {
     <Row justify={"space-between"}>
       <Col span={24}>
         <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-          <Card>
-            <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-              <Row justify={"space-between"}>
-                <Col lg={{ span: 6 }}>
-                  {classList && (
-                    <Pie
-                      data={chartData}
-                      options={graphOption(
-                        "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
-                        1,
-                        true
-                      )}
-                    />
-                  )}
-                </Col>
-                <Col lg={{ span: 6 }}>
-                  {sales && (
-                    <Doughnut
-                      data={salesData}
-                      options={graphOption(
-                        "Sales - " +
-                          Object.values(sales!).reduce(
-                            (outerAcc, innerRecord) =>
-                              outerAcc + Object.values(innerRecord).reduce((innerAcc, number) => innerAcc + number, 0),
-                            0
+          <Row justify={"space-between"}>
+            <Col span={17}>
+              <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+                <Row justify={"space-between"}>
+                  <Col lg={{ span: 6 }}>
+                    {classList && (
+                      <Pie
+                        data={chartData}
+                        options={graphOption(
+                          "Student - " + classList?.reduce((partialSum, a) => partialSum + a.studentStrength, 0),
+                          1,
+                          true
+                        )}
+                      />
+                    )}
+                  </Col>
+                  <Col lg={{ span: 6 }}>
+                    {sales && (
+                      <Doughnut
+                        data={salesData}
+                        options={graphOption(
+                          "Sales - " +
+                            Object.values(sales!).reduce(
+                              (outerAcc, innerRecord) =>
+                                outerAcc +
+                                Object.values(innerRecord).reduce((innerAcc, number) => innerAcc + number, 0),
+                              0
+                            ),
+                          1,
+                          true
+                        )}
+                      />
+                    )}
+                  </Col>
+                  <Col lg={{ span: 6 }}>
+                    {transport && (
+                      <Doughnut
+                        options={graphOption(
+                          "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0),
+                          1,
+                          true
+                        )}
+                        data={tansportData}
+                      />
+                    )}
+                  </Col>
+                  <Col lg={{ span: 6 }}>
+                    {admissionMonthly && (
+                      <Line
+                        options={{
+                          ...graphOption(
+                            "Admission - " +
+                              Object.values(admissionMonthly!)?.reduce((partialSum, a) => partialSum + a, 0)
                           ),
-                        1,
-                        true
-                      )}
-                    />
-                  )}
-                </Col>
-                <Col lg={{ span: 6 }}>
-                  {transport && (
-                    <Doughnut
-                      options={graphOption(
-                        "Transport - " + Object.entries(transport).reduce((acc, [key, value]) => acc + value, 0),
-                        1,
-                        true
-                      )}
-                      data={tansportData}
-                    />
-                  )}
-                </Col>
-                <Col lg={{ span: 6 }}>
-                  {admissionMonthly && (
-                    <Line
-                      options={{
-                        ...graphOption(
-                          "Admission - " +
-                            Object.values(admissionMonthly!)?.reduce((partialSum, a) => partialSum + a, 0)
-                        ),
-                        ...{
-                          scales: {
-                            y: {
-                              suggestedMin: 0, // Start y-axis from 0
-                              ticks: {
-                                stepSize: 3,
+                          ...{
+                            scales: {
+                              y: {
+                                suggestedMin: 0, // Start y-axis from 0
+                                ticks: {
+                                  stepSize: 3,
+                                },
                               },
                             },
                           },
-                        },
-                      }}
-                      data={admission}
-                    />
-                  )}
-                </Col>
+                        }}
+                        data={admission}
+                      />
+                    )}
+                  </Col>
+                </Row>
+                <Row justify={"space-around"}>
+                  <Bar options={graphOption("Expense", 4)} data={expense} />
+                </Row>
+              </Space>
+            </Col>
+
+            <Col span={6}>
+              <Row align={"middle"}>
+                <AcademicCalender />
               </Row>
-              <Row justify={"space-around"}>
-                <Bar options={graphOption("Expense", 4)} data={expense} />
-              </Row>
-            </Space>
-          </Card>
+            </Col>
+          </Row>
 
           <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
             <Col xs={{ span: 24 }} lg={{ span: 12 }}>

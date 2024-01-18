@@ -59,7 +59,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                 {employeeData?.name}{" "}
                 {user?.authority &&
                 [Role.PRINCIPAL, Role.ADMIN].includes(user?.authority) &&
-                dayjs(employeeData.createdDate)?.isSame(dayjs(new Date()), "month") ? (
+                !dayjs(employeeData.createdDate)?.isSame(dayjs(new Date()), "month") ? (
                   <Tooltip title="Download Joining Letter">
                     {" "}
                     <Button
