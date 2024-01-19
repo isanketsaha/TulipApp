@@ -1,54 +1,48 @@
-import { Button, Card, Modal, Select, Space, message } from "antd"
+import { Button, Card, Col, List, Modal, Row, Select, Space, Typography, message } from "antd"
 import { useEffect, useState } from "react"
 import { Session } from "../shared/component/data/Session"
 import { useAppSelector } from "../store"
 import modal from "antd/es/modal"
+import { Stock } from "../shared/component/reports/Stock"
+import { ITransportCatalog } from "../shared/interface/ITransportCatalog"
+import { useFetchAllTransportCatalogQuery } from "../shared/redux/api/feature/catalog/api"
+import VirtualList from "rc-virtual-list"
 
 export const Data = () => {
-  const { sessionList, selectedSession } = useAppSelector((app) => app.commonData)
-  const [session, setSession] = useState<String>()
-  const contentListNoTitle: Record<string, React.ReactNode> = {
-    product: <></>,
-    Transport: <></>,
-  }
-  const [tab, setTab] = useState<string>("product")
-  const [addSession, setAddSession] = useState<boolean>(false)
-
-  useEffect(() => {
-    setSession(String(selectedSession.value))
-  }, [selectedSession.value])
+  const { selectedSession } = useAppSelector((app) => app.commonData)
+  const { data: transport, isLoading } = useFetchAllTransportCatalogQuery(selectedSession.value, {
+    skip: !selectedSession.value,
+  })
+  const { Text } = Typography
 
   return (
-    <>
-      <Card
-        style={{ width: "100%", minHeight: "80%" }}
-        onTabChange={setTab}
-        defaultActiveTabKey="product"
-        tabBarExtraContent={
-          <Space>
-            <Button type="link" onClick={() => setAddSession(true)}>
-              Add Session
-            </Button>
-            <Select value={session} onChange={setSession} style={{ width: "100%" }} options={sessionList} />
-          </Space>
-        }
-        tabList={Object.keys(contentListNoTitle).map((item, index) => {
-          const id = String(index + 1)
-          return {
-            label: item.toUpperCase(),
-            key: item,
-          }
-        })}
-        tabProps={{
-          size: "middle",
-          centered: true,
-        }}
-      >
-        {contentListNoTitle[tab]}
-      </Card>
-      <Modal open={addSession} title="Add Session" width={1100} footer={[]} onCancel={() => setAddSession(false)}>
-        <Session value={sessionList.filter((item) => item.value === session)} />
-      </Modal>
-    </>
+    <Row justify={"space-between"}>
+      <Col span={17}>
+        <Stock />
+      </Col>
+      <Col span={6}>
+        <Card loading={isLoading} bordered={false} title="Transport Fees">
+          {transport && (
+            <List>
+              <VirtualList data={transport} height={300} itemKey="transportCatalog">
+                {(item: ITransportCatalog, index) => (
+                  <List.Item key={item.id} style={{ borderBlockEnd: 0 }}>
+                    <div style={{ marginRight: "2vmin" }}>{index + 1}.</div>
+                    <List.Item.Meta title={item.location} />
+                    <Text type="success">
+                      {item.amount.toLocaleString("en-IN", {
+                        maximumFractionDigits: 1,
+                        style: "currency",
+                        currency: "INR",
+                      })}
+                    </Text>
+                  </List.Item>
+                )}
+              </VirtualList>
+            </List>
+          )}
+        </Card>
+      </Col>
+    </Row>
   )
 }

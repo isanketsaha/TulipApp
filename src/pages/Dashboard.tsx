@@ -7,7 +7,7 @@ import { CollectionReport } from "../shared/component/reports/CollectionReport"
 import { useFetchAllClassroomQuery } from "../shared/redux/api/feature/classroom/api"
 import { useFetchSalesReportQuery, useFetchTransportReportQuery } from "../shared/redux/api/feature/report/api"
 import { useAdmissionByMonthQuery, useExpenseReportQuery } from "../shared/redux/api/feature/vizualize/api"
-import { monthToNumber } from "../shared/utils/Const"
+import { monthToNumber } from "../shared/utils/Constants"
 import { useAppSelector } from "../store"
 import dayjs from "dayjs"
 import { AcademicCalender } from "../shared/component/AcademicCalender"
@@ -136,7 +136,7 @@ export const Dashboard = () => {
       <Col span={24}>
         <Space direction="vertical" size="middle" style={{ display: "flex" }}>
           <Row justify={"space-between"}>
-            <Col span={17}>
+            <Col span={24}>
               <Space direction="vertical" size="middle" style={{ display: "flex" }}>
                 <Row justify={"space-between"}>
                   <Col lg={{ span: 6 }}>
@@ -211,24 +211,11 @@ export const Dashboard = () => {
               </Space>
             </Col>
 
-            <Col span={6}>
+            {/* <Col span={6}>
               <Row align={"middle"}>
                 <AcademicCalender />
               </Row>
-            </Col>
-          </Row>
-
-          <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
-            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-              <Card>
-                <StudentReport />
-              </Card>
-            </Col>
-            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-              <Card>
-                <StaffReport />
-              </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Space>
       </Col>
