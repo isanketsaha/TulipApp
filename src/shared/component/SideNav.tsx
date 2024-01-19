@@ -1,27 +1,17 @@
-import {
-  ExclamationCircleFilled,
-  EyeFilled,
-  FolderOpenFilled,
-  FundFilled,
-  HomeOutlined,
-  IdcardFilled,
-  LogoutOutlined,
-  SnippetsFilled,
-  UserOutlined,
-} from "@ant-design/icons"
-import { PiChalkboardTeacher, PiStudentBold } from "react-icons/pi"
-import { ImOffice } from "react-icons/im"
+import { ExclamationCircleFilled, LogoutOutlined, UserOutlined } from "@ant-design/icons"
 import { Avatar, Menu, MenuProps, Modal, Typography, theme } from "antd"
 import Sider from "antd/es/layout/Sider"
 import React, { useEffect, useState } from "react"
 import { BsDatabaseFillGear } from "react-icons/bs"
+import { ImOffice } from "react-icons/im"
+import { MdDashboardCustomize, MdOutlineAccountTree } from "react-icons/md"
+import { PiChalkboardTeacher, PiStudentBold } from "react-icons/pi"
+import { SiGoogleclassroom } from "react-icons/si"
 import { useMediaQuery } from "react-responsive"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../store"
 import { logout } from "../redux/slices/UserAuthSlice"
 import { Role } from "../utils/Role"
-import { MdDashboardCustomize, MdOutlineAccountTree } from "react-icons/md"
-import { SiGoogleclassroom } from "react-icons/si"
 
 interface nav {
   label: string
@@ -64,10 +54,6 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
 
   const navigatons: nav[] = [
     {
-      label: "Home",
-      icon: <MdDashboardCustomize />,
-    },
-    {
       label: "Office",
       icon: <ImOffice />,
     },
@@ -83,15 +69,19 @@ export const SideNav = ({ collapsed, setCollapsed }: ISliderProps) => {
       label: "Classroom",
       icon: <SiGoogleclassroom />,
     },
+    {
+      label: "Data",
+      icon: <BsDatabaseFillGear />,
+    },
     ...(user?.authority && [Role.ADMIN].includes(user?.authority)
       ? [
           {
-            label: "Accounts",
-            icon: <MdOutlineAccountTree />,
+            label: "Dashboard",
+            icon: <MdDashboardCustomize />,
           },
           {
-            label: "Data",
-            icon: <BsDatabaseFillGear />,
+            label: "Accounts",
+            icon: <MdOutlineAccountTree />,
           },
         ]
       : []),

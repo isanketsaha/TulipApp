@@ -122,9 +122,10 @@ export const Onboarding = () => {
   }
 
   const onNext = () => {
-    form.validateFields().then((values) => {
-      setCurrentStep(currentStep + 1)
-    })
+    setCurrentStep(currentStep + 1)
+    // form.validateFields().then((values) => {
+    //   setCurrentStep(currentStep + 1)
+    // })
   }
 
   const createUser = () => {
@@ -167,6 +168,7 @@ export const Onboarding = () => {
           }
           setConfirmData(data)
           setConfirmEnrollment(true)
+          console.log(data)
         })
         .catch(async (e) => {
           // validation failed, call some validation function

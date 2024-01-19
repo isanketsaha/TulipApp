@@ -1,3 +1,5 @@
+import { Role } from "../utils/Role"
+
 export interface IBasicDetails {
   id: number
   name: string
@@ -13,4 +15,5 @@ export interface IBasicDetails {
   classId: number
   annualPaidFees: string[]
   classTeacher: string
+  authority: Role
 }

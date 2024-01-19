@@ -39,8 +39,12 @@ export const AppRouter = createBrowserRouter([
             element: <RouteDecider />,
           },
           {
-            path: "/home",
-            element: <Dashboard />,
+            path: "/dashboard",
+            element: (
+              <AuthRotes roles={[Role.ADMIN]}>
+                <Dashboard />
+              </AuthRotes>
+            ),
           },
           {
             path: "/office",
@@ -113,7 +117,7 @@ export const AppRouter = createBrowserRouter([
           {
             path: "data",
             element: (
-              <AuthRotes roles={[Role.ADMIN]}>
+              <AuthRotes roles={[Role.ADMIN, Role.PRINCIPAL, Role.STAFF]}>
                 <Data />
               </AuthRotes>
             ),

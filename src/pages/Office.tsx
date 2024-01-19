@@ -5,28 +5,22 @@ import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router-dom"
 import { AddExpense } from "../shared/component/AddExpense"
 import { Dues } from "../shared/component/reports/Dues"
-import { Stock } from "../shared/component/reports/Stock"
 import { TransactionReport } from "../shared/component/reports/TransactionReports"
 import { useAllDuesQuery } from "../shared/redux/api/feature/payment/api"
 import { Role } from "../shared/utils/Role"
 import { useAppSelector } from "../store"
-import { useFetchAllTransportCatalogQuery } from "../shared/redux/api/feature/catalog/api"
-import { ITransportCatalog } from "../shared/interface/ITransportCatalog"
-import VirtualList from "rc-virtual-list"
+import { StaffReport } from "../shared/component/reports/StaffReport"
+import { StudentReport } from "../shared/component/reports/Student"
+import { AcademicCalender } from "../shared/component/AcademicCalender"
 
 export const Office = () => {
   const { user } = useAppSelector((app) => app.userAuth)
-  const { selectedSession } = useAppSelector((app) => app.commonData)
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const [transactionDate, setTransactionDate] = useState<Dayjs>(dayjs(new Date()).startOf("date"))
   const [isExpenseModelOpen, setIsExpenseModelOpen] = useState(false)
   const dateFormat = "DD-MMM-YYYY"
-  let navigate = useNavigate()
   const { data } = useAllDuesQuery()
-  const { data: transport, isLoading } = useFetchAllTransportCatalogQuery(selectedSession.value, {
-    skip: !selectedSession.value,
-  })
-  const { Text } = Typography
+
   const disableDate = (currentDate: Dayjs) => {
     return user?.authority == Role.ADMIN
       ? currentDate.isAfter(new Date()) || currentDate.isBefore(dayjs().add(-60, "days"))
@@ -38,8 +32,9 @@ export const Office = () => {
       <div className="site-card-wrapper">
         <Space direction="vertical" size="middle" style={{ display: "flex" }}>
           <Row gutter={16}>
-            <Col span={24}>
+            <Col span={18}>
               <Card
+                style={{ height: "100%" }}
                 title="Collection Report"
                 extra={
                   <Space size={"large"}>
@@ -57,35 +52,13 @@ export const Office = () => {
                 <TransactionReport transactionDate={transactionDate} />
               </Card>
             </Col>
-          </Row>
-          <Row justify={"space-between"}>
-            <Col span={17}>
-              <Stock />
-            </Col>
             <Col span={6}>
-              <Card loading={isLoading} bordered={false} title="Transport Fees">
-                {transport && (
-                  <List>
-                    <VirtualList data={transport} height={300} itemKey="transportCatalog">
-                      {(item: ITransportCatalog, index) => (
-                        <List.Item key={item.id} style={{ borderBlockEnd: 0 }}>
-                          <div style={{ marginRight: "2vmin" }}>{index + 1}.</div>
-                          <List.Item.Meta title={item.location} />
-                          <Text type="success">
-                            {item.amount.toLocaleString("en-IN", {
-                              maximumFractionDigits: 1,
-                              style: "currency",
-                              currency: "INR",
-                            })}
-                          </Text>
-                        </List.Item>
-                      )}
-                    </VirtualList>
-                  </List>
-                )}
-              </Card>
+              <Row align={"middle"}>
+                <AcademicCalender />
+              </Row>
             </Col>
           </Row>
+
           {data && data?.length > 0 && (
             <Row>
               <Col xs={{ span: 24 }}>
@@ -93,6 +66,18 @@ export const Office = () => {
               </Col>
             </Row>
           )}
+          <Row justify={"space-evenly"} align={"bottom"} gutter={[16, 16]}>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Card>
+                <StudentReport />
+              </Card>
+            </Col>
+            <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+              <Card>
+                <StaffReport />
+              </Card>
+            </Col>
+          </Row>
         </Space>
 
         <Modal

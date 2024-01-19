@@ -2,15 +2,14 @@ import { Button, Col, Form, Row, Select, Space, Switch, Table, UploadFile } from
 import { UploadFiles } from "../UploadFiles"
 import { useFetchUploadOptionsQuery } from "../../redux/api/feature/common/api"
 import { ColumnsType, TableProps } from "antd/es/table"
-import { ITransactionReport } from "../../interface/ITransactionReport"
 import { useAddMutation, useFetchAllQuery, useLazyFetchUrlQuery } from "../../redux/api/feature/data/api"
-import { CheckCircleTwoTone, CloseCircleOutlined, DownloadOutlined } from "@ant-design/icons"
-import dayjs, { Dayjs } from "dayjs"
+import { CheckCircleTwoTone, CloseCircleOutlined, DownloadOutlined, EyeOutlined } from "@ant-design/icons"
+import dayjs from "dayjs"
 
 export const DataUpload = () => {
   const { data: uploadOption } = useFetchUploadOptionsQuery()
   const [add] = useAddMutation()
-  const { data: allFiles } = useFetchAllQuery("EXPENSE")
+  const { data: allFiles } = useFetchAllQuery("UPLOAD")
   const [fetchUrl] = useLazyFetchUrlQuery()
 
   const columns: ColumnsType<UploadFile> = [
@@ -58,7 +57,7 @@ export const DataUpload = () => {
       render: (_: any, record: UploadFile) => (
         <Space size="middle">
           <Button type="link" onClick={() => fetchUrl(record.response)}>
-            <DownloadOutlined /> Download
+            <EyeOutlined /> View
           </Button>
         </Space>
       ),

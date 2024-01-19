@@ -8,10 +8,10 @@ export const RouteDecider = () => {
   const { user } = useAppSelector((app) => app.userAuth)
 
   useEffect(() => {
-    if (user?.authority == Role.STAFF) {
-      navigate("/office")
+    if (user?.authority == Role.ADMIN) {
+      navigate("/dashboard")
     } else {
-      navigate("/home")
+      navigate("/office")
     }
   }, [user?.userId])
   return <></>
