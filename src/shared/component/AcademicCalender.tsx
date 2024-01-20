@@ -19,10 +19,9 @@ export const AcademicCalender = () => {
           date.get("date")
         ) : (
           <Popover content={content} trigger={"click"}>
-            <div>
+            <Badge dot color="blue">
               {date.get("date")}
-              <Badge status="warning" style={{ display: "flex" }} />
-            </div>
+            </Badge>
           </Popover>
         ),
       })
@@ -34,20 +33,15 @@ export const AcademicCalender = () => {
       <Calendar
         fullscreen={false}
         headerRender={({ value }) => {
-          let current = value.clone()
-          const month = value.month()
           return (
-            <>
-              <Row justify={"center"}>
-                <Typography.Title level={5} style={{ marginTop: "1vmin" }}>
-                  {value.format("MMMM-YYYY")}
-                </Typography.Title>
-              </Row>
-            </>
+            <Row justify={"center"}>
+              <Typography.Title level={5} style={{ marginTop: "1vmin" }}>
+                {value.format("MMMM-YYYY")}
+              </Typography.Title>
+            </Row>
           )
         }}
         onSelect={onSelect}
-        onChange={onSelect}
         mode={"month"}
         fullCellRender={cellRender}
       />
