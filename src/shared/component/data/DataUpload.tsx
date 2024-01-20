@@ -15,7 +15,6 @@ export const DataUpload = () => {
   const columns: ColumnsType<UploadFile> = [
     {
       title: "Date",
-      width: 130,
       dataIndex: "lastModifiedDate",
       key: "age",
       fixed: "left",
@@ -25,14 +24,13 @@ export const DataUpload = () => {
     },
     {
       title: "File Name",
-      width: 150,
       dataIndex: "name",
       key: "name",
     },
     {
       title: "Status",
       dataIndex: "status",
-      key: "1",
+      key: "status",
       align: "center",
       width: 10,
       render: (value, record, index) => {
@@ -46,14 +44,15 @@ export const DataUpload = () => {
     {
       title: "Type",
       dataIndex: "documentType",
-      key: "2",
-      width: 100,
+      key: "documentType",
+      render: (value, record, index) => {
+        return value.split("_")[0]
+      },
     },
     {
       title: "Action",
       dataIndex: "action",
-      key: "2",
-      width: 100,
+      key: "action",
       render: (_: any, record: UploadFile) => (
         <Space size="middle">
           <Button type="link" onClick={() => fetchUrl(record.response)}>
