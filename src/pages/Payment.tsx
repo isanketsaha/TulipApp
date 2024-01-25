@@ -293,7 +293,7 @@ export const Payment = () => {
                       </Form.Item>
                     </Col>
                     <Col span={3}>
-                      <Form.Item name={"dueOpted"}>
+                      <Form.Item name={"dueOpted"} valuePropName="checked">
                         <Switch checkedChildren="Dues" unCheckedChildren="No Dues" checked={false} onChange={addDue} />
                       </Form.Item>
                     </Col>

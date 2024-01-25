@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Col, Form, Input, Row, Space } from "antd"
+import { Alert, Button, Card, Col, Form, Input, Row, Space, Typography } from "antd"
 import { useEffect } from "react"
 import { useMediaQuery } from "react-responsive"
 import { useNavigate } from "react-router-dom"
@@ -7,8 +7,10 @@ import { DateTime } from "../shared/component/DateTime"
 import { LoginDTO } from "../shared/interface/login"
 import { useLoginUserMutation } from "../shared/redux/api/feature/auth/loginApi"
 import { useAppDispatch, useAppSelector } from "../store"
+import { Footer } from "antd/es/layout/layout"
 
 export const Login = () => {
+  const { Text, Link } = Typography
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   let navigate = useNavigate()
   const { user } = useAppSelector((state) => state.userAuth)
@@ -106,6 +108,16 @@ export const Login = () => {
           </Col>
         </Row>
       </div>
+      <Footer style={{ textAlign: "center", backgroundColor: "white" }}>
+        <Text> Tulip English School Estabilished on ©2018 </Text>
+        <br />
+        <Text type="secondary">
+          Build by{" "}
+          <Link href="https://isanketsaha.github.io/" target="_blank">
+            Sanket Saha
+          </Link>
+        </Text>
+      </Footer>
     </>
   )
 }
