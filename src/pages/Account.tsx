@@ -12,9 +12,11 @@ import { useTransactionDownloadMutation } from "../shared/redux/api/feature/expo
 import { IoMdAddCircleOutline } from "react-icons/io"
 import { Session } from "../shared/component/data/Session"
 import { useAppSelector } from "../store"
+import { useMediaQuery } from "react-responsive"
 
 export const Accounts = () => {
   const { RangePicker } = DatePicker
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const [transactionDownload] = useTransactionDownloadMutation()
   const [selectedTransactionMonth, setSelectedTransactionMonth] = useState<string[]>([])
   const [addSession, setAddSession] = useState<boolean>(false)
@@ -104,11 +106,11 @@ export const Accounts = () => {
   return (
     <>
       <Space direction="vertical" style={{ width: "100%" }} size={"large"}>
-        <Row justify={"space-between"} align={"bottom"}>
-          <Col span={11}>
+        <Row justify={"space-between"} align={"bottom"} gutter={[16, 16]}>
+          <Col xs={24} md={11}>
             <Projections />
           </Col>
-          <Col span={11}>
+          <Col xs={24} md={11}>
             <Bar options={graphOption("Monthly Transaction")} data={transactionData} />
           </Col>
         </Row>
@@ -119,31 +121,33 @@ export const Accounts = () => {
             size="large"
             defaultActiveKey="1"
             tabBarExtraContent={
-              <Space>
-                <Button type="link" onClick={() => setAddSession(true)}>
-                  Add Session
-                </Button>
-                <Divider type="vertical" />
-                <Button
-                  type="link"
-                  disabled={selectedTransactionMonth.length == 0}
-                  onClick={() => transactionDownload(selectedTransactionMonth)}
-                  icon={<DownloadOutlined />}
-                >
-                  Export To Excel
-                </Button>
+              !isMobile && (
+                <Space>
+                  <Button type="link" onClick={() => setAddSession(true)}>
+                    Add Session
+                  </Button>
+                  <Divider type="vertical" />
+                  <Button
+                    type="link"
+                    disabled={selectedTransactionMonth.length == 0}
+                    onClick={() => transactionDownload(selectedTransactionMonth)}
+                    icon={<DownloadOutlined />}
+                  >
+                    Export To Excel
+                  </Button>
 
-                <RangePicker
-                  picker="month"
-                  disabledDate={disabledDate}
-                  allowClear={false}
-                  onCalendarChange={(val: null | (Dayjs | null)[]) =>
-                    val && setSelectedRange(val.filter(Boolean) as Dayjs[])
-                  }
-                  format={"MMM-YYYY"}
-                  defaultValue={[selectedRange[0], selectedRange[1]]}
-                />
-              </Space>
+                  <RangePicker
+                    picker="month"
+                    disabledDate={disabledDate}
+                    allowClear={false}
+                    onCalendarChange={(val: null | (Dayjs | null)[]) =>
+                      val && setSelectedRange(val.filter(Boolean) as Dayjs[])
+                    }
+                    format={"MMM-YYYY"}
+                    defaultValue={[selectedRange[0], selectedRange[1]]}
+                  />
+                </Space>
+              )
             }
             items={tabList}
           />

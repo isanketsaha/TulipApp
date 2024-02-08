@@ -31,8 +31,8 @@ export const Office = () => {
     <>
       <div className="site-card-wrapper">
         <Space direction="vertical" size="middle" style={{ display: "flex" }}>
-          <Row gutter={16}>
-            <Col span={18}>
+          <Row gutter={[16, 16]}>
+            <Col xs={24} md={18}>
               <Card
                 style={{ height: "100%" }}
                 title="Collection Report"
@@ -52,7 +52,7 @@ export const Office = () => {
                 <TransactionReport transactionDate={transactionDate} />
               </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} md={6}>
               <Row align={"middle"}>
                 <AcademicCalender />
               </Row>

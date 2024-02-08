@@ -11,8 +11,10 @@ import { EditableCell } from "../EditableCell"
 import { useAppSelector } from "/src/store"
 import { useUpdateProductVisibilityMutation, useUpdateStockMutation } from "../../redux/api/feature/catalog/api"
 import { useNavigate } from "react-router-dom"
+import { useMediaQuery } from "react-responsive"
 
 export const Stock = () => {
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const { data: stockDate } = useFetchInventoryReportQuery()
   const [exportStock] = useExportStockMutation()
   const [editingKey, setEditingKey] = useState<number>()
@@ -122,7 +124,7 @@ export const Stock = () => {
           currency: "INR",
         }),
     },
-    ...(user?.authority == Role.ADMIN
+    ...(user?.authority == Role.ADMIN && !isMobile
       ? [
           {
             title: "Purchase Quantity",

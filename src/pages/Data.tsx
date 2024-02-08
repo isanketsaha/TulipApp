@@ -16,11 +16,11 @@ export const Data = () => {
   const { Text } = Typography
 
   return (
-    <Row justify={"space-between"}>
-      <Col span={17}>
+    <Row justify={"space-between"} gutter={[16, 16]}>
+      <Col xs={24} md={17}>
         <Stock />
       </Col>
-      <Col span={6}>
+      <Col xs={24} md={6}>
         <Card loading={isLoading} bordered={false} title="Transport Fees">
           {transport && (
             <List>
