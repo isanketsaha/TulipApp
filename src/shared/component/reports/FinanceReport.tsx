@@ -1,11 +1,12 @@
-import { Button, Space, Table, Tag } from "antd"
-import dayjs, { Dayjs, months } from "dayjs"
-import { useFetchTransactionReportQuery } from "../../redux/api/feature/account/api"
-import { ITransactionReport } from "../../interface/ITransactionReport"
-import { ColumnsType } from "antd/es/table"
-import { useState } from "react"
 import { ArrowLeftOutlined } from "@ant-design/icons"
+import { Button, Space, Table, Tag } from "antd"
+import { ColumnsType } from "antd/es/table"
+import dayjs, { Dayjs } from "dayjs"
+import { useState } from "react"
+import { ITransactionReport } from "../../interface/ITransactionReport"
+import { useFetchTransactionReportQuery } from "../../redux/api/feature/account/api"
 import { TransactionReport } from "./TransactionReports"
+import { useMediaQuery } from "react-responsive"
 
 interface IFinanceReportProps {
   selectedRange: Dayjs[]
@@ -15,7 +16,7 @@ interface IFinanceReportProps {
 export const FinanceReport = ({ selectedRange, selectedTransactionMonth }: IFinanceReportProps) => {
   const [monthSelected, setMonthSelected] = useState<Dayjs[]>([])
   const [groupByFilter, setGroupByFilter] = useState<string>("MONTHLY")
-
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const { data: financeReportData } = useFetchTransactionReportQuery({
     fromDate:
       groupByFilter == "MONTHLY"
@@ -46,7 +47,8 @@ export const FinanceReport = ({ selectedRange, selectedTransactionMonth }: IFina
       dataIndex: "transactionDate",
       key: "transactionDate",
       sorter: (a, b) => new Date(a.transactionDate).getTime() - new Date(b.transactionDate).getTime(),
-      render: (item) => dayjs(item).format(groupByFilter == "MONTHLY" ? "MMMM-YYYY" : "DD-MMM-YYYY"),
+      render: (item) =>
+        dayjs(item).format(groupByFilter == "MONTHLY" ? (isMobile ? "MMM-YYYY" : "MMMM-YYYY") : "DD-MMM-YYYY"),
     },
     {
       title: "Fees",
@@ -97,7 +99,7 @@ export const FinanceReport = ({ selectedRange, selectedTransactionMonth }: IFina
       sorter: (a, b) => a.total - b.total,
     },
     Table.EXPAND_COLUMN,
-    ...(groupByFilter == "MONTHLY"
+    ...(groupByFilter == "MONTHLY" && !isMobile
       ? [
           {
             title: "Action",
@@ -108,8 +110,6 @@ export const FinanceReport = ({ selectedRange, selectedTransactionMonth }: IFina
         ]
       : []),
   ]
-
-  // <TransactionReport transactionDate={transactionDate} />
 
   return (
     <>
@@ -127,60 +127,62 @@ export const FinanceReport = ({ selectedRange, selectedTransactionMonth }: IFina
           }}
           pagination={{ pageSize: 50 }}
           columns={columns}
-          summary={() => (
-            <Table.Summary fixed={"bottom"}>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={3} colSpan={2}>
-                  {groupByFilter !== "MONTHLY" ? (
-                    <Button
-                      icon={<ArrowLeftOutlined />}
-                      onClick={() => {
-                        setGroupByFilter("MONTHLY")
-                      }}
-                    >
-                      Back
-                    </Button>
-                  ) : null}
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={3} colSpan={1}>
-                  <Tag color={"purple"}>
-                    {financeReportData?.feesTotal.toLocaleString("en-IN", {
-                      maximumFractionDigits: 2,
-                      style: "currency",
-                      currency: "INR",
-                    })}
-                  </Tag>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={3} colSpan={1}>
-                  <Tag color={"blue"}>
-                    {financeReportData?.purchaseTotal.toLocaleString("en-IN", {
-                      maximumFractionDigits: 2,
-                      style: "currency",
-                      currency: "INR",
-                    })}
-                  </Tag>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={3} colSpan={1}>
-                  <Tag color={"volcano"}>
-                    {financeReportData?.expenseTotal.toLocaleString("en-IN", {
-                      maximumFractionDigits: 2,
-                      style: "currency",
-                      currency: "INR",
-                    })}
-                  </Tag>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={3}>
-                  <Tag color={"green"}>
-                    {financeReportData?.amountTotal.toLocaleString("en-IN", {
-                      maximumFractionDigits: 2,
-                      style: "currency",
-                      currency: "INR",
-                    })}
-                  </Tag>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </Table.Summary>
-          )}
+          summary={() =>
+            !isMobile && (
+              <Table.Summary fixed={"bottom"}>
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={3} colSpan={2}>
+                    {groupByFilter !== "MONTHLY" ? (
+                      <Button
+                        icon={<ArrowLeftOutlined />}
+                        onClick={() => {
+                          setGroupByFilter("MONTHLY")
+                        }}
+                      >
+                        Back
+                      </Button>
+                    ) : null}
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3} colSpan={1}>
+                    <Tag color={"purple"}>
+                      {financeReportData?.feesTotal.toLocaleString("en-IN", {
+                        maximumFractionDigits: 2,
+                        style: "currency",
+                        currency: "INR",
+                      })}
+                    </Tag>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3} colSpan={1}>
+                    <Tag color={"blue"}>
+                      {financeReportData?.purchaseTotal.toLocaleString("en-IN", {
+                        maximumFractionDigits: 2,
+                        style: "currency",
+                        currency: "INR",
+                      })}
+                    </Tag>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3} colSpan={1}>
+                    <Tag color={"volcano"}>
+                      {financeReportData?.expenseTotal.toLocaleString("en-IN", {
+                        maximumFractionDigits: 2,
+                        style: "currency",
+                        currency: "INR",
+                      })}
+                    </Tag>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3}>
+                    <Tag color={"green"}>
+                      {financeReportData?.amountTotal.toLocaleString("en-IN", {
+                        maximumFractionDigits: 2,
+                        style: "currency",
+                        currency: "INR",
+                      })}
+                    </Tag>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </Table.Summary>
+            )
+          }
           sticky
         />
       </Space>

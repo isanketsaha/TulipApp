@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row, Select, Space, Switch, Table, UploadFile } from "antd"
+import { Button, Col, Form, Row, Select, Space, Switch, Table, Typography, UploadFile } from "antd"
 import { UploadFiles } from "../UploadFiles"
 import { useFetchUploadOptionsQuery } from "../../redux/api/feature/common/api"
 import { ColumnsType, TableProps } from "antd/es/table"
@@ -26,6 +26,9 @@ export const DataUpload = () => {
       title: "File Name",
       dataIndex: "name",
       key: "name",
+      render: (value) => {
+        return <Typography.Text ellipsis={true}>{value}</Typography.Text>
+      },
     },
     {
       title: "Status",
@@ -48,11 +51,13 @@ export const DataUpload = () => {
       render: (value, record, index) => {
         return value.split("_")[0]
       },
+      responsive: ["md"],
     },
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      responsive: ["md"],
       render: (_: any, record: UploadFile) => (
         <Space size="middle">
           <Button type="link" onClick={() => fetchUrl(record.response)}>
