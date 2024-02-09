@@ -13,7 +13,6 @@ interface ITransactionProps {
 }
 
 export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
-  const isMobile = useMediaQuery({ query: "(max-width: 700px)" })
   const [totalCollection, setTotalCollection] = useState(0)
   const { data: transactionReport } = useFetchTransactionHistoryQuery(transactionDate.format("YYYY-MM-DD"))
   const [transaction, setTransactions] = useState<IPayDetailsSummary[]>(transactionReport ?? [])
@@ -69,10 +68,7 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
         >
           <VirtualList height={150} fullHeight={true} data={transaction} itemKey="transaction">
             {(item: IPayDetailsSummary, index) => (
-              <List.Item
-                key={index}
-                actions={[!isMobile && <Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}
-              >
+              <List.Item key={index} actions={[<Link to={`/purchaseSummary/${item.paymentId}`}>Details</Link>]}>
                 <List.Item.Meta
                   key={index}
                   description={
@@ -80,9 +76,9 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
                       <Col md={{ span: 1 }} xs={{ span: 0 }}>
                         {index + 1}.
                       </Col>
-                      {!isMobile && (
-                        <Col md={{ span: 6 }}>{dayjs(item.paymentDateTime).format("MMM D, YYYY h:mm A")}</Col>
-                      )}
+
+                      <Col md={{ span: 6 }}>{dayjs(item.paymentDateTime).format("MMM D, YYYY h:mm A")}</Col>
+
                       <Col md={{ span: 5 }}>
                         <Space>
                           {item.payType != "EXPENSE" ? (
@@ -96,12 +92,12 @@ export const TransactionReport = ({ transactionDate }: ITransactionProps) => {
                       <Col md={{ span: 2 }}>
                         <Tag color={item?.payType == "FEES" ? "purple" : "volcano"}>{item.payType}</Tag>
                       </Col>
-                      {!isMobile && (
-                        <Col md={{ span: 2, offset: 1 }}>
-                          <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
-                        </Col>
-                      )}
-                      {!isMobile && item.dueOpted && (
+
+                      <Col md={{ span: 2, offset: 1 }}>
+                        <Tag color={item?.paymentMode == "CASH" ? "green" : "cyan"}> {item.paymentMode} </Tag>
+                      </Col>
+
+                      {item.dueOpted && (
                         <Col md={{ span: 2, offset: 1 }}>
                           (
                           <>
