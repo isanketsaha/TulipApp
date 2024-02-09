@@ -109,7 +109,7 @@ export const Login = () => {
         </Row>
       </div>
       <Footer style={{ textAlign: "center", backgroundColor: "white" }}>
-        <Text> Tulip English School Estabilished on ©2018 </Text>
+        <Text> Estabilished on ©2018 </Text>
         <br />
         <Text type="secondary">
           Build by{" "}

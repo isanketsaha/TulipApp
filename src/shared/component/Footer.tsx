@@ -17,7 +17,7 @@ export const AppFooter = () => {
   useFetchAvailablePaymentOptionsQuery()
   return (
     <Footer style={{ textAlign: "center" }}>
-      <Text> Tulip English School Estabilished on ©2018 </Text>
+      <Text> Established on ©2018 </Text>
     </Footer>
   )
 }

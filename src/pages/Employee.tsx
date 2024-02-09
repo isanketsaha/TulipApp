@@ -17,29 +17,43 @@ const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const { data, isFetching } = useSeachEmployeeByNameQuery(debouncedSearchTerm, { skip: debouncedSearchTerm == "" });
 
     return (
-        <>
-            <Row>
-               {isMobile ? null : <Col span={3} >
-                   {user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && <Link to="/onboarding" state={{
-                        type: 'employee'
-                    }}>
-                        <Button type="primary" htmlType="submit">
-                            Onboard Employee
-                        </Button>
-                    </Link>}
-                </Col>}
-                <Col span={isMobile ? 20 : 5} offset={isMobile ? 2 : 16}>
-                    <Select
-                        allowClear
-                        showSearch placeholder="Teacher Name / ID" size="large"
-                        
-                        onSearch={(value) => setSearchValue(value)} loading={isFetching} showArrow={false}
-                        filterOption={false} style={{ width: '100%' }} notFoundContent={null} options={data?.map((d) => ({
-                            value: d.id,
-                            label: <Link to={`../employeeDetails/${d.id}`}> {d.name} </Link>,
-                        }))} />
-                </Col>
-            </Row>
-            <EmployeeBasicDetails />
-        </>);
+      <>
+        <Row>
+          {isMobile ? null : (
+            <Col span={3}>
+              {user?.authority && [Role.ADMIN, Role.PRINCIPAL].includes(user?.authority) && (
+                <Link
+                  to="/onboarding"
+                  state={{
+                    type: "employee",
+                  }}
+                >
+                  <Button type="primary" htmlType="submit">
+                    Onboard Employee
+                  </Button>
+                </Link>
+              )}
+            </Col>
+          )}
+          <Col span={isMobile ? 20 : 5} offset={isMobile ? 2 : 16}>
+            <Select
+              allowClear
+              showSearch
+              placeholder="Teacher Name / ID"
+              size="large"
+              onSearch={(value) => setSearchValue(value)}
+              loading={isFetching}
+              filterOption={false}
+              style={{ width: "100%" }}
+              notFoundContent={null}
+              options={data?.map((d) => ({
+                value: d.id,
+                label: <Link to={`../employeeDetails/${d.id}`}> {d.name} </Link>,
+              }))}
+            />
+          </Col>
+        </Row>
+        <EmployeeBasicDetails />
+      </>
+    )
 }
