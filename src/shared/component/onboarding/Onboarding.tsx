@@ -87,8 +87,8 @@ export const Onboarding = () => {
   }
 
   const formatStudentDetails = (user: IUserDetails | undefined) => {
-    if (user) {
-      return {
+    return (
+      user && {
         name: user.name,
         profilePicture: user.profilePicture,
         id: user.id,
@@ -118,14 +118,14 @@ export const Onboarding = () => {
           }
         }),
       }
-    }
+    )
   }
 
   const onNext = () => {
     setCurrentStep(currentStep + 1)
-    // form.validateFields().then((values) => {
-    //   setCurrentStep(currentStep + 1)
-    // })
+    form.validateFields().then((values) => {
+      setCurrentStep(currentStep + 1)
+    })
   }
 
   const createUser = () => {

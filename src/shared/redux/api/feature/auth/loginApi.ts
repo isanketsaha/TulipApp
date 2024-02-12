@@ -24,7 +24,7 @@ export const loginApi = createApi({
                 try {
                   const { data } = await queryFulfilled;
                   dispatch(login(data));
-                  sessionStorage.setItem("tulipAuth", JSON.stringify(data));
+                  localStorage.setItem("tulipAuth", JSON.stringify(data))
                 } catch (error) {}
               },
         }),

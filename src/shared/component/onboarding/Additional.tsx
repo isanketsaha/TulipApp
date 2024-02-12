@@ -51,7 +51,13 @@ export const AddAdditional = ({ form }: IAdditionalProps) => {
                       label="Salary Offered"
                       rules={[{ type: "number", required: true }]}
                     >
-                      <InputNumber maxLength={5} controls={false} style={{ width: "100%" }} />
+                      <InputNumber
+                        prefix="₹"
+                        formatter={(value) => `${value}`.replace(/\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g, ",")}
+                        maxLength={6}
+                        controls={false}
+                        style={{ width: "100%" }}
+                      />
                     </Form.Item>
                   </Col>
                   <Col span={8}>

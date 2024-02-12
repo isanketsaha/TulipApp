@@ -73,7 +73,6 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
               <div>
                 {
                   <Button icon={<EditOutlined />} type="link" disabled onClick={showEditConfirm}>
-                    {" "}
                     Edit
                   </Button>
                 }
@@ -168,7 +167,7 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
           <Upload
             className="row"
             {...uploadProps()}
-            fileList={[...employeeData.panCard, ...employeeData.aadhaarCard]}
+            fileList={[...employeeData.panCard, ...employeeData.aadhaarCard, ...employeeData.highestQualification]}
             listType="text"
           ></Upload>
 
@@ -221,7 +220,13 @@ export const EmployeeViewDetails = ({ employeeId }: IEmployeeProps) => {
                 <Descriptions.Item label="Joined On">
                   {employeeData?.interview?.doj && dayjs(employeeData?.interview?.doj).format("DD-MM-YYYY")}
                 </Descriptions.Item>
-                <Descriptions.Item label="Salary">{employeeData?.interview?.salary}</Descriptions.Item>
+                <Descriptions.Item label="Salary">
+                  {employeeData?.interview?.salary.toLocaleString("en-IN", {
+                    maximumFractionDigits: 2,
+                    style: "currency",
+                    currency: "INR",
+                  })}
+                </Descriptions.Item>
                 <Descriptions.Item label="Comments">{employeeData?.interview?.comments}</Descriptions.Item>
               </Descriptions>
             </>
