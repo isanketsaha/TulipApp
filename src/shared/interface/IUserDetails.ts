@@ -32,6 +32,7 @@ export interface IUserDetails {
   dependent: IDependent[]
   bank: IBank
   interview: IInterview
+  highestQualification: UploadFile[]
   aadhaarCard: UploadFile[]
   panCard: UploadFile[]
   birthCertificate: UploadFile[]

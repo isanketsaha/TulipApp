@@ -2,11 +2,14 @@ import { WhatsAppOutlined } from "@ant-design/icons"
 import { Checkbox, Col, DatePicker, Divider, Form, FormProps, Input, InputNumber, Row, Select } from "antd"
 import type { Dayjs } from "dayjs"
 import { FC } from "react"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { useLocation } from "react-router-dom"
 import { useAppSelector } from "../../../store"
 import { UploadFiles } from "../UploadFiles"
+import dayjs from "dayjs"
 
 export const AddBasic: FC<FormProps> = (formProps) => {
+  dayjs.extend(relativeTime)
   const { state } = useLocation()
   const { classList, sessionList, selectedSession, bloodGroupList, genderList, religionList } = useAppSelector(
     (state) => state.commonData
@@ -53,7 +56,24 @@ export const AddBasic: FC<FormProps> = (formProps) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="dob" label="Date Of Birth" rules={[{ required: true }]}>
+          <Form.Item
+            name="dob"
+            label="Date Of Birth"
+            rules={[
+              { required: true },
+              ({ getFieldValue }) => ({
+                validator: async (rule, value) => {
+                  if (value) {
+                    return state.type == "employee"
+                      ? value && dayjs().diff(value, "y") >= 18
+                        ? Promise.resolve()
+                        : Promise.reject(new Error("Employee should be 18+"))
+                      : Promise.resolve()
+                  }
+                },
+              }),
+            ]}
+          >
             <DatePicker format={"DD-MM-YYYY"} style={{ width: "100%" }} disabledDate={disableDate} />
           </Form.Item>
         </Col>
@@ -115,7 +135,7 @@ export const AddBasic: FC<FormProps> = (formProps) => {
             <Form.Item
               name="experince"
               label="Experience"
-              rules={[{ required: true, type: "number", min: 0, max: 50 }]}
+              rules={[{ required: false, type: "number", min: 0, max: 50 }]}
             >
               <InputNumber controls={false} style={{ width: "100%" }} />
             </Form.Item>
@@ -168,7 +188,15 @@ export const AddBasic: FC<FormProps> = (formProps) => {
           {state.type == "student" ? (
             <UploadFiles listType={"text"} showUploadList={false} name="birthCertificate" label="Birth Certificate" />
           ) : (
-            <UploadFiles listType={"text"} showUploadList={false} name="panCard" label="Pan Card" />
+            <>
+              <UploadFiles listType={"text"} showUploadList={false} name="panCard" label="Pan Card" />
+              <UploadFiles
+                listType={"text"}
+                showUploadList={false}
+                name="highestQualification"
+                label="Highest Qualification"
+              />
+            </>
           )}
         </Col>
       </Row>
