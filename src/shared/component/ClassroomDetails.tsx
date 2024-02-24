@@ -181,7 +181,10 @@ export const ClassroomDetails = ({ session, stdList }: IClassDetailsProsp) => {
                       </Col>
                       <Col span={5} offset={5}>
                         <Form.Item label="Session" name="sessionId" rules={[{ required: true }]}>
-                          <Select options={sessionList} style={{ width: "100%" }} />
+                          <Select
+                            options={sessionList?.filter((item) => Number(item.value) > selectedSession?.value)}
+                            style={{ width: "100%" }}
+                          />
                         </Form.Item>
                       </Col>
                       <Col span={2} offset={5}>
@@ -285,6 +288,7 @@ export const ClassroomDetails = ({ session, stdList }: IClassDetailsProsp) => {
       children: (
         <Space direction="vertical" style={{ width: "100%" }}>
           <Table dataSource={classDetails?.feesCatalogs} size="small" scroll={{ y: 340 }} columns={feesColumns} />
+          )
           <Table dataSource={classDetails?.productCatalogs} size="small" scroll={{ y: 340 }} columns={productColumns} />
         </Space>
       ),
