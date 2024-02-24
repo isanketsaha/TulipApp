@@ -14,13 +14,15 @@ export const Fees: FC<FormProps & SelectProps & { fees?: Record<string, IFeesCat
       fees && (
         <Form.List
           name={["feesList", name]}
-          initialValue={fees[name].map((item) => {
-            return {
-              label: item.name,
-              price: item.amount,
-              rule: item.applicableRule,
-            }
-          })}
+          initialValue={[...fees[name]]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((item) => {
+              return {
+                itemName: item.name,
+                price: item.amount,
+                rule: item.applicableRule,
+              }
+            })}
         >
           {(fields, { add, remove }) => (
             <div>
@@ -35,13 +37,13 @@ export const Fees: FC<FormProps & SelectProps & { fees?: Record<string, IFeesCat
                     </Form.Item>
                   </Col>
                   <Col span={5}>
-                    <Form.Item name={[name, "label"]}>
-                      <Input placeholder="label" />
+                    <Form.Item name={[name, "itemName"]}>
+                      <Input placeholder="Fees Label" />
                     </Form.Item>
                   </Col>
                   <Col span={3}>
                     <Form.Item name={[name, "price"]}>
-                      <Input placeholder="price" />
+                      <Input placeholder="Price" />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
