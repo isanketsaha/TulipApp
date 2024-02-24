@@ -4,7 +4,7 @@ import { UploadFile, message } from "antd"
 
 export const dataeApi = createApi({
   reducerPath: "dataload",
-  tagTypes: ["AdmissionReport", "Session", "Student", "Upload"],
+  tagTypes: ["AdmissionReport", "SessionList", "Student", "Upload"],
   baseQuery: baseQueryWithRetry("dataload"),
   endpoints: (builder) => ({
     addSession: builder.mutation<void, any>({
@@ -15,7 +15,7 @@ export const dataeApi = createApi({
           body,
         }
       },
-      invalidatesTags: ["Session"],
+      invalidatesTags: ["SessionList"],
     }),
     add: builder.mutation<{ type: string; file: UploadFile[] }, any>({
       query: (body) => {
