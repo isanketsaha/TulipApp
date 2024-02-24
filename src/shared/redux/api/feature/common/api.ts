@@ -8,6 +8,7 @@ import { ISession } from "/src/shared/interface/ISession"
 export const commonApi = createApi({
   reducerPath: "common",
   baseQuery: baseQueryWithRetry("common"),
+  tagTypes: ["SessionList"],
   endpoints: (builder) => ({
     fetchGenderList: builder.query<DefaultOptionType[], void>({
       query: () => "/genderList",
@@ -68,6 +69,7 @@ export const commonApi = createApi({
     }),
     fetchAllFinacialYear: builder.query<DefaultOptionType[], void>({
       query: () => "/financialYearList",
+      providesTags: () => [{ type: "SessionList" }],
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled

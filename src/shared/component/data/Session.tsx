@@ -23,7 +23,7 @@ export const Session: FC<SelectProps> = (props) => {
   const [error, setError] = useState<boolean>(false)
   const [form] = useForm()
   const [feesByRule] = useFeesByRuleMutation()
-  const [addSession] = useAddSessionMutation()
+  const [addSession, { isSuccess: addedSession }] = useAddSessionMutation()
   const [fees, setFees] = useState<Record<string, IFeesCatalog[]>>()
   const [teacher, setTeacher] = useState<IBasicDetails[]>([])
   const { data: currectSession } = useFetchCurrentSessionQuery()
@@ -43,9 +43,9 @@ export const Session: FC<SelectProps> = (props) => {
         endDate: data.endDate.format("YYYY-MM-DD"),
       }
       addSession(data).then((res: any) => {
-        if (res?.data) {
+        if (addedSession) {
           message.info("Session created succesfully.")
-          navigate("/data")
+          navigate("/classroom")
           form.resetFields()
         }
       })
